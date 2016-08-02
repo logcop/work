@@ -21,21 +21,17 @@ public class HeaderFactory {
 	private static ObjectFactory objectFactory = new ObjectFactory();
 	
 	public static final void addHeader(WordprocessingMLPackage wordMLPackage) {
-		// OK, the guts of this sample:
-		// The 2 things you need:
 		// 1. the Header part
 		Relationship relationship = null;
 		try {
 			relationship = createHeaderPart(wordMLPackage);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		// 2. an entry in SectPr
 		try {
 			createHeaderReference(wordMLPackage, relationship);
 		} catch (InvalidFormatException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

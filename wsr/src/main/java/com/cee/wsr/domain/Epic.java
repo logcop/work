@@ -1,6 +1,7 @@
 package com.cee.wsr.domain;
 
 import java.util.Map;
+import java.util.Set;
 
 public class Epic {
 
@@ -12,14 +13,40 @@ public class Epic {
 		this.name = name;
 	}
 	
+	/*public void addJiraIssue(JiraIssue jiraIssue) {
+		Story story = new Story();
+		String epicKey = jiraIssue.getEpic();
+		if (epicMap.containsKey(epicKey)) {
+			epic = epicMap.get(epicKey);
+		} else {
+			epic = new Epic(epicKey);
+			epicMap.put(epicKey, epic);
+		}
+		epic.addJiraIssue(jiraIssue);
+	}*/
+	
 	public void addJiraIssue(JiraIssue jiraIssue) {
 		String issueType = jiraIssue.getType();
 		if (IssueType.STORY.equals(issueType)) {
 			storiesMap.put(jiraIssue.getKey(), createStory(jiraIssue));
-		} else if (IssueType.TASK.equals(issueType)) {
-			createTask(JiraIssue jiraIssue) {
-				
+		} 
+		else if (IssueType.TASK.equals(issueType)) {
+			Set<String> linkedKeys = jiraIssue.getLinkedIssueKeys();
+			String storyKey;
+			if (linkedKeys != null && linkedKeys.iterator().hasNext()) {
+				storyKey = linkedKeys.iterator().next();				
+			} else {
+				storyKey = Story.MISC_STORY_NAME;
 			}
+			Story story = storiesMap.get(storyKey);				
+			if (story == null) {
+				story = new Story(jiraIssue.getSummary());
+				storiesMap.put(jiraIssue.getKey(), story);
+			}
+			story.addTask(jiraIssue.getKey(), createTask(jiraIssue));
+		} 
+		else if (IssueType.BUG.equals(issueType)) {
+			//createBug(jiraIssue)
 		}
 	}
 	
@@ -30,8 +57,12 @@ public class Epic {
 			throw new IllegalArgumentException("jiraIssue must be of type Task.");
 		}
 		Task task = new Task();
-		task.
-		
+		task.setType(jiraIssue.getType());
+		task.setSummary(jiraIssue.getSummary());
+		task.setDevelopers(jiraIssue.getDevelopers());
+		task.setHoursSpent(jiraIssue.getTimeSpent());
+		task.setStatus(jiraIssue.getStatus());
+		return task;
 	}
 	
 	private Story createStory(JiraIssue jiraIssue) {

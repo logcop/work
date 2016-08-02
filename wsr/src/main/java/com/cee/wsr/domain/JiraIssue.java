@@ -14,7 +14,7 @@ public class JiraIssue {
 	private float estimate;
 	private float timeSpent;
 	private String[] subTasks;
-	private String[] linkedIssueKeys;
+	private Set<String> linkedIssueKeys;
 	private Set<String> developers;
 
 	public JiraIssue(String projectName, String epic, 
@@ -195,7 +195,7 @@ public class JiraIssue {
 	/**
 	 * @return the linkedIssueKeys
 	 */
-	public String[] getLinkedIssueKeys() {
+	public Set<String> getLinkedIssueKeys() {
 		return linkedIssueKeys;
 	}
 
@@ -203,7 +203,7 @@ public class JiraIssue {
 	/**
 	 * @param linkedIssueKeys the linkedIssueKeys to set
 	 */
-	public void setLinkedIssueKeys(String[] linkedIssueKeys) {
+	public void setLinkedIssueKeys(Set<String> linkedIssueKeys) {
 		this.linkedIssueKeys = linkedIssueKeys;
 	}
 
