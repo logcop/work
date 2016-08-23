@@ -16,9 +16,10 @@ public class JiraXlsxIssueDao implements JiraIssueDao{
 	@Autowired
 	StatusReportProperties statusReportProperties;
 	
+	@Override
 	public JiraIssues getAllIssues() {
 		// TODO: have to figure out how to inject a different path if user overrides path.
-		String xlsxPath = statusReportProperties.getXlsPath();
+		String[] xlsxPath = statusReportProperties.getXlsPath();
 		
 		return jiraIssuesXlsxParser.parseXlsx(xlsxPath);		
 	}

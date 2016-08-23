@@ -1,211 +1,135 @@
 package com.cee.wsr.domain;
 
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.springframework.util.CollectionUtils;
 
 public class JiraIssue {
-	private String projectName;
-	private String key;
-	private String summary;
-	private String type;
-	private String status;
-	private String epic;
-	private float estimate;
-	private float timeSpent;
-	private String[] subTasks;
-	private Set<String> linkedIssueKeys;
-	private Set<String> developers;
-
-	public JiraIssue(String projectName, String epic, 
-			String summary, String status, Set<String> developers) {
-		this.projectName = projectName;
-		this.epic = epic;
-		this.summary = summary;
-		this.status = status;
-		this.developers = developers;
-	}	
 	
+	private Map<String, List<String>> attributeNameValuesMap = new HashMap<String, List<String>>(75,1.0f);
+		
 
 	public JiraIssue() {
 		// TODO Auto-generated constructor stub
 	}
-
-
-	/**
-	 * @return the projectName
-	 */
-	public String getProjectName() {
-		return projectName;
+	
+	public void addAttribute(String name, List<String> values) {		
+		if (attributeNameValuesMap.containsKey(name)) {
+			attributeNameValuesMap.get(name).addAll(values);
+		}
+		else {
+			attributeNameValuesMap.put(name, values);
+		}
 	}
-
-
-	/**
-	 * @param projectName the projectName to set
-	 */
-	public void setProjectName(String projectName) {
-		this.projectName = projectName;
+	
+	public void addAttribute(String name, String value) {
+		if (attributeNameValuesMap.containsKey(name)) {
+			List<String> values = attributeNameValuesMap.get(name);
+			values.add(value);
+		}
+		else {
+			List<String> values = new ArrayList<String>();
+			values.add(value);
+			attributeNameValuesMap.put(name, values);
+		}
 	}
-
-
-	/**
-	 * @return the subTasks
-	 */
-	public String[] getSubTasks() {
-		return subTasks;
+	
+	public String getValue(String name) {		
+		String value = null;
+		List<String> values = attributeNameValuesMap.get(name);
+		if (!CollectionUtils.isEmpty(values)) {
+			value = values.get(0);
+		}
+		if(value == null) {
+			return "";
+		}
+		return value;
 	}
-
-
-	/**
-	 * @param subTasks the subTasks to set
-	 */
-	public void setSubTasks(String[] subTasks) {
-		this.subTasks = subTasks;
+	
+	public List<String> getValues(String name) {
+		List<String> values = attributeNameValuesMap.get(name);
+		
+		if (values == null) {
+			return new ArrayList<String>();
+		}
+		
+		return values;
 	}
-
-
-	/**
-	 * @return the epic
-	 */
-	public String getEpic() {
-		return epic;
-	}
-
-
-	/**
-	 * @param epic the epic to set
-	 */
-	public void setEpic(String epic) {
-		this.epic = epic;
-	}
-
-
-	/**
-	 * @param developers the developers to set
-	 */
-	public void setDevelopers(Set<String> developers) {
-		this.developers = developers;
-	}
-
-
-
-	/**
-	 * @return the summary
-	 */
+	
+	
 	public String getSummary() {
-		return summary;
-	}
-
-	/**
-	 * @param summary
-	 *            the summary to set
-	 */
-	public void setSummary(String summary) {
-		this.summary = summary;
-	}
-
-	/**
-	 * @return the status
-	 */
-	public String getStatus() {
-		return status;
-	}
-
-	/**
-	 * @param status
-	 *            the status to set
-	 */
-	public void setStatus(String status) {
-		this.status = status;
-	}
-
-	/**
-	 * @return the developers
-	 */
-	public Set<String> getDevelopers() {
-		return developers;
+		return getValue(JiraAttribute.SUMMARY);
 	}
 	
-	
-
-	/**
-	 * @return the key
-	 */
 	public String getKey() {
-		return key;
+		return getValue(JiraAttribute.ISSUE_KEY);
 	}
-
-
-	/**
-	 * @param key the key to set
-	 */
-	public void setKey(String key) {
-		this.key = key;
+	
+	public String getId() {
+		return getValue(JiraAttribute.ISSUE_ID);
 	}
-
-
-	/**
-	 * @return the type
-	 */
+	
+	public String getParentId() {
+		return getValue(JiraAttribute.PARENT_ID);
+	}
+	
 	public String getType() {
-		return type;
+		return getValue(JiraAttribute.ISSUE_TYPE);
+	}
+	
+	public String getStatus() {
+		return getValue(JiraAttribute.STATUS);
+	}
+	
+	public String getProjectKey() {
+		return getValue(JiraAttribute.PROJECT_KEY);
+	}
+	
+	public String getProjectName() {
+		return getValue(JiraAttribute.PROJECT_NAME);
+	}
+	
+	public List<String> getSprints() {
+		return getValues(JiraAttribute.SPRINT);
+	}
+	
+	public String getEpicName() {
+		return getValue(JiraAttribute.CUSTOM_FIELD_EPIC_NAME);
+	}
+	
+	public String getEpicKey() {
+		return getValue(JiraAttribute.CUSTOM_FIELD_EPIC_LINK);
+	}
+	
+	public String getEstimate() {
+		return getValue(JiraAttribute.ORIGINAL_ESTIMATE);
+	}
+	
+	public String getTimeSpent() {
+		return getValue(JiraAttribute.TIME_SPENT);
+	}
+	
+	public List<String> getLinkedIssueKeys() {
+		return getValues(JiraAttribute.OUTWARD_ISSUE_LINK_PROBLEM_INCIDENT);
+	}
+	
+	public List<String> getDevelopers() {
+		return getValues(JiraAttribute.CUSTOM_FIELD_ASSIGNED_DEVELOPER);
+	}
+	
+
+	public String getStoryPoints() {
+		return getValue(JiraAttribute.CUSTOM_FIELD_STORY_POINTS);
+	}
+	
+	public List<String> getWorkLog() {
+		return getValues(JiraAttribute.LOG_WORK);
 	}
 
-
-	/**
-	 * @param type the type to set
-	 */
-	public void setType(String type) {
-		this.type = type;
-	}
-
-
-	/**
-	 * @return the estimate
-	 */
-	public float getEstimate() {
-		return estimate;
-	}
-
-
-	/**
-	 * @param estimate the estimate to set
-	 */
-	public void setEstimate(float estimate) {
-		this.estimate = estimate;
-	}
-
-
-	/**
-	 * @return the timeSpent
-	 */
-	public float getTimeSpent() {
-		return timeSpent;
-	}
-
-
-	/**
-	 * @param timeSpent the timeSpent to set
-	 */
-	public void setTimeSpent(float timeSpent) {
-		this.timeSpent = timeSpent;
-	}
-
-
-	/**
-	 * @return the linkedIssueKeys
-	 */
-	public Set<String> getLinkedIssueKeys() {
-		return linkedIssueKeys;
-	}
-
-
-	/**
-	 * @param linkedIssueKeys the linkedIssueKeys to set
-	 */
-	public void setLinkedIssueKeys(Set<String> linkedIssueKeys) {
-		this.linkedIssueKeys = linkedIssueKeys;
-	}
 
 
 	/*
@@ -215,7 +139,21 @@ public class JiraIssue {
 	 */
 	@Override
 	public String toString() {
+		/*if (CollectionUtils.isEmpty(attributeNameValuesMap)) {
+			return "";
+		}
+		StringBuilder sb = new StringBuilder();
+		for (String attributeName : attributeNameValuesMap.keySet()) {
+			List<String> values = attributeNameValuesMap.get(attributeName);
+			if (CollectionUtils.isEmpty(values)) {
+				sb.append(attributeName)
+					.append(" : ")
+					.append("; ")
+			}
+		}*/
 		return ToStringBuilder.reflectionToString(this);
 	}
+	
+	
 
 }

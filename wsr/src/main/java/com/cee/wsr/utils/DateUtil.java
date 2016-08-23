@@ -36,6 +36,7 @@ import java.util.Date;
  */
 
 public class DateUtil {
+	
 	private static final String DATE_STRING_FORMAT = "dd MMM yyyy";
 	private static final String TIME_DATE_STRING_FORMAT = "HH:mm:ss:SS  dd MMM yyyy";
 	private static final DateFormat DATE_FORMATER = new SimpleDateFormat(DATE_STRING_FORMAT);
@@ -44,6 +45,19 @@ public class DateUtil {
 	private DateUtil() {
 	}
 
+	public static Date toDate(String format, String dateString) {
+		Date date = null;
+		try {
+			DateFormat dateFormater = new SimpleDateFormat(format);
+			
+			date = dateFormater.parse(dateString);
+		} catch (ParseException pe) {
+			throw new IllegalArgumentException("String must be in the following format - '"
+					+ format + "'", pe);
+		}
+		return date;
+	}
+	
 	public static Date toDate(String string) {
 		Date date = null;
 		try {

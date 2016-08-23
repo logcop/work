@@ -1,12 +1,14 @@
 package com.cee.wsr.domain;
 
-import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
 
 public class StatusReport {
+	//private static final Logger log = LoggerFactory.getLogger(StatusReport.class);
 	private String classification;
 	
 	private String title;
@@ -14,9 +16,7 @@ public class StatusReport {
 	private Author author;
 	private Date weekEndingDate;
 	
-	private List<Project> projectList = new ArrayList<Project>();
-
-	// private List<Appendix> appendixList;
+	private Map<String, Project> projectMap = new HashMap<String, Project>(6,1.0f);
 
 	public StatusReport(String title, String classification, Sprint sprint, Author author, Date weekEndingDate) {
 		this.title = title;
@@ -25,70 +25,73 @@ public class StatusReport {
 		this.classification = classification;
 		this.weekEndingDate = weekEndingDate;
 	}
-
-	public Project getProject(String name) {
-		for (Project project : projectList) {
-			if (project.getName().equals(name)) {
-				return project;
-			}
-		}
-		return null;
-	}
 	
-	
-
-	/**
-	 * TODO: rewrite....
-	 * Adds a task to the given named project. If the project doesn't exist, a
-	 * new project is created, the task is added to it, and it is associated
-	 * with the StatusReport.
-	 * 
-	 * @param projectName
-	 * @param epic
-	 * @param jiraIssue
-	 */
-	public void addJiraIssue(JiraIssue jiraIssue) {
-		if (jiraIssue == null) {
-			throw new IllegalArgumentException("JiraIssue cannot be null.");
-		}
-
-		Project project = getProject(jiraIssue.getProjectName());
-		if (project == null) {
-			project = new Project(jiraIssue.getProjectName());
-			project.addJiraIssue(jiraIssue);
-			projectList.add(project);
-		} else {
-			project.addJiraIssue(jiraIssue);
-		}
-	}
-	
-	public void addJiraIssues(List<JiraIssue> jiraIssues) {
-		for (JiraIssue jiraIssue : jiraIssues) {
-			addJiraIssue(jiraIssue);
-		}
-	}
-
 	public void addProject(Project project) {
-		if (!this.containsProject(project)) {
-			projectList.add(project);
+		if(project == null) {
+			throw new IllegalArgumentException("Project must not be null.");
 		}
-	}
-
-	public boolean containsProject(Project project) {
-		return containsProject(project.getName());
-	}
-
-	public boolean containsProject(String projectName) {
-		for (Project existingProject : projectList) {
-			if (existingProject.getName().equals(projectName)) {
-				return true;
-			}
+		
+		String projectKey = project.getKey();
+		if (projectMap.containsKey(projectKey)) {
+			throw new RuntimeException("Project " + projectKey + " already exists in StatusReport.");
 		}
-		return false;
+		
+		projectMap.put(projectKey, project);
+		
+		
 	}
 	
-	public List<Project> getProjects() {
-		return projectList;
+	public String logStats() {
+		StringBuilder sb = new StringBuilder();
+		sb.append("StatusReport.printStats...\n")
+		.append("StatusReport Stats\n")
+		.append("==================\n")
+		.append("Title: ").append(title + "\n")
+		.append("Sprint: ").append(sprint + "\n")
+		.append("Author: ").append(author + "\n")
+		.append("Classification: ").append(classification + "\n")
+		.append("Weekending Date: ").append(weekEndingDate +"\n");
+		
+		for(Project project : projectMap.values()) {
+			sb.append("Project Name: ").append(project.getName() + "\n")
+			.append("Project Key: ").append(project.getKey() + "\n")
+			.append("Project Total Hours Logged: ").append(project.getTotalLoggedHours() + "\n")
+			.append("Time Spent: ").append(project.getTimeSpentInHours() + "\n");
+			for (Epic epic : project.getEpics()) {
+				sb.append("\tEpic Name:").append(epic.getName() + "\n")
+				.append("\tEpic Key: ").append(epic.getKey() + "\n")
+				.append("\tEpic Total Hours Logged: ").append(epic.getTotalLoggedHours() + "\n")
+				.append("\tTime Spent: ").append(epic.getTimeSpentInHours() + "\n");
+				for (Story story : epic.getStories()) {
+					sb.append("\t\tStory Name: ").append(story.getName() + "\n")
+					.append("\t\tStory Key: ").append(story.getKey() + "\n")
+					.append("\t\tStory Total Hours Logged: ").append(story.getTotalLoggedHours() + "\n")
+					.append("\t\tTime Spent: ").append(story.getTimeSpentInHours() + "\n");
+					for(Task task : story.getTasks()) {
+						sb.append("\t\t\tTask Summary: ").append(task.getSummary() + "\n")
+						.append("\t\t\tTask Key: ").append(task.getKey() + "\n")
+						.append("\t\t\tTask Story Points: ").append(task.getStoryPoints() + "\n")
+						.append("\t\t\tTask Total Hours Logged: ").append(task.getTotalLoggedHours() + "\n")
+						.append("\t\t\tTime Spent: ").append(task.getTimeSpentInHours() + "\n")
+						.append("\t\t\tStatus: ").append(task.getStatus() + "\n");
+						for(String developer : task.getDevelopers()) {
+							sb.append("\t\t\tDeveloper: ").append(developer + "\n");
+						}
+					}
+				}
+			}
+		}
+		
+		return sb.toString();
+	}
+	
+
+	public Project getProject(String projectKey) {		
+		return projectMap.get(projectKey);
+	}	
+	
+	public Collection<Project> getProjects() {
+		return projectMap.values();
 	}
 
 	/**

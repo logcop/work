@@ -119,8 +119,8 @@ public class StatusReportProperties {
 	/**
 	 * @return the xlsPath
 	 */
-	public String getXlsPath() {
-		return xlsPath;
+	public String[] getXlsPath() {		
+		return xlsPath.split(";");
 	}
 	
 	public void setXlsPath(String xlsxPath) {

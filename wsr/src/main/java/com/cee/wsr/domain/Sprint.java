@@ -4,22 +4,52 @@ import java.util.Date;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
+/**
+ * @author chuck
+ *
+ */
 public class Sprint {
-	private int number;
+	
+	private String name;
+	private Integer number;
 	private Date startDate;
 	private Date endDate;
 
+	public Sprint(String name) {
+		this.name = name;
+	}
+	
 	public Sprint(int number, Date startDate, Date endDate) {
 		super();
 		this.number = number;
 		this.startDate = startDate;
 		this.endDate = endDate;
 	}
+	
+	
+	/**
+	 * @return the name
+	 */
+	public String getName() {
+		return name;
+	}
+
+	/**
+	 * @param name the name to set
+	 */
+	public void setName(String name) {
+		this.name = name;
+	}
 
 	/**
 	 * @return the number
 	 */
 	public int getNumber() {
+		if (number == null) {
+			String sprintNumber = name.substring(name.lastIndexOf("Sprint ") + "Sprint ".length());
+			System.out.println("getSprintNumber = " + sprintNumber);
+			number = new Integer(sprintNumber);
+		}
 		return number;
 	}
 

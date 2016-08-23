@@ -2,6 +2,7 @@ package com.cee.wsr.document;
 
 import java.io.File;
 import java.math.BigInteger;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
@@ -29,10 +30,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
+import com.cee.wsr.domain.JiraIssue;
 import com.cee.wsr.domain.Project;
 import com.cee.wsr.domain.Sprint;
 import com.cee.wsr.domain.StatusReport;
-import com.cee.wsr.domain.JiraIssue;
 import com.cee.wsr.utils.DateUtil;
 
 @Component
@@ -154,7 +155,7 @@ public class DocxGenerator {
 	}
 	
 
-	public static final void addProjects(WordprocessingMLPackage wordMLPackage, List<Project> projects) {
+	public static final void addProjects(WordprocessingMLPackage wordMLPackage, Collection<Project> projects) {
 		for (Project project : projects) {
 			addProject(wordMLPackage, project);
 		}
@@ -199,7 +200,7 @@ public class DocxGenerator {
 	}
 	
 	
-	public static final void addDevelopers(Set<String> developers, MainDocumentPart mdp, String taskFontSize) {
+	public static final void addDevelopers(Collection<String> developers, MainDocumentPart mdp, String taskFontSize) {
 		String developerLabel = "";
 		String developerValue = "";
 		
