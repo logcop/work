@@ -13,11 +13,12 @@ public class Task extends BaseIssue {
 	private String summary;	
 	private String status;
 	private String storyPoints;
-	private int timeSpentInSeconds;
+	private int timeSpentInSeconds = 0;
 	
 	private List<String> developers = new ArrayList<String>();
 	private Map<Date, WorkLog> dateToWorkLogMap = new HashMap<Date, WorkLog>();
 
+	private Map<String, Task> keyToSubtaskMap = new HashMap<String, Task>();
 
 	public Task(String summary) {
 		this.summary = summary;
@@ -91,25 +92,27 @@ public class Task extends BaseIssue {
 	}
 
 	public float getTimeSpentInHours() {
-		float timeSpentInHours = 0;
-		if (timeSpentInSeconds > 0) {
-			timeSpentInHours = timeSpentInSeconds / 3600f;
-		}
-		return timeSpentInHours;
+		return getTimeSpentInSeconds() / 3600f;
 	}
 	
 	/**
 	 * @return the timeSpentInSeconds
 	 */
 	public int getTimeSpentInSeconds() {
-		return timeSpentInSeconds;
+		return timeSpentInSeconds / 3600;
 	}
-
-	/**
-	 * @param timeSpentInSeconds the timeSpentInSeconds to set
-	 */
+	
 	public void setTimeSpentInSeconds(int timeSpentInSeconds) {
 		this.timeSpentInSeconds = timeSpentInSeconds;
+	}
+	
+	public int getLoggedTimeInHours () {
+		int timeSpentInSeconds = 0;
+		
+		for (WorkLog workLog : dateToWorkLogMap.values()) {
+			timeSpentInSeconds += workLog.getTimeInSeconds();
+		}
+		return timeSpentInSeconds;
 	}
 
 	/**

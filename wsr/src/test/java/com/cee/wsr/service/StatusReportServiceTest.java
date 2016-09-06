@@ -22,8 +22,8 @@ public class StatusReportServiceTest {
 	StatusReportService srService;
 	
 	@Test
-	public void testGetV2StatusReport() {
-		StatusReport report = srService.getV2StatusReport();
+	public void testGetStatusReport() {
+		StatusReport report = srService.getStatusReport();
 		
 		Assert.assertNotNull(report);
 		log.debug(report.logStats());

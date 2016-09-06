@@ -17,6 +17,7 @@ public class DevNameUtil {
 		firstToFullNameMap.put("Jim", "Jim Hayes");
 		firstToFullNameMap.put("Jordan", "Jordan Laimana");
 		firstToFullNameMap.put("Sal", "Sal Fiesta");
+		firstToFullNameMap.put("Brooks", "Mark Yanagihara-Brooks");
 	}
 
 	private DevNameUtil() {

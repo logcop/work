@@ -13,7 +13,7 @@ public class Epic extends BaseIssue {
 	private static final Logger log = LoggerFactory.getLogger(Epic.class);
 	private String name;
 	
-	private Map<String, Story> storiesMap = new HashMap<String, Story>(); 
+	private Map<String, Story> keyToStoryMap = new HashMap<String, Story>(); 
 	
 	public Epic(String name) {
 		this.name = name;
@@ -21,7 +21,7 @@ public class Epic extends BaseIssue {
 	
 	public float getTimeSpentInHours() {
 		float timeSpent = 0;
-		for (Story story : storiesMap.values()) {
+		for (Story story : keyToStoryMap.values()) {
 			timeSpent += story.getTimeSpentInHours();
 		}
 		return timeSpent;
@@ -29,7 +29,7 @@ public class Epic extends BaseIssue {
 	
 	public float getTotalLoggedHours() {
 		float loggedHours = 0;
-		for (Story story : storiesMap.values()) {
+		for (Story story : keyToStoryMap.values()) {
 			loggedHours += story.getTotalLoggedHours();
 		}
 		return loggedHours;
@@ -37,7 +37,7 @@ public class Epic extends BaseIssue {
 	
 	public float getLoggedHoursBetween(Date startDate, Date endDate) {
 		float loggedHours = 0;
-		for (Story story : storiesMap.values()) {
+		for (Story story : keyToStoryMap.values()) {
 			loggedHours = story.getLoggedHoursBetween(startDate, endDate);
 		}
 		return loggedHours;
@@ -52,22 +52,22 @@ public class Epic extends BaseIssue {
 		if (storyKey == null) {
 			throw new RuntimeException("Story must contain a key.");
 		}
-		if (storiesMap.containsKey(storyKey)) {
+		if (keyToStoryMap.containsKey(storyKey)) {
 			throw new RuntimeException("Story " + storyKey + " already exists in Epic " + getKey());
 		}
-		if (CollectionUtils.isEmpty(storiesMap)) {
-			storiesMap = new HashMap<String, Story>();
+		if (CollectionUtils.isEmpty(keyToStoryMap)) {
+			keyToStoryMap = new HashMap<String, Story>();
 		}
-		storiesMap.put(storyKey, story);
+		keyToStoryMap.put(storyKey, story);
 		
 	}
 	
 	public Story getStory(String storyKey) {
-		return storiesMap.get(storyKey);
+		return keyToStoryMap.get(storyKey);
 	}
 	
 	public Collection<Story> getStories() {
-		return storiesMap.values();
+		return keyToStoryMap.values();
 	}
 	
 	/*public void addJiraIssue(JiraIssue jiraIssue) {
@@ -85,7 +85,7 @@ public class Epic extends BaseIssue {
 	/*public void addJiraIssue(JiraIssue jiraIssue) {
 		String issueType = jiraIssue.getType();
 		if (IssueType.STORY.equals(issueType)) {
-			storiesMap.put(jiraIssue.getKey(), createStory(jiraIssue));
+			keyToStoryMap.put(jiraIssue.getKey(), createStory(jiraIssue));
 		} 
 		else if (IssueType.TASK.equals(issueType)) {
 			Set<String> linkedKeys = jiraIssue.getLinkedIssueKeys();
@@ -95,10 +95,10 @@ public class Epic extends BaseIssue {
 			} else {
 				storyKey = Story.MISC_STORY_NAME;
 			}
-			Story story = storiesMap.get(storyKey);				
+			Story story = keyToStoryMap.get(storyKey);				
 			if (story == null) {
 				story = new Story(jiraIssue.getSummary());
-				storiesMap.put(jiraIssue.getKey(), story);
+				keyToStoryMap.put(jiraIssue.getKey(), story);
 			}
 			story.addTask(jiraIssue.getKey(), createTask(jiraIssue));
 		} 

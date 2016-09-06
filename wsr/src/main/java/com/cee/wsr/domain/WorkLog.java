@@ -2,12 +2,17 @@ package com.cee.wsr.domain;
 
 import java.util.Date;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+
 
 public class WorkLog {
 	private String comment;
 	private Date date;
 	private String owner;
 	private int timeInSeconds;
+	
+	public WorkLog() {
+	}
 	
 	public WorkLog(String comment, Date date, String owner, int timeInSeconds) {
 		this.comment = comment;
@@ -68,5 +73,8 @@ public class WorkLog {
 		this.timeInSeconds = timeInSeconds;
 	}
 	
-	
+	@Override
+	public String toString() {
+		return ToStringBuilder.reflectionToString(this);
+	}
 }

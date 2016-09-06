@@ -37,25 +37,40 @@ import java.util.Date;
 
 public class DateUtil {
 	
-	private static final String DATE_STRING_FORMAT = "dd MMM yyyy";
-	private static final String TIME_DATE_STRING_FORMAT = "HH:mm:ss:SS  dd MMM yyyy";
-	private static final DateFormat DATE_FORMATER = new SimpleDateFormat(DATE_STRING_FORMAT);
-	private static final DateFormat TIME_DATE_FORMATER = new SimpleDateFormat(TIME_DATE_STRING_FORMAT);
+	public static final String DATE_STRING_FORMAT = "dd MMM yyyy";
+	public static final String JIRA_WORKLOG_DATE_FORMAT = "dd/MMM/yy hh:mm aa";
+	public static final String TIME_DATE_STRING_FORMAT = "HH:mm:ss:SS  dd MMM yyyy";
+	public static final DateFormat DATE_FORMATER = new SimpleDateFormat(DATE_STRING_FORMAT);
+	public static final DateFormat TIME_DATE_FORMATER = new SimpleDateFormat(TIME_DATE_STRING_FORMAT);
 
 	private DateUtil() {
 	}
 
 	public static Date toDate(String format, String dateString) {
 		Date date = null;
+		if (isDateByFormat(format, dateString)) {
+			try {
+				DateFormat dateFormater = new SimpleDateFormat(format);
+				
+				date = dateFormater.parse(dateString);
+			} catch (ParseException pe) {
+				throw new IllegalArgumentException("String \"" + dateString + "\" must be in the following format - '"
+						+ format + "'", pe);
+			}
+		}
+		return date;
+	}
+	
+	public static boolean isDateByFormat(String format, String dateString) {
+		Date date = null;
 		try {
 			DateFormat dateFormater = new SimpleDateFormat(format);
 			
 			date = dateFormater.parse(dateString);
-		} catch (ParseException pe) {
-			throw new IllegalArgumentException("String must be in the following format - '"
-					+ format + "'", pe);
+		} catch (Exception ex) {
+			return false;
 		}
-		return date;
+		return (date != null);
 	}
 	
 	public static Date toDate(String string) {

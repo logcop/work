@@ -11,7 +11,7 @@ public class Wsr {
 		ApplicationContext ctx = new AnnotationConfigApplicationContext(ApplicationConfig.class);
 
 		StatusReportGenerator srGenerator = ctx.getBean(StatusReportGenerator.class);
-		srGenerator.generate();
+		srGenerator.generateV2();
 	}
 
 }

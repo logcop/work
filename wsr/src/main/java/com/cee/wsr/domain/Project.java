@@ -17,7 +17,7 @@ public class Project {
 	private static final Logger log = LoggerFactory.getLogger(Project.class);
 	private String name;
 	private String key;
-	private Map<String, Epic> epicMap = new HashMap<String, Epic>();
+	private Map<String, Epic> keyToEpicMap = new HashMap<String, Epic>();
 	
 	@Deprecated
 	private Map<String, List<JiraIssue>> epicToTaskListMap = new HashMap<String, List<JiraIssue>>(); 
@@ -29,7 +29,7 @@ public class Project {
 	
 	public float getTimeSpentInHours() {
 		float timeSpent = 0;
-		for (Epic epic : epicMap.values()) {
+		for (Epic epic : keyToEpicMap.values()) {
 			timeSpent += epic.getTimeSpentInHours();
 		}
 		return timeSpent;
@@ -38,7 +38,7 @@ public class Project {
 	public float getTotalLoggedHours() {
 		float loggedHours = 0;
 		
-		for (Epic epic : epicMap.values()) {
+		for (Epic epic : keyToEpicMap.values()) {
 			loggedHours += epic.getTotalLoggedHours();
 		}
 		
@@ -47,14 +47,14 @@ public class Project {
 	
 	public float getLoggedHoursBetween(Date startDate, Date endDate) {
 		float loggedHours = 0;
-		for (Epic epic : epicMap.values()) {
+		for (Epic epic : keyToEpicMap.values()) {
 			loggedHours = epic.getLoggedHoursBetween(startDate, endDate);
 		}
 		return loggedHours;
 	}
 	
 	public Epic getEpic(String epicKey) {
-		return epicMap.get(epicKey);
+		return keyToEpicMap.get(epicKey);
 	}
 	
 	public void addEpic(Epic epic) {
@@ -65,13 +65,13 @@ public class Project {
 		if (epicKey == null) {
 			throw new RuntimeException("Epic must contain a key.");
 		}
-		if (epicMap.containsKey(epicKey)) {
+		if (keyToEpicMap.containsKey(epicKey)) {
 			throw new RuntimeException("Epic '" + epicKey + "' already exists in Project " + getName());
 		}
-		if (CollectionUtils.isEmpty(epicMap)) {
-			epicMap = new HashMap<String, Epic>();
+		if (CollectionUtils.isEmpty(keyToEpicMap)) {
+			keyToEpicMap = new HashMap<String, Epic>();
 		}
-		epicMap.put(epicKey, epic);
+		keyToEpicMap.put(epicKey, epic);
 		
 	}
 	
@@ -87,12 +87,12 @@ public class Project {
 		
 		String epicKey = jiraIssue.getValue(JiraAttribute.ISSUE_KEY);
 		String epicName = jiraIssue.getValue(JiraAttribute.CUSTOM_FIELD_EPIC_NAME);
-		Epic epic = epicMap.get(epicKey);
+		Epic epic = keyToEpicMap.get(epicKey);
 		if (epic == null) {
 			epic = addEpic(epicKey, epicName);
 		}
 		
-		epicMap.put(epicKey, epic);
+		keyToEpicMap.put(epicKey, epic);
 		
 		return true;
 		
@@ -113,7 +113,7 @@ public class Project {
 	}
 	
 	public Collection<Epic> getEpics() {
-		return epicMap.values();
+		return keyToEpicMap.values();
 	}
 
 	@Deprecated
@@ -129,11 +129,11 @@ public class Project {
 	/*public void addToEpic(JiraIssue jiraIssue) {
 		Epic epic;
 		String epicKey = jiraIssue.getEpic();
-		if (epicMap.containsKey(epicKey)) {
-			epic = epicMap.get(epicKey);
+		if (keyToEpicMap.containsKey(epicKey)) {
+			epic = keyToEpicMap.get(epicKey);
 		} else {
 			epic = new Epic(epicKey);
-			epicMap.put(epicKey, epic);
+			keyToEpicMap.put(epicKey, epic);
 		}
 		epic.addJiraIssue(jiraIssue);
 	}*/

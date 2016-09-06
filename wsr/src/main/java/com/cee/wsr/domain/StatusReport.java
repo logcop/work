@@ -16,7 +16,7 @@ public class StatusReport {
 	private Author author;
 	private Date weekEndingDate;
 	
-	private Map<String, Project> projectMap = new HashMap<String, Project>(6,1.0f);
+	private Map<String, Project> keyToProjectMap = new HashMap<String, Project>(6,1.0f);
 
 	public StatusReport(String title, String classification, Sprint sprint, Author author, Date weekEndingDate) {
 		this.title = title;
@@ -32,11 +32,11 @@ public class StatusReport {
 		}
 		
 		String projectKey = project.getKey();
-		if (projectMap.containsKey(projectKey)) {
+		if (keyToProjectMap.containsKey(projectKey)) {
 			throw new RuntimeException("Project " + projectKey + " already exists in StatusReport.");
 		}
 		
-		projectMap.put(projectKey, project);
+		keyToProjectMap.put(projectKey, project);
 		
 		
 	}
@@ -52,7 +52,7 @@ public class StatusReport {
 		.append("Classification: ").append(classification + "\n")
 		.append("Weekending Date: ").append(weekEndingDate +"\n");
 		
-		for(Project project : projectMap.values()) {
+		for(Project project : keyToProjectMap.values()) {
 			sb.append("Project Name: ").append(project.getName() + "\n")
 			.append("Project Key: ").append(project.getKey() + "\n")
 			.append("Project Total Hours Logged: ").append(project.getTotalLoggedHours() + "\n")
@@ -87,11 +87,11 @@ public class StatusReport {
 	
 
 	public Project getProject(String projectKey) {		
-		return projectMap.get(projectKey);
+		return keyToProjectMap.get(projectKey);
 	}	
 	
 	public Collection<Project> getProjects() {
-		return projectMap.values();
+		return keyToProjectMap.values();
 	}
 
 	/**

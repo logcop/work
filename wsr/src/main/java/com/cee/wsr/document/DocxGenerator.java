@@ -5,7 +5,6 @@ import java.math.BigInteger;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
-import java.util.Set;
 
 import org.docx4j.model.structure.SectionWrapper;
 import org.docx4j.openpackaging.exceptions.Docx4JException;
@@ -30,45 +29,24 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
-import com.cee.wsr.domain.JiraIssue;
+import com.cee.wsr.domain.Epic;
 import com.cee.wsr.domain.Project;
 import com.cee.wsr.domain.Sprint;
 import com.cee.wsr.domain.StatusReport;
+import com.cee.wsr.domain.Story;
+import com.cee.wsr.domain.Task;
 import com.cee.wsr.utils.DateUtil;
 
 @Component
 public class DocxGenerator {
 	private static final Logger LOG = LoggerFactory.getLogger(DocxGenerator.class);
 	private static final String WrsPath = System.getProperty("user.dir") + "/JIRA.docx";
-
-	/*public void generateDocument(StatusReport statusReport) {
-		try {
-			WordprocessingMLPackage wordMLPackage = WordprocessingMLPackage.createPackage();
-			MainDocumentPart mdp = wordMLPackage.getMainDocumentPart();
-			// Example 1: add text in Title style
-			mdp.addStyledParagraphOfText("Title", "Example 1");
-			try {
-				wordMLPackage.save(new File(WrsPath));
-			} catch (Docx4JException d4je) {
-				LOG.error("Unable to save document - " + WrsPath, d4je);
-			}
-		} catch (InvalidFormatException ife) {
-			LOG.error("Unable to create document.", ife);
-		}
-	}*/
 	
 	private static ObjectFactory objectFactory = new ObjectFactory();
 	
 	public void generateDocument(StatusReport statusReport) {
 		try {
-			WordprocessingMLPackage wordMLPackage = WordprocessingMLPackage.createPackage();
-			//MainDocumentPart mdp = wordMLPackage.getMainDocumentPart();
-			
-			// TODO: move below into an "add" function			
-			// Delete the Styles part, since it clutters up our output
-			//Relationship styleRel = mdp.getStyleDefinitionsPart().getSourceRelationships().get(0);
-			//mdp.getRelationshipsPart().removeRelationship(styleRel);
-			
+			WordprocessingMLPackage wordMLPackage = WordprocessingMLPackage.createPackage();			
 			
 			try {
 				addHeader(wordMLPackage, statusReport.getTitle(), statusReport.getWeekEndingDate());
@@ -79,9 +57,6 @@ public class DocxGenerator {
 			addProjects(wordMLPackage, statusReport.getProjects());
 			try {
 				wordMLPackage.save(new File(WrsPath));
-				// Display the result as Flat OPC XML
-				/*FlatOpcXmlCreator worker = new FlatOpcXmlCreator(wordMLPackage);
-				worker.marshal(System.out);*/
 			} catch (Docx4JException d4je) {
 				LOG.error("Unable to save document - " + WrsPath, d4je);
 			}
@@ -93,13 +68,13 @@ public class DocxGenerator {
 
 	public static final void addHeader(WordprocessingMLPackage wordMLPackage, String title, Date weekEndingDate) throws Exception{
 		// the Header part
-		Relationship relationship = createHeaderPart(wordMLPackage, title, weekEndingDate);		
+		Relationship relationship = createHeaderRelationship(wordMLPackage, title, weekEndingDate);		
 		// an entry in SectPr
 		createHeaderReference(wordMLPackage, relationship);		
 	}
 	
 	
-	private static Relationship createHeaderPart(WordprocessingMLPackage wordprocessingMLPackage, String title, Date weekEndingDate)
+	private static Relationship createHeaderRelationship(WordprocessingMLPackage wordprocessingMLPackage, String title, Date weekEndingDate)
 			throws Exception {
 
 		HeaderPart headerPart = new HeaderPart();
@@ -171,31 +146,38 @@ public class DocxGenerator {
 		P projectP = createP(project.getName(), true, false, projectFontSize);
 		mdp.addObject(projectP);
 		
-		Set<String> epics = project.getEpicsSet();		
-		for (String epic : epics) {
-			addEpic(epic, project.getTasksByEpic(epic), mdp, projectFontSize);
+		Collection<Epic> epics = project.getEpics();
+		for (Epic epic : epics) {
+			addEpic(epic, mdp, projectFontSize);
 		}
 	}
 	
-	
-	public static final void addEpic(String epic, List<JiraIssue> jiraIssues, MainDocumentPart mdp, String epicFontSize) {
+	public static final void addEpic(Epic epic, MainDocumentPart mdp, String epicFontSize) {
 		P emptyP = createP("", false, false, epicFontSize);
 		mdp.addObject(emptyP);
-		P epicP = createP(epic, false, true, epicFontSize);
+		P epicP = createP(epic.getName(), false, true, epicFontSize);
 		mdp.addObject(epicP);
 		
-		for (JiraIssue jiraIssue : jiraIssues) {
-			addTask(jiraIssue, mdp, epicFontSize);
+		for (Story story : epic.getStories()) {
+			addStory(story, mdp, epicFontSize);
 		}
 	}
 	
+	public static final void addStory(Story story, MainDocumentPart mdp, String epicFontSize) {
+		//P storyP = createP(story.getName(), false, true, epicFontSize);
+		//mdp.addObject(storyP);
+		
+		for (Task task : story.getTasks()) {
+			addTask(task, mdp, epicFontSize);
+		}
+	}
 	
-	public static final void addTask(JiraIssue jiraIssue, MainDocumentPart mdp, String taskFontSize) {
-		P summaryP = createP("     " + jiraIssue.getSummary(), false, false, taskFontSize);
+	public static final void addTask(Task task, MainDocumentPart mdp, String taskFontSize) {
+		P summaryP = createP("     " + task.getSummary(), false, false, taskFontSize);
 		mdp.addObject(summaryP);
-		P statusP = createP("          Status: " + jiraIssue.getStatus(), false, false, taskFontSize);
+		P statusP = createP("          Status: " + task.getStatus(), false, false, taskFontSize);
 		mdp.addObject(statusP);
-		addDevelopers(jiraIssue.getDevelopers(), mdp, taskFontSize);
+		addDevelopers(task.getDevelopers(), mdp, taskFontSize);
 		
 	}
 	

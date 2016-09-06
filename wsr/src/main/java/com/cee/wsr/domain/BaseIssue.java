@@ -135,5 +135,4 @@ public class BaseIssue {
 		this.sprints = sprints;
 	}
 	
-	
 }

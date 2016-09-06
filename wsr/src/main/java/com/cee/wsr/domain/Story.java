@@ -11,16 +11,16 @@ public class Story extends BaseIssue {
 
 	public static final String MISC_STORY_NAME = "MISC";
 	
-	public Map<String, Task> tasksMap;
+	public Map<String, Task> keyToTaskMap;
 	
 	public Story(String name) {
 		this.name = name;
-		tasksMap = new HashMap<String, Task>();
+		keyToTaskMap = new HashMap<String, Task>();
 	}
 	
 	public float getTimeSpentInHours() {
 		float timeSpent = 0;
-		for (Task task : tasksMap.values()) {
+		for (Task task : keyToTaskMap.values()) {
 			timeSpent += task.getTimeSpentInHours();
 		}
 		return timeSpent;
@@ -28,7 +28,7 @@ public class Story extends BaseIssue {
 	
 	public float getTotalLoggedHours() {
 		float loggedHours = 0;
-		for (Task task : tasksMap.values()) {
+		for (Task task : keyToTaskMap.values()) {
 			loggedHours += task.getTotalLoggedHours();
 		}
 		return loggedHours;
@@ -36,7 +36,7 @@ public class Story extends BaseIssue {
 	
 	public float getLoggedHoursBetween(Date startDate, Date endDate) {
 		float loggedHours = 0;
-		for (Task task : tasksMap.values()) {
+		for (Task task : keyToTaskMap.values()) {
 			loggedHours = task.getLoggedHoursBetween(startDate, endDate);
 		}
 		return loggedHours;
@@ -50,15 +50,15 @@ public class Story extends BaseIssue {
 		if (taskKey == null) {
 			throw new RuntimeException("Task must contain a key.");
 		}
-		if (tasksMap.containsKey(taskKey)) {
+		if (keyToTaskMap.containsKey(taskKey)) {
 			throw new RuntimeException("Task " + taskKey + " already exists in Story " + getKey());
 		}
-		tasksMap.put(taskKey, task);
+		keyToTaskMap.put(taskKey, task);
 		
 	}
 	
 	public Collection<Task> getTasks() {
-		return tasksMap.values();
+		return keyToTaskMap.values();
 	}
 	
 	public String getName() {

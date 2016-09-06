@@ -21,6 +21,7 @@ public class StatusReportProperties {
 	private String authorTitle;
 	private String authorType;
 	private String xlsPath;
+	private String csvPath;
 	private String docxPath;
 
 	@Autowired
@@ -35,6 +36,7 @@ public class StatusReportProperties {
 			@Value("${author.title}") String authorTitle,
 			@Value("${author.type}") String authorType, 
 			@Value("${xls.path}") String xlsPath,
+			@Value("${csv.path}") String csvPath,
 			@Value("${docx.path}") String docxPath) {
 		// Validation can go here if needed, throwing IllegalArgumentException
 		// if it fails..
@@ -48,6 +50,7 @@ public class StatusReportProperties {
 		this.authorTitle = authorTitle;
 		this.authorType = authorType;
 		this.xlsPath = xlsPath;
+		this.csvPath = csvPath;
 		this.docxPath = docxPath;
 	}
 
@@ -125,6 +128,17 @@ public class StatusReportProperties {
 	
 	public void setXlsPath(String xlsxPath) {
 		this.xlsPath = xlsxPath;
+	}
+	
+	/**
+	 * @return the csvPath
+	 */
+	public String[] getCsvPath() {		
+		return csvPath.split(";");
+	}
+	
+	public void setCsvPath(String csvPath) {
+		this.csvPath = csvPath;
 	}
 
 	/**
