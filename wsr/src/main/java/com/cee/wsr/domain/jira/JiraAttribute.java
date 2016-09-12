@@ -1,4 +1,4 @@
-package com.cee.wsr.domain;
+package com.cee.wsr.domain.jira;
 
 public class JiraAttribute {
 

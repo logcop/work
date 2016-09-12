@@ -1,4 +1,4 @@
-package com.cee.wsr.domain;
+package com.cee.wsr.domain.report;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 

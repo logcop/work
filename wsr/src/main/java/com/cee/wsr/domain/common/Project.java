@@ -1,11 +1,9 @@
-package com.cee.wsr.domain;
+package com.cee.wsr.domain.common;
 
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -18,13 +16,35 @@ public class Project {
 	private String name;
 	private String key;
 	private Map<String, Epic> keyToEpicMap = new HashMap<String, Epic>();
+	private float hoursWorkedBetween;
+	private float totalHoursWorked;
 	
-	@Deprecated
-	private Map<String, List<JiraIssue>> epicToTaskListMap = new HashMap<String, List<JiraIssue>>(); 
-		
 	public Project(String key, String name) {
 		this.key = key;
 		this.name = name;
+		hoursWorkedBetween = 0;
+		totalHoursWorked = 0;
+	}
+	
+	/**
+	 * <b>WARNING: If this method is called and the results are greater than zero, it will not update again.
+	 * Assumes this project is completely initialized and no more epics will be added.</b>
+	 * This is to speed up document generation at the end. <br><br>
+	 * Gets the total hours worked between the given dates. 
+	 * @param startDate The start Date of the range to get the hours for.
+	 * @param endDate The end Date of the range to get the hours for.
+	 * @return The hours worked.
+	 */
+	public float getHoursWorkedBetween(Date startDate, Date endDate) {
+		if (hoursWorkedBetween <=0 ) {
+			log.debug("hoursWorkedBetween <=0");
+			for (Epic epic : keyToEpicMap.values()) {
+				float epicHoursWorkedBetween = epic.getHoursWorkedBetween(startDate, endDate);
+				log.debug("epic hours: {}", epicHoursWorkedBetween);
+				hoursWorkedBetween += epicHoursWorkedBetween;
+			}
+		}
+		return hoursWorkedBetween;
 	}
 	
 	public float getTimeSpentInHours() {
@@ -33,24 +53,6 @@ public class Project {
 			timeSpent += epic.getTimeSpentInHours();
 		}
 		return timeSpent;
-	}
-	
-	public float getTotalLoggedHours() {
-		float loggedHours = 0;
-		
-		for (Epic epic : keyToEpicMap.values()) {
-			loggedHours += epic.getTotalLoggedHours();
-		}
-		
-		return loggedHours;
-	}
-	
-	public float getLoggedHoursBetween(Date startDate, Date endDate) {
-		float loggedHours = 0;
-		for (Epic epic : keyToEpicMap.values()) {
-			loggedHours = epic.getLoggedHoursBetween(startDate, endDate);
-		}
-		return loggedHours;
 	}
 	
 	public Epic getEpic(String epicKey) {
@@ -73,31 +75,7 @@ public class Project {
 		}
 		keyToEpicMap.put(epicKey, epic);
 		
-	}
-	
-	/*public boolean addEpic(JiraIssue jiraIssue) {
-		if (jiraIssue == null) {
-			log.error("Cannot add null epic.");
-			return false;
-		}
-		if (!IssueType.EPIC.equals(jiraIssue.getValue(JiraAttribute.ISSUE_TYPE))) {
-			log.error("Given JiraIssue is not an epic type.");
-			return false; // not an epic...
-		}
-		
-		String epicKey = jiraIssue.getValue(JiraAttribute.ISSUE_KEY);
-		String epicName = jiraIssue.getValue(JiraAttribute.CUSTOM_FIELD_EPIC_NAME);
-		Epic epic = keyToEpicMap.get(epicKey);
-		if (epic == null) {
-			epic = addEpic(epicKey, epicName);
-		}
-		
-		keyToEpicMap.put(epicKey, epic);
-		
-		return true;
-		
-	}*/
-	
+	}	
 	
 	public static String getProjectAbbr(String projectName) {
 		String abbr = "";
@@ -115,28 +93,6 @@ public class Project {
 	public Collection<Epic> getEpics() {
 		return keyToEpicMap.values();
 	}
-
-	@Deprecated
-	public Set<String> getEpicsSet() {
-		return epicToTaskListMap.keySet();
-	}
-
-	@Deprecated
-	public List<JiraIssue> getTasksByEpic(String epic) {
-		return epicToTaskListMap.get(epic);
-	}
-
-	/*public void addToEpic(JiraIssue jiraIssue) {
-		Epic epic;
-		String epicKey = jiraIssue.getEpic();
-		if (keyToEpicMap.containsKey(epicKey)) {
-			epic = keyToEpicMap.get(epicKey);
-		} else {
-			epic = new Epic(epicKey);
-			keyToEpicMap.put(epicKey, epic);
-		}
-		epic.addJiraIssue(jiraIssue);
-	}*/
 	
 	/**
 	 * @return the name
@@ -164,6 +120,20 @@ public class Project {
 	 */
 	public void setKey(String key) {
 		this.key = key;
+	}
+	
+	
+	/**
+	 * @return the totalHoursWorked
+	 */
+	public float getTotalHoursWorked() {
+		if (totalHoursWorked <=0) {
+			for (Epic epic : keyToEpicMap.values()) {
+				float totalEpicHoursWorked = epic.getTotalHoursWorked();
+				totalHoursWorked += totalEpicHoursWorked;
+			}
+		}
+		return totalHoursWorked;
 	}
 
 	@Override

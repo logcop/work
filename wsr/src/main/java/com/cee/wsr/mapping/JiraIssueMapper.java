@@ -8,13 +8,13 @@ import org.apache.commons.lang3.math.NumberUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.cee.wsr.domain.Epic;
-import com.cee.wsr.domain.IssueType;
-import com.cee.wsr.domain.JiraIssue;
-import com.cee.wsr.domain.Sprint;
-import com.cee.wsr.domain.Story;
-import com.cee.wsr.domain.Task;
-import com.cee.wsr.domain.WorkLog;
+import com.cee.wsr.domain.common.Epic;
+import com.cee.wsr.domain.common.Sprint;
+import com.cee.wsr.domain.common.Story;
+import com.cee.wsr.domain.common.Task;
+import com.cee.wsr.domain.common.WorkLog;
+import com.cee.wsr.domain.jira.IssueType;
+import com.cee.wsr.domain.jira.JiraIssue;
 import com.cee.wsr.utils.DateUtil;
 
 public class JiraIssueMapper {
@@ -47,11 +47,13 @@ public class JiraIssueMapper {
 	
 	public static Task createTask(JiraIssue taskJiraIssue) {
 		Task task = null;
-		if (!IssueType.TASK.equals(taskJiraIssue.getType())) {
+		/*if (!IssueType.TASK.equals(taskJiraIssue.getType())) {
 			return task;
-		}
+		}*/
 		task = new Task(taskJiraIssue.getSummary());
 		task.setKey(taskJiraIssue.getKey());
+		task.setId(taskJiraIssue.getId());
+		task.setParentId(taskJiraIssue.getParentId());
 		task.setStoryPoints(taskJiraIssue.getStoryPoints());
 		task.setStatus(taskJiraIssue.getStatus());
 		String timeSpentString = taskJiraIssue.getTimeSpent();
@@ -65,26 +67,26 @@ public class JiraIssueMapper {
 			WorkLog workLog = createWorkLog(workLogString);
 			task.addWorkLog(workLog);
 		}
-		
+		//log.debug("returning task: {}", task.getSummary());
 		return task;
 	}	
 	
 	public static WorkLog createWorkLog(String workLogString) {
 		WorkLog workLog = new WorkLog();
-		String [] delimitedBySemiColonString = workLogString.split(";");
+		String [] splitBySemiColonValues = workLogString.split(";");
 		// log.debug("split worklog str = " + ToStringBuilder.reflectionToString(delimitedBySemiColonString));
 		// start the processing if worklog has required number of potential attributes.
 		// log.debug("delimitedBySemiColonString.length = " + delimitedBySemiColonString.length);
 		// log.debug("NUM_OF_WORK_LOG_ATTRBS = " + NUM_OF_WORK_LOG_ATTRBS);
-		if (delimitedBySemiColonString.length >= NUM_OF_WORK_LOG_ATTRBS) {			
+		if (splitBySemiColonValues.length >= NUM_OF_WORK_LOG_ATTRBS) {			
 			boolean foundDate = false;
 			boolean foundOwner = false;
 			boolean foundTime = false;
 			// workLog attributes are positional in the following order: 
 			// comment, date, owner, time.
-			String comment = delimitedBySemiColonString[0];
-			for (int i=1; i < delimitedBySemiColonString.length; i++) {
-				String nextString = delimitedBySemiColonString[i];
+			String comment = splitBySemiColonValues[0];
+			for (int i=1; i < splitBySemiColonValues.length; i++) {
+				String nextString = splitBySemiColonValues[i];
 				if (!foundDate) {
 					// comment may have one or more ';' so have to append to comment until date is found.
 					// log.debug("checking if nextString is date: " + nextString);

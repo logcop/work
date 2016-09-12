@@ -1,9 +1,11 @@
-package com.cee.wsr.domain;
+package com.cee.wsr.domain.common;
 
+import java.util.Date;
 import java.util.List;
 
-public class BaseIssue {
-
+public abstract class BaseIssue {
+	//private static final Logger log = LoggerFactory.getLogger(BaseIssue.class);
+	
 	private String summary;
 	private String key;
 	private String id;
@@ -14,6 +16,32 @@ public class BaseIssue {
 	private String updated;
 	private String description;
 	private List<Sprint> sprints;
+	
+	
+	
+	
+	/**
+	 * <b>WARNING: If this method is called and the results are greater than zero, it will not update again.
+	 * Assumes this issue is completely initialized.</b>
+	 * This is to speed up document generation at the end. <br><br>
+	 * Gets the total hours worked between the given dates. 
+	 * @param startDate The start Date of the range to get the hours for.
+	 * @param endDate The end Date of the range to get the hours for.
+	 * @return The hours worked.
+	 */
+	public abstract float getHoursWorkedBetween(Date startDate, Date endDate);
+	
+	/**
+	 * <b>WARNING: If this method is called and the results are greater than zero, it will not update again.
+	 * Assumes this issue is completely initialized.</b>
+	 * This is to speed up document generation at the end. <br><br>
+	 * Gets the running total hours worked. 
+	 * @param startDate The start Date of the range to get the hours for.
+	 * @param endDate The end Date of the range to get the hours for.
+	 * @return The running total of the hours worked.
+	 */
+	public abstract float getTotalHoursWorked();
+	
 	/**
 	 * @return the summary
 	 */

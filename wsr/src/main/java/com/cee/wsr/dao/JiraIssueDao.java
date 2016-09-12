@@ -1,9 +1,11 @@
 package com.cee.wsr.dao;
 
-import com.cee.wsr.domain.JiraIssues;
+import java.util.List;
+
+import com.cee.wsr.domain.jira.JiraIssue;
 
 
 public interface JiraIssueDao {
 	
-	JiraIssues getAllIssues();
+	List<JiraIssue> getAllIssues();
 }

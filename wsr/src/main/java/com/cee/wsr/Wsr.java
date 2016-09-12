@@ -11,7 +11,9 @@ public class Wsr {
 		ApplicationContext ctx = new AnnotationConfigApplicationContext(ApplicationConfig.class);
 
 		StatusReportGenerator srGenerator = ctx.getBean(StatusReportGenerator.class);
-		srGenerator.generateV2();
+		String weekEndDate = "9/11/2016";
+		
+		srGenerator.generateV2(weekEndDate);
 	}
 
 }

@@ -4,6 +4,8 @@ import junit.framework.TestCase;
 
 import org.junit.Assert;
 
+import com.cee.wsr.domain.common.Sprint;
+
 public class SprintTest extends TestCase {
 	
 	private static final String pacomSprint12Name = "PACOM Sprint 12";

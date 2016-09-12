@@ -1,5 +1,7 @@
 package com.cee.wsr.dao;
 
+import java.util.List;
+
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -10,7 +12,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.cee.wsr.config.ApplicationConfig;
-import com.cee.wsr.domain.JiraIssues;
+import com.cee.wsr.domain.jira.JiraIssue;
 
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -22,8 +24,8 @@ public class JiraXlsxIssueDaoTest {
 	
 	@Test
 	public void testGetAllIssues() {
-		JiraIssues issues = jiraIssueDao.getAllIssues();
+		List<JiraIssue> issues = jiraIssueDao.getAllIssues();
 		Assert.assertNotNull(issues);
-		log.debug("Retreived JiraIssues.. {}", issues.printStats());
+		log.debug("Retreived JiraIssues.. {}", issues.size());
 	}
 }

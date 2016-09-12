@@ -4,7 +4,9 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.csv.CSVFormat;
@@ -13,39 +15,28 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
-import com.cee.wsr.domain.JiraIssue;
-import com.cee.wsr.domain.JiraIssues;
+import com.cee.wsr.domain.jira.JiraIssue;
 @Component
 public class JiraIssuesCsvParser {
 	Logger log = LoggerFactory.getLogger(JiraIssuesCsvParser.class);
 	private static final int HEADER_ROW = 0;
-	private static final int START_ROW = 1;
+	
 	private Map<Integer, String> indexToAttributeNameMap;
 	
-	public JiraIssues parseCsv(String[] csvPaths) {
-		JiraIssues jiraIssues = new JiraIssues();
+	public List<JiraIssue> parseCsv(String[] csvPaths) {
+		List<JiraIssue> jiraIssues = new ArrayList<JiraIssue>();
 		
 		for (String csvPath : csvPaths) {
-			addToJiraIssues(csvPath, jiraIssues);
+			List<JiraIssue> issuesToAdd = parseCsv(csvPath);
+			jiraIssues.addAll(issuesToAdd);
 		}
 		
 		return jiraIssues;
 	}	
 	
 	
-	public JiraIssues parseCsv(String csvPath) {
-		JiraIssues jiraIssues = new JiraIssues();
-		
-		addToJiraIssues(csvPath, jiraIssues);
-		
-		return jiraIssues;
-	}
-	
-	
-	public void addToJiraIssues(String csvPath, JiraIssues jiraIssues) {
-		log.debug("attempting to create jira issues from: " + csvPath);
-		//Create the CSVFormat object
-		//CSVFormat format = CSVFormat.RFC4180.withHeader().withDelimiter(',');
+	public List<JiraIssue> parseCsv(String csvPath) {
+		List<JiraIssue> jiraIssues = new ArrayList<JiraIssue>();
 		Iterable<CSVRecord> records = null;
 		try {
 			Reader in = new FileReader(csvPath);
@@ -53,16 +44,12 @@ public class JiraIssuesCsvParser {
 		}
 		catch (FileNotFoundException fnfe) {
 			log.error("Unable to find: " + csvPath, fnfe);
-			return;
+			return jiraIssues;
 		}
 		catch (IOException ioe) {
 			log.error("Unable to process csv file: " + csvPath);
-			return;
+			return jiraIssues;
 		}
-		
-		
-		//initialize the CSVParser object
-		//CSVParser parser = new CSVParser(new FileReader(csvPath), format);
 		
 		int index = 0;
 		for(CSVRecord record : records){
@@ -72,11 +59,14 @@ public class JiraIssuesCsvParser {
 				indexToAttributeNameMap = createIndexMap(record);
 			}
 			else {
-				jiraIssues.addIssue(process(record));
+				jiraIssues.add(process(record));
 			}
 			++index;
 		}
-	}
+		
+		return jiraIssues;
+	}	
+	
 	
 	private JiraIssue process(CSVRecord record) {
 		JiraIssue jiraIssue = new JiraIssue();

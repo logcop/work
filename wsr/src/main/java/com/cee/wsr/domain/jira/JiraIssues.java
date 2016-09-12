@@ -1,4 +1,4 @@
-package com.cee.wsr.domain;
+package com.cee.wsr.domain.jira;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -20,7 +20,7 @@ public class JiraIssues {
 	private Map<String, JiraIssue> tasksMap;
 	private Map<String, JiraIssue> subTasksMap;
 	
-	public JiraIssues() {
+	protected JiraIssues() {
 		this.taskIdToKeyMap = new HashMap<String, String>();
 		this.taskKeyToStoryKeyMap = new HashMap<String, String>();
 		this.epicsMap = new HashMap<String, JiraIssue>();
@@ -30,7 +30,8 @@ public class JiraIssues {
 		this.subTasksMap = new HashMap<String, JiraIssue>();
 	}
 
-	public void addIssue(JiraIssue jiraIssue) {
+
+	protected void addIssue(JiraIssue jiraIssue) {
 		String issueType = jiraIssue.getValue(JiraAttribute.ISSUE_TYPE);
 		String issueKey = jiraIssue.getValue(JiraAttribute.ISSUE_KEY);
 		String issueId = jiraIssue.getValue(JiraAttribute.ISSUE_ID);
@@ -56,11 +57,11 @@ public class JiraIssues {
 			taskIdToKeyMap.put(issueId, issueKey);
 		} 
 		else if (IssueType.SUB_TASK.equals(issueType)) {
-			//log.debug("Adding Sub-Task jiraIssue:/n {}", jiraIssue);
+			//log.debug("\nAdding key: {} \nand Sub-Task: {}/n", issueKey, jiraIssue.getSummary());
 			subTasksMap.put(issueKey, jiraIssue);
 		}
 		else if (IssueType.BUG.equals(issueType)) {
-			//log.debug("Adding Bug jiraIssue:/n {}", jiraIssue);
+			//log.debug("\nAdding key: {} \nand Bug: {}\n", issueKey, jiraIssue.getSummary());
 			bugsMap.put(issueKey, jiraIssue);
 		} 
 		else {
@@ -91,6 +92,10 @@ public class JiraIssues {
 
 	public Collection<JiraIssue> getTasks() {
 		return tasksMap.values();
+	}
+	
+	public Collection<JiraIssue> getSubTasks() {
+		return subTasksMap.values();
 	}
 	
 	public String getTaskIssueKey(String issueId) {

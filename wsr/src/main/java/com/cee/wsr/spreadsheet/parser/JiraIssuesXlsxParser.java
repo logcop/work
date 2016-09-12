@@ -4,7 +4,9 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.poi.ss.usermodel.Cell;
@@ -13,8 +15,7 @@ import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.stereotype.Component;
 
-import com.cee.wsr.domain.JiraIssue;
-import com.cee.wsr.domain.JiraIssues;
+import com.cee.wsr.domain.jira.JiraIssue;
 import com.cee.wsr.spreadsheet.util.PoiXlsxUtil;
 @Component
 public class JiraIssuesXlsxParser {
@@ -24,28 +25,20 @@ public class JiraIssuesXlsxParser {
 	private Map<Integer, String> indexToAttributeNameMap;
 	
 	
-	public JiraIssues parseXlsx(String[] xlsPaths) {
-		JiraIssues jiraIssues = new JiraIssues();
+	public List<JiraIssue> parseXlsx(String[] xlsPaths) {
+		List<JiraIssue> jiraIssues = new ArrayList<JiraIssue>();
 		
 		for (String xlsPath : xlsPaths) {
-			addXlsxToJiraIssues(xlsPath, jiraIssues);
+			List<JiraIssue> issuesToAdd = parseXlsx(xlsPath);
+			jiraIssues.addAll(issuesToAdd);
 		}
 		
 		return jiraIssues;
 	}	
 	
 	
-	public JiraIssues parseXlsx(String xlsPath) {
-		JiraIssues jiraIssues = new JiraIssues();
-		
-		addXlsxToJiraIssues(xlsPath, jiraIssues);
-		
-		return jiraIssues;
-	}
-	
-	
-	private void addXlsxToJiraIssues(String xlsPath, JiraIssues jiraIssues) {
-		
+	public List<JiraIssue> parseXlsx(String xlsPath) {
+		List<JiraIssue> jiraIssues = new ArrayList<JiraIssue>();
 		try {
 			FileInputStream file = new FileInputStream(new File(xlsPath));
 			XSSFWorkbook workbook = new XSSFWorkbook(file);
@@ -56,7 +49,7 @@ public class JiraIssuesXlsxParser {
 			
 			for (Row row : sheet) {				
 				if (row.getRowNum() >= START_ROW) {					
-					jiraIssues.addIssue(process(row));
+					jiraIssues.add(process(row));
 				}
 			}
 			
@@ -66,8 +59,8 @@ public class JiraIssuesXlsxParser {
 		} catch (IOException ioe) {
 			ioe.printStackTrace();
 		}
+		return jiraIssues;
 	}
-
 	
 	private JiraIssue process(Row row) {
 		JiraIssue jiraIssue = new JiraIssue();

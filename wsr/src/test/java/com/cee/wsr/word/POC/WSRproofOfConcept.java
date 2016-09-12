@@ -1,11 +1,13 @@
 package com.cee.wsr.word.POC;
 
+import java.util.Date;
+
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import com.cee.wsr.config.ApplicationConfig;
 import com.cee.wsr.document.DocxGenerator;
-import com.cee.wsr.domain.StatusReport;
+import com.cee.wsr.domain.report.StatusReport;
 import com.cee.wsr.service.StatusReportService;
 
 public class WSRproofOfConcept {
@@ -22,7 +24,7 @@ public class WSRproofOfConcept {
 		DocxGenerator docxGenerator = ctx.getBean(DocxGenerator.class);
 
 		// Sprint will be passed into the production code, lives here for now..
-		StatusReport statusReport = srService.getStatusReport();
+		StatusReport statusReport = srService.getWeeklyStatusReport(new Date(), new Date());
 		docxGenerator.generateDocument(statusReport);
 		
 		/*WordprocessingMLPackage wordMLPackage = WordprocessingMLPackage.createPackage();

@@ -1,5 +1,7 @@
 package com.cee.wsr.service;
 
+import java.util.Date;
+
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -10,9 +12,8 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.cee.wsr.config.ApplicationConfig;
-import com.cee.wsr.domain.StatusReport;
+import com.cee.wsr.domain.report.StatusReport;
 
-@SuppressWarnings("deprecation")
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = ApplicationConfig.class)
 public class StatusReportServiceTest {
@@ -23,10 +24,9 @@ public class StatusReportServiceTest {
 	
 	@Test
 	public void testGetStatusReport() {
-		StatusReport report = srService.getStatusReport();
+		StatusReport report = srService.getWeeklyStatusReport(new Date(), new Date());
 		
 		Assert.assertNotNull(report);
 		log.debug(report.logStats());
-		//log.debug("StatusReport = \n {}", report);
 	}
 }

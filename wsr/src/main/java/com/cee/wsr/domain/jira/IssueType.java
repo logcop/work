@@ -1,4 +1,4 @@
-package com.cee.wsr.domain;
+package com.cee.wsr.domain.jira;
 
 public abstract class IssueType {
 	public static final String EPIC = "Epic";

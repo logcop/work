@@ -1,4 +1,4 @@
-package com.cee.wsr.domain;
+package com.cee.wsr.domain.jira;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -138,19 +138,7 @@ public class JiraIssue {
 	 * @see java.lang.Object#toString()
 	 */
 	@Override
-	public String toString() {
-		/*if (CollectionUtils.isEmpty(attributeNameValuesMap)) {
-			return "";
-		}
-		StringBuilder sb = new StringBuilder();
-		for (String attributeName : attributeNameValuesMap.keySet()) {
-			List<String> values = attributeNameValuesMap.get(attributeName);
-			if (CollectionUtils.isEmpty(values)) {
-				sb.append(attributeName)
-					.append(" : ")
-					.append("; ")
-			}
-		}*/
+	public String toString() {		
 		return ToStringBuilder.reflectionToString(this);
 	}
 	

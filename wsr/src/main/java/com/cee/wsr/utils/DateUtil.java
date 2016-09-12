@@ -3,7 +3,10 @@ package com.cee.wsr.utils;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
+
+import org.apache.commons.lang3.time.DateUtils;
 
 /**
  * 	TODO: look into making this comment to look more like a table... <p>
@@ -37,7 +40,8 @@ import java.util.Date;
 
 public class DateUtil {
 	
-	public static final String DATE_STRING_FORMAT = "dd MMM yyyy";
+	public static final String DATE_STRING_FORMAT = "dd MMM yyyy";	
+	public static final String WEEK_ENDING_DATE_FORMAT = "MM/dd/yyyy";
 	public static final String JIRA_WORKLOG_DATE_FORMAT = "dd/MMM/yy hh:mm aa";
 	public static final String TIME_DATE_STRING_FORMAT = "HH:mm:ss:SS  dd MMM yyyy";
 	public static final DateFormat DATE_FORMATER = new SimpleDateFormat(DATE_STRING_FORMAT);
@@ -45,7 +49,50 @@ public class DateUtil {
 
 	private DateUtil() {
 	}
-
+	
+	/**
+	 * Creates a week ending date from the given string. The week ending date must be in 
+	 * conform to the <code>DateUtil.WEEK_ENDING_DATE_FORMAT</code>. 
+	 * @param dateString The end date string
+	 * @return a week ending Date.
+	 */
+	public static Date getWeekEndingDate(String dateString) {
+		if (!isDateByFormat(WEEK_ENDING_DATE_FORMAT, dateString)) {
+			throw new IllegalArgumentException("String \"" + dateString + 
+					"\" must be in the following format - '" + WEEK_ENDING_DATE_FORMAT + "'");
+		}
+		
+		Date date = toDate(WEEK_ENDING_DATE_FORMAT, dateString);
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(date);
+		cal.set(Calendar.HOUR, 11);
+		cal.set(Calendar.AM_PM, Calendar.PM);
+		cal.set(Calendar.MINUTE, 59);
+		cal.set(Calendar.SECOND, 59);
+		cal.set(Calendar.MILLISECOND, 999);
+		
+		return cal.getTime();
+	}
+	
+	public static Date getWeekStartDate(String weekEndingDateString) {
+		if (!isDateByFormat(WEEK_ENDING_DATE_FORMAT, weekEndingDateString)) {
+			throw new IllegalArgumentException("String \"" + weekEndingDateString + 
+					"\" must be in the following format - '" + WEEK_ENDING_DATE_FORMAT + "'");
+		}
+		
+		Date weekEndingDate = toDate(WEEK_ENDING_DATE_FORMAT, weekEndingDateString);
+		Date weekStartDate = DateUtils.addDays(weekEndingDate, -6);
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(weekStartDate);
+		cal.set(Calendar.HOUR, 0);
+		cal.set(Calendar.AM_PM, Calendar.AM);
+		cal.set(Calendar.MINUTE, 0);
+		cal.set(Calendar.SECOND, 0);
+		cal.set(Calendar.MILLISECOND, 001);
+		
+		return cal.getTime();
+	}
+	
 	public static Date toDate(String format, String dateString) {
 		Date date = null;
 		if (isDateByFormat(format, dateString)) {

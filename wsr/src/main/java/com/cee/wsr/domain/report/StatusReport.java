@@ -1,4 +1,4 @@
-package com.cee.wsr.domain;
+package com.cee.wsr.domain.report;
 
 import java.util.Collection;
 import java.util.Date;
@@ -6,24 +6,35 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.cee.wsr.domain.common.Epic;
+import com.cee.wsr.domain.common.Project;
+import com.cee.wsr.domain.common.Sprint;
+import com.cee.wsr.domain.common.Story;
+import com.cee.wsr.domain.common.Task;
 
 public class StatusReport {
-	//private static final Logger log = LoggerFactory.getLogger(StatusReport.class);
+	private static final Logger log = LoggerFactory.getLogger(StatusReport.class);
 	private String classification;
 	
 	private String title;
 	private Sprint sprint;
 	private Author author;
+	private Date weekStartDate;
 	private Date weekEndingDate;
+	private float hoursWorkedBetween = 0;
 	
 	private Map<String, Project> keyToProjectMap = new HashMap<String, Project>(6,1.0f);
 
-	public StatusReport(String title, String classification, Sprint sprint, Author author, Date weekEndingDate) {
+	protected StatusReport(String title, String classification, Sprint sprint, Author author, Date weekStartDate, Date weekEndingDate) {
 		this.title = title;
 		this.sprint = sprint;
 		this.author = author;
 		this.classification = classification;
 		this.weekEndingDate = weekEndingDate;
+		this.weekStartDate = weekStartDate;
 	}
 	
 	public void addProject(Project project) {
@@ -41,6 +52,19 @@ public class StatusReport {
 		
 	}
 	
+	public float getHoursWorkedBetween() {
+		log.debug("getting hours worked between {} and {}", weekStartDate, weekStartDate);
+		if (hoursWorkedBetween <= 0) {
+			log.debug("hoursWorkedBetween <= 0");
+			for (Project project : keyToProjectMap.values()) {
+				float projectHours = project.getHoursWorkedBetween(weekStartDate, weekEndingDate);
+				log.debug("project hours: " + projectHours);
+				hoursWorkedBetween += projectHours;
+			}
+		}
+		return hoursWorkedBetween;
+	}
+	
 	public String logStats() {
 		StringBuilder sb = new StringBuilder();
 		sb.append("StatusReport.printStats...\n")
@@ -55,23 +79,23 @@ public class StatusReport {
 		for(Project project : keyToProjectMap.values()) {
 			sb.append("Project Name: ").append(project.getName() + "\n")
 			.append("Project Key: ").append(project.getKey() + "\n")
-			.append("Project Total Hours Logged: ").append(project.getTotalLoggedHours() + "\n")
+			.append("Project Total Hours Logged: ").append(project.getTotalHoursWorked() + "\n")
 			.append("Time Spent: ").append(project.getTimeSpentInHours() + "\n");
 			for (Epic epic : project.getEpics()) {
 				sb.append("\tEpic Name:").append(epic.getName() + "\n")
 				.append("\tEpic Key: ").append(epic.getKey() + "\n")
-				.append("\tEpic Total Hours Logged: ").append(epic.getTotalLoggedHours() + "\n")
+				.append("\tEpic Total Hours Logged: ").append(epic.getTotalHoursWorked() + "\n")
 				.append("\tTime Spent: ").append(epic.getTimeSpentInHours() + "\n");
 				for (Story story : epic.getStories()) {
 					sb.append("\t\tStory Name: ").append(story.getName() + "\n")
 					.append("\t\tStory Key: ").append(story.getKey() + "\n")
-					.append("\t\tStory Total Hours Logged: ").append(story.getTotalLoggedHours() + "\n")
+					.append("\t\tStory Total Hours Logged: ").append(story.getTotalHoursWorked() + "\n")
 					.append("\t\tTime Spent: ").append(story.getTimeSpentInHours() + "\n");
 					for(Task task : story.getTasks()) {
 						sb.append("\t\t\tTask Summary: ").append(task.getSummary() + "\n")
 						.append("\t\t\tTask Key: ").append(task.getKey() + "\n")
 						.append("\t\t\tTask Story Points: ").append(task.getStoryPoints() + "\n")
-						.append("\t\t\tTask Total Hours Logged: ").append(task.getTotalLoggedHours() + "\n")
+						.append("\t\t\tTask Total Hours Logged: ").append(task.getTotalHoursWorked() + "\n")
 						.append("\t\t\tTime Spent: ").append(task.getTimeSpentInHours() + "\n")
 						.append("\t\t\tStatus: ").append(task.getStatus() + "\n");
 						for(String developer : task.getDevelopers()) {
@@ -151,6 +175,20 @@ public class StatusReport {
 	 */
 	public void setWeekEndingDate(Date weekEndingDate) {
 		this.weekEndingDate = weekEndingDate;
+	}	
+
+	/**
+	 * @return the weekStartDate
+	 */
+	public Date getWeekStartDate() {
+		return weekStartDate;
+	}
+
+	/**
+	 * @param weekStartDate the weekStartDate to set
+	 */
+	public void setWeekStartDate(Date weekStartDate) {
+		this.weekStartDate = weekStartDate;
 	}
 
 	/**
