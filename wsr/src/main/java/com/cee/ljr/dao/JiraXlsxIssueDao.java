@@ -25,7 +25,5 @@ public class JiraXlsxIssueDao implements JiraIssueDao{
 		String[] xlsxPath = weeklyStatusReportProperties.getXlsPath();
 		return jiraIssuesXlsxParser.parseXlsx(xlsxPath);
 	}
-	
-	public List<JiraIssue>
 
 }

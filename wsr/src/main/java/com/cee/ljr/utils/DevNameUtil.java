@@ -2,6 +2,7 @@ package com.cee.ljr.utils;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 public class DevNameUtil {
 	private static Map<String, String> firstToFullNameMap = new HashMap<String, String>();
@@ -25,6 +26,10 @@ public class DevNameUtil {
 
 	public static String getFullName(String firstName) {
 		return firstToFullNameMap.get(firstName);
+	}
+	
+	public static Set<String> getAllJiraNames() {
+		return firstToFullNameMap.keySet();
 	}
 
 }
