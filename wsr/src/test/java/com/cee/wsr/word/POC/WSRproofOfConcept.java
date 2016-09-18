@@ -5,10 +5,10 @@ import java.util.Date;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
-import com.cee.wsr.config.ApplicationConfig;
-import com.cee.wsr.document.DocxGenerator;
-import com.cee.wsr.domain.report.StatusReport;
-import com.cee.wsr.service.StatusReportService;
+import com.cee.ljr.config.ApplicationConfig;
+import com.cee.ljr.document.DocxGenerator;
+import com.cee.ljr.domain.report.StatusReport;
+import com.cee.ljr.service.StatusReportService;
 
 public class WSRproofOfConcept {
 	//private static ObjectFactory objectFactory = new ObjectFactory();
@@ -23,7 +23,7 @@ public class WSRproofOfConcept {
 		StatusReportService srService = ctx.getBean(StatusReportService.class);
 		DocxGenerator docxGenerator = ctx.getBean(DocxGenerator.class);
 
-		// Sprint will be passed into the production code, lives here for now..
+		// ProjectSprint will be passed into the production code, lives here for now..
 		StatusReport statusReport = srService.getWeeklyStatusReport(new Date(), new Date());
 		docxGenerator.generateDocument(statusReport);
 		
@@ -86,13 +86,13 @@ public class WSRproofOfConcept {
 		
 	}
 	
-	public static final void addSprint(WordprocessingMLPackage wordMLPackage, Sprint sprint) {
+	public static final void addSprint(WordprocessingMLPackage wordMLPackage, ProjectSprint sprint) {
 		MainDocumentPart mdp = wordMLPackage.getMainDocumentPart();
 		String sprintFontSize = "11";
 		
 		P beginEmptyP = createP("", false, false, sprintFontSize);
 		mdp.addObject(beginEmptyP);
-		P sprintNumberP = createLabelValueP("Current Sprint: ", String.valueOf(sprint.getNumber()), sprintFontSize);
+		P sprintNumberP = createLabelValueP("Current ProjectSprint: ", String.valueOf(sprint.getNumber()), sprintFontSize);
 		mdp.addObject(sprintNumberP);
 		P sprintStartDateP = createLabelValueP("Start Date: ", DateUtil.toString(sprint.getStartDate()), sprintFontSize);
 		mdp.addObject(sprintStartDateP);

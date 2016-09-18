@@ -7,8 +7,9 @@ import junit.framework.TestCase;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.Assert;
 
-import com.cee.wsr.domain.common.WorkLog;
-import com.cee.wsr.utils.DateUtil;
+import com.cee.ljr.domain.common.WorkLog;
+import com.cee.ljr.mapping.JiraIssueMapper;
+import com.cee.ljr.utils.DateUtil;
 
 public class JiraIssueMapperTest extends TestCase {
 	

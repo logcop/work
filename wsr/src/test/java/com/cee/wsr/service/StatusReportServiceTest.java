@@ -11,8 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import com.cee.wsr.config.ApplicationConfig;
-import com.cee.wsr.domain.report.StatusReport;
+import com.cee.ljr.config.ApplicationConfig;
+import com.cee.ljr.domain.report.StatusReport;
+import com.cee.ljr.service.StatusReportService;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = ApplicationConfig.class)

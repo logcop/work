@@ -11,8 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import com.cee.wsr.config.ApplicationConfig;
-import com.cee.wsr.domain.jira.JiraIssue;
+import com.cee.ljr.config.ApplicationConfig;
+import com.cee.ljr.dao.JiraIssueDao;
+import com.cee.ljr.domain.jira.JiraIssue;
 
 
 @RunWith(SpringJUnit4ClassRunner.class)

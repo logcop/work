@@ -14,7 +14,7 @@ import org.docx4j.fonts.PhysicalFonts;
 import org.docx4j.openpackaging.packages.WordprocessingMLPackage;
 import org.docx4j.openpackaging.parts.WordprocessingML.MainDocumentPart;
 
-import com.cee.wsr.document.WordXMLTemplate;
+import com.cee.ljr.document.WordXMLTemplate;
 
 /** This class generates a sample document in case no
  *  document has been passed.
