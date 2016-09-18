@@ -1,6 +1,6 @@
-package com.cee.wsr.dao;
+package com.cee.ljr.service;
 
-import java.util.List;
+import java.util.Date;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -12,21 +12,22 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.cee.ljr.config.ApplicationConfig;
-import com.cee.ljr.dao.JiraIssueDao;
-import com.cee.ljr.domain.jira.JiraIssue;
-
+import com.cee.ljr.domain.report.WeeklyStatusReport;
+import com.cee.ljr.service.WeeklyStatusReportService;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = ApplicationConfig.class)
-public class JiraXlsxIssueDaoTest {
-	Logger log = LoggerFactory.getLogger(JiraXlsxIssueDaoTest.class);
+public class StatusReportServiceTest {
+	Logger log = LoggerFactory.getLogger(StatusReportServiceTest.class);
+	
 	@Autowired
-	JiraIssueDao jiraIssueDao;
+	WeeklyStatusReportService srService;
 	
 	@Test
-	public void testGetAllIssues() {
-		List<JiraIssue> issues = jiraIssueDao.getAllIssues();
-		Assert.assertNotNull(issues);
-		log.debug("Retreived JiraIssues.. {}", issues.size());
+	public void testGetStatusReport() {
+		WeeklyStatusReport report = srService.getWeeklyStatusReport(new Date(), new Date());
+		
+		Assert.assertNotNull(report);
+		log.debug(report.logStats());
 	}
 }

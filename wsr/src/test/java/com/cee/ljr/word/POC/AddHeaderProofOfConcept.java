@@ -1,4 +1,4 @@
-package com.cee.wsr.word.POC;
+package com.cee.ljr.word.POC;
 
 import java.io.File;
 import java.util.List;

@@ -8,7 +8,7 @@ import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 
 @Configuration
 @ComponentScan({ "com.cee.ljr" })
-@PropertySource({"properties/app.properties", "properties/status-report.properties"})
+@PropertySource({"properties/app.properties", "properties/weekly-status-report.properties"})
 public class ApplicationConfig {
 
 	/**

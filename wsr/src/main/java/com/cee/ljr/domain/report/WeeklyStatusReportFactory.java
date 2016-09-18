@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 
 import com.cee.ljr.domain.common.Epic;
 import com.cee.ljr.domain.common.Project;
-import com.cee.ljr.domain.common.ProjectSprint;
+import com.cee.ljr.domain.common.Sprint;
 import com.cee.ljr.domain.common.Story;
 import com.cee.ljr.domain.common.Task;
 import com.cee.ljr.domain.jira.IssueType;
@@ -21,8 +21,8 @@ import com.cee.ljr.mapping.JiraIssueMapper;
 import com.cee.ljr.properties.WeeklyStatusReportProperties;
 
 @Component
-public class StatusReportFactory {
-	private static final Logger log = LoggerFactory.getLogger(StatusReportFactory.class);
+public class WeeklyStatusReportFactory {
+	private static final Logger log = LoggerFactory.getLogger(WeeklyStatusReportFactory.class);
 	
 	@Autowired 
 	WeeklyStatusReportProperties srProps;
@@ -30,10 +30,13 @@ public class StatusReportFactory {
 	@Autowired
 	JiraIssuesFactory jiraIssuesFactory;
 	
-	public StatusReport getWeeklyStatusReport(List<JiraIssue> jiraIssueList, Date weekStartDate, Date weekEndingDate) {
+	@Autowired
+	JiraIssueMapper jiraIssueMapper;
+	
+	public WeeklyStatusReport getWeeklyStatusReport(List<JiraIssue> jiraIssueList, Date weekStartDate, Date weekEndingDate) {
 		JiraIssues jiraIssues = jiraIssuesFactory.getJiraIssues(jiraIssueList);
 		
-		StatusReport statusReport = new StatusReport(
+		WeeklyStatusReport weeklyStatusReport = new WeeklyStatusReport(
 				srProps.getReportTitle(), 
 				srProps.getReportClassification(), 
 				createSprint(), 
@@ -42,21 +45,21 @@ public class StatusReportFactory {
 				weekEndingDate);	
 		
 		// iterate over tasks, bugs, and sub-tasks
-		addTasksToStatusReport(jiraIssues, statusReport);	
-		addBugsToStatusReport(jiraIssues, statusReport);
-		addSubTasksToStatusReport(jiraIssues, statusReport);
+		addTasksToStatusReport(jiraIssues, weeklyStatusReport);	
+		addBugsToStatusReport(jiraIssues, weeklyStatusReport);
+		addSubTasksToStatusReport(jiraIssues, weeklyStatusReport);
 		
-		return statusReport;
+		return weeklyStatusReport;
 	}
 	
-	private void addBugsToStatusReport(JiraIssues jiraIssues, StatusReport statusReport) {
+	private void addBugsToStatusReport(JiraIssues jiraIssues, WeeklyStatusReport weeklyStatusReport) {
 		for (JiraIssue taskJiraIssue : jiraIssues.getBugs()) {
 			String projectKey = taskJiraIssue.getProjectKey();
-			Project project = statusReport.getProject(projectKey);
+			Project project = weeklyStatusReport.getProject(projectKey);
 			
 			if (project == null) {
 				project = createNewProject(taskJiraIssue, jiraIssues);
-				statusReport.addProject(project);
+				weeklyStatusReport.addProject(project);
 			} 
 			else {
 				addTaskToProject(taskJiraIssue, project, jiraIssues);			
@@ -64,23 +67,23 @@ public class StatusReportFactory {
 		}
 	}
 	
-	private void addSubTasksToStatusReport(JiraIssues jiraIssues, StatusReport statusReport) {
+	private void addSubTasksToStatusReport(JiraIssues jiraIssues, WeeklyStatusReport weeklyStatusReport) {
 		for (JiraIssue taskJiraIssue : jiraIssues.getSubTasks()) {
 			String projectKey = taskJiraIssue.getProjectKey();
-			Project project = statusReport.getProject(projectKey);
+			Project project = weeklyStatusReport.getProject(projectKey);
 			
 			addTaskToProject(taskJiraIssue, project, jiraIssues);
 		}
 	}
 	
-	private void addTasksToStatusReport(JiraIssues jiraIssues, StatusReport statusReport) {
+	private void addTasksToStatusReport(JiraIssues jiraIssues, WeeklyStatusReport weeklyStatusReport) {
 		for (JiraIssue taskJiraIssue : jiraIssues.getTasks()) {
 			String projectKey = taskJiraIssue.getProjectKey();
-			Project project = statusReport.getProject(projectKey);
+			Project project = weeklyStatusReport.getProject(projectKey);
 			
 			if (project == null) {
 				project = createNewProject(taskJiraIssue, jiraIssues);
-				statusReport.addProject(project);
+				weeklyStatusReport.addProject(project);
 			} 
 			else {
 				addTaskToProject(taskJiraIssue, project, jiraIssues);			
@@ -162,7 +165,7 @@ public class StatusReportFactory {
 		JiraIssue storyJiraIssue = jiraIssues.getStoryByTaskKey(taskKey);
 		
 		if (storyJiraIssue != null) {
-			story = JiraIssueMapper.createStory(storyJiraIssue);
+			story = jiraIssueMapper.createStory(storyJiraIssue);
 		} else {
 			story = new Story("Misc. Tasks");
 			story.setKey("");
@@ -177,7 +180,7 @@ public class StatusReportFactory {
 	}
 	
 	private Task createNewTask(JiraIssue taskJiraIssue) {
-		return JiraIssueMapper.createTask(taskJiraIssue);		
+		return jiraIssueMapper.createTask(taskJiraIssue);		
 	}
 	
 	private Author createAuthor() {
@@ -187,9 +190,9 @@ public class StatusReportFactory {
 				srProps.getAuthorTitle());
 	}
 	
-	private ProjectSprint createSprint() {
-		return new ProjectSprint("0"); //TODO: have to figure out how to inject sprint hours.
-		/*return new ProjectSprint(
+	private Sprint createSprint() {
+		return new Sprint("0", new Date(), new Date()); //TODO: have to figure out how to inject sprint hours.
+		/*return new Sprint(
 				srProps.getSprintNumber(), 
 				srProps.getSprintStartDate(), 
 				srProps.getSprintEndDate());*/

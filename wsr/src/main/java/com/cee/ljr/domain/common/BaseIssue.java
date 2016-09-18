@@ -18,7 +18,7 @@ public abstract class BaseIssue {
 	private String created;
 	private String updated;
 	private String description;
-	private List<ProjectSprint> projectSprints;
+	private List<Sprint> sprints;
 	
 	
 	
@@ -154,16 +154,16 @@ public abstract class BaseIssue {
 		this.description = description;
 	}
 	/**
-	 * @return the projectSprints
+	 * @return the sprints
 	 */
-	public List<ProjectSprint> getSprints() {
-		return projectSprints;
+	public List<Sprint> getSprints() {
+		return sprints;
 	}
 	/**
-	 * @param projectSprints the projectSprints to set
+	 * @param sprints the sprints to set
 	 */
-	public void setSprints(List<ProjectSprint> projectSprints) {
-		this.projectSprints = projectSprints;
+	public void setSprints(List<Sprint> sprints) {
+		this.sprints = sprints;
 	}
 	
 	public String toStringLight() {

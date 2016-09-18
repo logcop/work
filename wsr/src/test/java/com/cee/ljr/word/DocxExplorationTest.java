@@ -1,4 +1,4 @@
-package com.cee.wsr.word;
+package com.cee.ljr.word;
 
 import java.io.File;
 

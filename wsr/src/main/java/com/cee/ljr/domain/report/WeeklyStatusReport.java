@@ -11,16 +11,16 @@ import org.slf4j.LoggerFactory;
 
 import com.cee.ljr.domain.common.Epic;
 import com.cee.ljr.domain.common.Project;
-import com.cee.ljr.domain.common.ProjectSprint;
+import com.cee.ljr.domain.common.Sprint;
 import com.cee.ljr.domain.common.Story;
 import com.cee.ljr.domain.common.Task;
 
-public class StatusReport {
-	private static final Logger log = LoggerFactory.getLogger(StatusReport.class);
+public class WeeklyStatusReport {
+	private static final Logger log = LoggerFactory.getLogger(WeeklyStatusReport.class);
 	private String classification;
 	
 	private String title;
-	private ProjectSprint projectSprint;
+	private Sprint sprint;
 	private Author author;
 	private Date weekStartDate;
 	private Date weekEndingDate;
@@ -28,9 +28,9 @@ public class StatusReport {
 	
 	private Map<String, Project> keyToProjectMap = new HashMap<String, Project>(6,1.0f);
 
-	protected StatusReport(String title, String classification, ProjectSprint projectSprint, Author author, Date weekStartDate, Date weekEndingDate) {
+	protected WeeklyStatusReport(String title, String classification, Sprint sprint, Author author, Date weekStartDate, Date weekEndingDate) {
 		this.title = title;
-		this.projectSprint = projectSprint;
+		this.sprint = sprint;
 		this.author = author;
 		this.classification = classification;
 		this.weekEndingDate = weekEndingDate;
@@ -44,7 +44,7 @@ public class StatusReport {
 		
 		String projectKey = project.getKey();
 		if (keyToProjectMap.containsKey(projectKey)) {
-			throw new RuntimeException("Project " + projectKey + " already exists in StatusReport.");
+			throw new RuntimeException("Project " + projectKey + " already exists in WeeklyStatusReport.");
 		}
 		
 		keyToProjectMap.put(projectKey, project);
@@ -67,11 +67,11 @@ public class StatusReport {
 	
 	public String logStats() {
 		StringBuilder sb = new StringBuilder();
-		sb.append("StatusReport.printStats...\n")
-		.append("StatusReport Stats\n")
+		sb.append("WeeklyStatusReport.printStats...\n")
+		.append("WeeklyStatusReport Stats\n")
 		.append("==================\n")
 		.append("Title: ").append(title + "\n")
-		.append("ProjectSprint: ").append(projectSprint + "\n")
+		.append("Sprint: ").append(sprint + "\n")
 		.append("Author: ").append(author + "\n")
 		.append("Classification: ").append(classification + "\n")
 		.append("Weekending Date: ").append(weekEndingDate +"\n");
@@ -134,18 +134,18 @@ public class StatusReport {
 	}
 
 	/**
-	 * @return the projectSprint
+	 * @return the sprint
 	 */
-	public ProjectSprint getSprint() {
-		return projectSprint;
+	public Sprint getSprint() {
+		return sprint;
 	}
 
 	/**
-	 * @param projectSprint
-	 *            the projectSprint to set
+	 * @param sprint
+	 *            the sprint to set
 	 */
-	public void setSprint(ProjectSprint projectSprint) {
-		this.projectSprint = projectSprint;
+	public void setSprint(Sprint sprint) {
+		this.sprint = sprint;
 	}
 
 	/**

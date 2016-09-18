@@ -7,18 +7,26 @@ import java.util.List;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import com.cee.ljr.domain.common.Epic;
-import com.cee.ljr.domain.common.ProjectSprint;
+import com.cee.ljr.domain.common.Sprint;
+import com.cee.ljr.domain.common.SprintFactory;
 import com.cee.ljr.domain.common.Story;
 import com.cee.ljr.domain.common.Task;
 import com.cee.ljr.domain.common.WorkLog;
 import com.cee.ljr.domain.jira.IssueType;
 import com.cee.ljr.domain.jira.JiraIssue;
+import com.cee.ljr.domain.report.WeeklyStatusReportFactory;
 import com.cee.ljr.utils.DateUtil;
 
-public class JiraIssueMapper {
+@Component
+public class JiraIssueMapper {	
 	private static final Logger log = LoggerFactory.getLogger(JiraIssueMapper.class);
+	
+	@Autowired
+	SprintFactory sprintFactory;
 	
 	public static final String WORK_LOG_DATE_FORMAT = DateUtil.JIRA_WORKLOG_DATE_FORMAT;
 	private static final int NUM_OF_WORK_LOG_ATTRBS = 4;
@@ -34,7 +42,7 @@ public class JiraIssueMapper {
 		return epic;
 	}
 	
-	public static Story createStory(JiraIssue storyJiraIssue) {
+	public Story createStory(JiraIssue storyJiraIssue) {
 		Story story = null;
 		if (!IssueType.STORY.equals(storyJiraIssue.getType())) {
 			return story;
@@ -45,7 +53,7 @@ public class JiraIssueMapper {
 		return story;
 	}
 	
-	public static Task createTask(JiraIssue taskJiraIssue) {
+	public Task createTask(JiraIssue taskJiraIssue) {
 		Task task = null;
 		/*if (!IssueType.TASK.equals(taskJiraIssue.getType())) {
 			return task;
@@ -61,8 +69,8 @@ public class JiraIssueMapper {
 		if (NumberUtils.isDigits(timeSpentString)) {
 			task.setTimeSpentInSeconds(Integer.valueOf(timeSpentString));
 		}
-		List<ProjectSprint> projectSprints = createSprints(taskJiraIssue.getSprints());
-		task.setSprints(projectSprints);
+		List<Sprint> sprints = createSprints(taskJiraIssue.getSprints());
+		task.setSprints(sprints);
 		task.setDevelopers(taskJiraIssue.getDevelopers());
 		for(String workLogString : taskJiraIssue.getWorkLog()) {
 			WorkLog workLog = createWorkLog(workLogString);
@@ -72,7 +80,7 @@ public class JiraIssueMapper {
 		return task;
 	}	
 	
-	public static WorkLog createWorkLog(String workLogString) {
+	public WorkLog createWorkLog(String workLogString) {
 		WorkLog workLog = new WorkLog();
 		String [] splitBySemiColonValues = workLogString.split(";");
 		// log.debug("split worklog str = " + ToStringBuilder.reflectionToString(delimitedBySemiColonString));
@@ -124,12 +132,12 @@ public class JiraIssueMapper {
 		return workLog;
 	}
 	
-	public static List<ProjectSprint> createSprints(List<String> sprintNames) {
-		List<ProjectSprint> projectSprints = new ArrayList<ProjectSprint>();
+	public List<Sprint> createSprints(List<String> sprintNames) {
+		List<Sprint> sprints = new ArrayList<Sprint>();
 		for (String sprintName : sprintNames) {
-			ProjectSprint projectSprint = new ProjectSprint(sprintName);
-			projectSprints.add(projectSprint);
+			Sprint sprint = sprintFactory.getSprint(sprintName);
+			sprints.add(sprint);
 		}
-		return projectSprints;
+		return sprints;
 	}
 }

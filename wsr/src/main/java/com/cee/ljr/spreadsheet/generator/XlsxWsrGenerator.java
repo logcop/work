@@ -23,7 +23,7 @@ import com.cee.ljr.domain.common.Epic;
 import com.cee.ljr.domain.common.Project;
 import com.cee.ljr.domain.common.Story;
 import com.cee.ljr.domain.common.Task;
-import com.cee.ljr.domain.report.StatusReport;
+import com.cee.ljr.domain.report.WeeklyStatusReport;
 
 @Component
 public class XlsxWsrGenerator {
@@ -47,33 +47,33 @@ public class XlsxWsrGenerator {
 	private static DataFormat dataFormat;
 	private static short hoursDataFormat;
 	
-	public void generateWsrDocument(StatusReport statusReport) {
-		if (statusReport == null) {
+	public void generateWsrDocument(WeeklyStatusReport weeklyStatusReport) {
+		if (weeklyStatusReport == null) {
 			throw new IllegalArgumentException("statusReport must not be null.");
 		}
-		if (CollectionUtils.isEmpty(statusReport.getProjects())) {
+		if (CollectionUtils.isEmpty(weeklyStatusReport.getProjects())) {
 			log.error("statusReport must contain at least one project");
 			return;
 		}
 		
-		if (statusReport.getHoursWorkedBetween() > 0) {
-			generateSpreadsheet(statusReport);
+		if (weeklyStatusReport.getHoursWorkedBetween() > 0) {
+			generateSpreadsheet(weeklyStatusReport);
 		}
 		else {
 			log.info("Unable to create report, no hours were logged between {} and {}.", 
-					statusReport.getWeekStartDate(), statusReport.getWeekEndingDate());
+					weeklyStatusReport.getWeekStartDate(), weeklyStatusReport.getWeekEndingDate());
 		}
 		
 		
 	}
 		
-	private void generateSpreadsheet(StatusReport statusReport) {
+	private void generateSpreadsheet(WeeklyStatusReport weeklyStatusReport) {
 		Workbook wb = new XSSFWorkbook();
-		Date startDate = statusReport.getWeekStartDate();
-		Date endDate = statusReport.getWeekEndingDate();
+		Date startDate = weeklyStatusReport.getWeekStartDate();
+		Date endDate = weeklyStatusReport.getWeekEndingDate();
 		initializeCellStyles(wb);
 		
-		for (Project project : statusReport.getProjects()) {
+		for (Project project : weeklyStatusReport.getProjects()) {
 			float hoursWorkedForWeek = project.getHoursWorkedBetween(startDate, endDate);
 			//log.debug("Weekly hours worked for project: " + hoursWorkedForWeek);
 			if (hoursWorkedForWeek > 0) {

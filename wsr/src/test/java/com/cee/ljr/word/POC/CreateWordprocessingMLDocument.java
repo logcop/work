@@ -1,4 +1,4 @@
-package com.cee.wsr.word.POC;
+package com.cee.ljr.word.POC;
 
 import org.docx4j.XmlUtils;
 import org.docx4j.openpackaging.packages.WordprocessingMLPackage;

@@ -1,4 +1,4 @@
-package com.cee.wsr.spreadsheet;
+package com.cee.ljr.spreadsheet;
 
 import junit.framework.TestCase;
 

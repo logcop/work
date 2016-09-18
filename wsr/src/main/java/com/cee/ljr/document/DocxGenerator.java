@@ -31,10 +31,10 @@ import org.springframework.util.CollectionUtils;
 
 import com.cee.ljr.domain.common.Epic;
 import com.cee.ljr.domain.common.Project;
-import com.cee.ljr.domain.common.ProjectSprint;
+import com.cee.ljr.domain.common.Sprint;
 import com.cee.ljr.domain.common.Story;
 import com.cee.ljr.domain.common.Task;
-import com.cee.ljr.domain.report.StatusReport;
+import com.cee.ljr.domain.report.WeeklyStatusReport;
 import com.cee.ljr.utils.DateUtil;
 
 @Component
@@ -44,17 +44,17 @@ public class DocxGenerator {
 	
 	private static ObjectFactory objectFactory = new ObjectFactory();
 	
-	public void generateDocument(StatusReport statusReport) {
+	public void generateDocument(WeeklyStatusReport weeklyStatusReport) {
 		try {
 			WordprocessingMLPackage wordMLPackage = WordprocessingMLPackage.createPackage();			
 			
 			try {
-				addHeader(wordMLPackage, statusReport.getTitle(), statusReport.getWeekEndingDate());
+				addHeader(wordMLPackage, weeklyStatusReport.getTitle(), weeklyStatusReport.getWeekEndingDate());
 			} catch (Exception e) {
 				e.printStackTrace();
 			}		
-			addSprint(wordMLPackage, statusReport.getSprint()); 
-			addProjects(wordMLPackage, statusReport.getProjects());
+			addSprint(wordMLPackage, weeklyStatusReport.getSprint()); 
+			addProjects(wordMLPackage, weeklyStatusReport.getProjects());
 			try {
 				wordMLPackage.save(new File(WrsPath));
 			} catch (Docx4JException d4je) {
@@ -115,17 +115,17 @@ public class DocxGenerator {
 	}
 	
 
-	public static final void addSprint(WordprocessingMLPackage wordMLPackage, ProjectSprint projectSprint) {
+	public static final void addSprint(WordprocessingMLPackage wordMLPackage, Sprint sprint) {
 		MainDocumentPart mdp = wordMLPackage.getMainDocumentPart();
 		String sprintFontSize = "11";
 		
 		P beginEmptyP = createP("", false, false, sprintFontSize);
 		mdp.addObject(beginEmptyP);
-		P sprintNumberP = createLabelValueP("Current ProjectSprint: ", String.valueOf(projectSprint.getNumber()), sprintFontSize);
+		P sprintNumberP = createLabelValueP("Current Sprint: ", String.valueOf(sprint.getNumber()), sprintFontSize);
 		mdp.addObject(sprintNumberP);
-		P sprintStartDateP = createLabelValueP("Start Date: ", DateUtil.toStringDate(projectSprint.getStartDate()), sprintFontSize);
+		P sprintStartDateP = createLabelValueP("Start Date: ", DateUtil.toStringDate(sprint.getStartDate()), sprintFontSize);
 		mdp.addObject(sprintStartDateP);
-		P sprintEndDateP = createLabelValueP("End Date: ", DateUtil.toStringDate(projectSprint.getEndDate()), sprintFontSize);
+		P sprintEndDateP = createLabelValueP("End Date: ", DateUtil.toStringDate(sprint.getEndDate()), sprintFontSize);
 		mdp.addObject(sprintEndDateP);		
 	}
 	

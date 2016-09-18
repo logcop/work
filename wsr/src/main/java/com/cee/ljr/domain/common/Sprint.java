@@ -11,15 +11,15 @@ import org.slf4j.LoggerFactory;
  * @author chuck
  *
  */
-public class ProjectSprint {
-	private static final Logger log = LoggerFactory.getLogger(ProjectSprint.class);
+public class Sprint {
+	private static final Logger log = LoggerFactory.getLogger(Sprint.class);
 	
 	private String name;
 	private Integer number;
 	private Date startDate;
 	private Date endDate;
 
-	public ProjectSprint(String name, Date startDate, Date endDate) {
+	public Sprint(String name, Date startDate, Date endDate) {
 		this.name = name;
 		this.startDate = startDate;
 		this.endDate = endDate;
@@ -44,7 +44,7 @@ public class ProjectSprint {
 	 */
 	public int getNumber() {
 		if (number == null) {
-			String numberStr = name.substring(name.lastIndexOf("ProjectSprint ") + "ProjectSprint ".length());
+			String numberStr = name.substring(name.lastIndexOf("Sprint ") + "Sprint ".length());
 			log.debug("getNumber = {}", numberStr);
 			if (NumberUtils.isDigits(numberStr)) {
 				number = new Integer(numberStr);
