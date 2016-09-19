@@ -1,4 +1,4 @@
-package com.cee.ljr.dao;
+package com.cee.ljr.intg.dao;
 
 import java.util.List;
 
