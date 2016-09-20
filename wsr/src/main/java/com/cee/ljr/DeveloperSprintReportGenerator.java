@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 import com.cee.ljr.service.DeveloperSprintReportService;
 
 @Component
-public class DeveloperSprintReportGenerator {
+public abstract class DeveloperSprintReportGenerator {
 	private static final Logger log = LoggerFactory.getLogger(DeveloperSprintReportGenerator.class);
 	
 	@Autowired

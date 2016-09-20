@@ -19,7 +19,7 @@ public class CsvReaderFileParser implements CsvFileParser<CSVRecord> {
 	private static final Logger log = LoggerFactory.getLogger(CsvReaderFileParser.class); 
 	
 	@Override
-	public Iterable<CSVRecord> parse(String filePath, boolean hasHeader) {
+	public Iterable<CSVRecord> parse(String filePath, boolean skipHeader) {
 		String path = FileUtil.getAbsolutePath(filePath);
 		
 		Reader reader = null;
@@ -30,7 +30,7 @@ public class CsvReaderFileParser implements CsvFileParser<CSVRecord> {
 			log.error("Could not find file: " + path, fnfe);
 		}
 		
-		CSVFormat csvFormat = getFormat(hasHeader);
+		CSVFormat csvFormat = getFormat(skipHeader);
 		try {
 			Iterable<CSVRecord> records = csvFormat.parse(reader);
 			return records;
@@ -42,11 +42,11 @@ public class CsvReaderFileParser implements CsvFileParser<CSVRecord> {
 		
 	}
 	
-	private CSVFormat getFormat(boolean hasHeader) {
-		if (hasHeader) {
+	private CSVFormat getFormat(boolean skipHeader) {
+		if (skipHeader) {
 			return CSVFormat.EXCEL.withHeader();
 		}
 		
-		return CSVFormat.RFC4180;
+		return CSVFormat.EXCEL;
 	}
 }

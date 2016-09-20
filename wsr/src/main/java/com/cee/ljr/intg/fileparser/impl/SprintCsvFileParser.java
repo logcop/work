@@ -24,7 +24,7 @@ public class SprintCsvFileParser implements SprintFileParser {
 	private static final int START_DATE_INDEX = 1;
 	private static final int END_DATE_INDEX = 2;
 	
-	private static final boolean CSV_HAS_HEADER = true;
+	private static final boolean SKIP_HEADER = true;
 	
 	@Value("${sprints.url}")
 	String filePath;
@@ -36,7 +36,7 @@ public class SprintCsvFileParser implements SprintFileParser {
 	public List<Sprint> parseAll() {
 		List<Sprint> sprintList = new ArrayList<Sprint>();
 		
-		Iterable<CSVRecord> records = csvFileParser.parse(filePath, CSV_HAS_HEADER);
+		Iterable<CSVRecord> records = csvFileParser.parse(filePath, SKIP_HEADER);
 		for (CSVRecord record : records) {
 			Sprint sprint = mapToSprint(record);
 			sprintList.add(sprint);
@@ -51,7 +51,7 @@ public class SprintCsvFileParser implements SprintFileParser {
 	public List<Sprint> parseByNumber(int sprintNumber) {
 		List<Sprint> sprintList = new ArrayList<Sprint>();
 		
-		Iterable<CSVRecord> records = csvFileParser.parse(filePath, CSV_HAS_HEADER);
+		Iterable<CSVRecord> records = csvFileParser.parse(filePath, SKIP_HEADER);
 		for (CSVRecord record : records) {
 			String name = record.get(NAME_INDEX);
 			int number = SprintUtil.getNumberFromName(name);
@@ -69,7 +69,7 @@ public class SprintCsvFileParser implements SprintFileParser {
 	public List<Sprint> parseByNames(List<String> sprintNames) {
 		List<Sprint> sprintList = new ArrayList<Sprint>();
 		
-		Iterable<CSVRecord> records = csvFileParser.parse(filePath, CSV_HAS_HEADER);
+		Iterable<CSVRecord> records = csvFileParser.parse(filePath, SKIP_HEADER);
 		for (CSVRecord record : records) {
 			String name = record.get(NAME_INDEX);
 			for (String sprintName : sprintNames) {
@@ -88,7 +88,7 @@ public class SprintCsvFileParser implements SprintFileParser {
 	public Sprint parseByName(String sprintName) {
 		Sprint sprint = null;
 		
-		Iterable<CSVRecord> records = csvFileParser.parse(filePath, CSV_HAS_HEADER);
+		Iterable<CSVRecord> records = csvFileParser.parse(filePath, SKIP_HEADER);
 		for (CSVRecord record : records) {
 			String name = record.get(NAME_INDEX);			
 			if (sprintName.equals(name)) {

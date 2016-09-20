@@ -8,4 +8,6 @@ import com.cee.ljr.domain.jira.JiraIssue;
 public interface JiraIssueDao {
 	
 	List<JiraIssue> getAllIssues();
+	
+	List<JiraIssue> getAllByDeveloperAndSprints(String developerName, List<String> sprintNames);
 }

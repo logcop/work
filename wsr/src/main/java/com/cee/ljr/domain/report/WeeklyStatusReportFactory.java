@@ -191,7 +191,7 @@ public class WeeklyStatusReportFactory {
 	}
 	
 	private Sprint createSprint() {
-		return new Sprint("0", new Date(), new Date()); //TODO: have to figure out how to inject sprint hours.
+		return new Sprint("Sprint 0", new Date(), new Date()); //TODO: have to figure out how to inject sprint hours.
 		/*return new Sprint(
 				srProps.getSprintNumber(), 
 				srProps.getSprintStartDate(), 

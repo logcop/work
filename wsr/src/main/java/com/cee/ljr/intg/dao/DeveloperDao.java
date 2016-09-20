@@ -7,4 +7,6 @@ import com.cee.ljr.domain.common.Developer;
 public interface DeveloperDao {
 	
 	List<Developer> getAll();
+	
+	Developer getByNameInJira(String nameInJira);
 }

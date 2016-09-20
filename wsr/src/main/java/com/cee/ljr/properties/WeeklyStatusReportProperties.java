@@ -8,45 +8,27 @@ import org.springframework.stereotype.Component;
 public class WeeklyStatusReportProperties {
 
 	private String reportTitle;
-	//private Date reportWeekEndingDate;
 	private String reportClassification;
-	//private int sprintNumber;
-	//private Date sprintStartDate;
-	//private Date sprintEndDate;
 	private String authorName;
 	private String authorTitle;
 	private String authorType;
-	private String xlsPath;
-	private String csvPath;
 	private String docxPath;
 
 	@Autowired
 	public WeeklyStatusReportProperties(
 			@Value("${report.title}") String reportTitle,
-			//@Value("${report.weekendingdate}") String reportWeekEndingDate,
 			@Value("${report.classification}") String reportClassification,
-			//@Value("${sprint.number}") String sprintNumber,
-			//@Value("${sprint.startdate}") String sprintStartDate,
-			//@Value("${sprint.enddate}") String sprintEndDate,
 			@Value("${author.name}") String authorName,
 			@Value("${author.title}") String authorTitle,
-			@Value("${author.type}") String authorType, 
-			@Value("${xls.path}") String xlsPath,
-			@Value("${csv.path}") String csvPath,
+			@Value("${author.type}") String authorType,
 			@Value("${docx.path}") String docxPath) {
 		// Validation can go here if needed, throwing IllegalArgumentException
 		// if it fails..
 		this.reportTitle = reportTitle;
-		//this.reportWeekEndingDate = DateUtil.toDate(reportWeekEndingDate)
 ;		this.reportClassification = reportClassification;
-		//this.sprintNumber = Integer.parseInt(sprintNumber);
-		//this.sprintStartDate = DateUtil.toDate(sprintStartDate);
-		//this.sprintEndDate = DateUtil.toDate(sprintEndDate);
 		this.authorName = authorName;
 		this.authorTitle = authorTitle;
 		this.authorType = authorType;
-		this.xlsPath = xlsPath;
-		this.csvPath = csvPath;
 		this.docxPath = docxPath;
 	}
 
@@ -84,28 +66,6 @@ public class WeeklyStatusReportProperties {
 	 */
 	public String getAuthorType() {
 		return authorType;
-	}
-
-	/**
-	 * @return the xlsPath
-	 */
-	public String[] getXlsPath() {		
-		return xlsPath.split(";");
-	}
-	
-	public void setXlsPath(String xlsxPath) {
-		this.xlsPath = xlsxPath;
-	}
-	
-	/**
-	 * @return the csvPath
-	 */
-	public String[] getCsvPath() {		
-		return csvPath.split(";");
-	}
-	
-	public void setCsvPath(String csvPath) {
-		this.csvPath = csvPath;
 	}
 
 	/**

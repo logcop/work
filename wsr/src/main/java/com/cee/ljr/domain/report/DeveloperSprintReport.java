@@ -1,55 +1,68 @@
 package com.cee.ljr.domain.report;
 
+import java.util.Date;
 import java.util.List;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+
 import com.cee.ljr.domain.common.Developer;
-import com.cee.ljr.domain.common.Sprint;
 import com.cee.ljr.domain.common.Task;
 
 public class DeveloperSprintReport {
 	
-	private Sprint sprint;
+	private int sprintNumber;
+	private Date sprintStartDate;
+	private Date sprintEndDate;
+	
 	private Developer developer;
 	private List<Task> tasks;
 	
 	
-	/**
-	 * @return the sprint
-	 */
-	public Sprint getSprint() {
-		return sprint;
-	}
-	/**
-	 * @param sprint the sprint to set
-	 */
-	public void setSprint(Sprint sprint) {
-		this.sprint = sprint;
-	}
-	/**
-	 * @return the developer
-	 */
-	public Developer getDeveloper() {
-		return developer;
-	}
-	/**
-	 * @param developer the developer to set
-	 */
-	public void setDeveloper(Developer developer) {
+	
+	public DeveloperSprintReport(int sprintNumber, Date sprintStartDate, Date sprintEndDate, Developer developer,
+			List<Task> tasks) {
+		super();
+		this.sprintNumber = sprintNumber;
+		this.sprintStartDate = sprintStartDate;
+		this.sprintEndDate = sprintEndDate;
 		this.developer = developer;
-	}
-	/**
-	 * @return the tasks
-	 */
-	public List<Task> getTasks() {
-		return tasks;
-	}
-	/**
-	 * @param tasks the tasks to set
-	 */
-	public void setTasks(List<Task> tasks) {
 		this.tasks = tasks;
 	}
 	
+
+	public int getSprintNumber() {
+		return sprintNumber;
+	}
+
+
+
+	public Date getSprintStartDate() {
+		return sprintStartDate;
+	}
+
+
+
+	public Date getSprintEndDate() {
+		return sprintEndDate;
+	}
+
+
+
+	public Developer getDeveloper() {
+		return developer;
+	}
+
+
+
+	public List<Task> getTasks() {
+		return tasks;
+	}
+	
+	
+	@Override
+	public String toString() {
+		return ToStringBuilder.reflectionToString(this);
+	}
 	
 
 }

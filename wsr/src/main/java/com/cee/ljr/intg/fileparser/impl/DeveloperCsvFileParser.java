@@ -21,7 +21,7 @@ public class DeveloperCsvFileParser implements DeveloperFileParser {
 	private static final int FIRST_NAME_INDEX = 1;
 	private static final int LAST_NAME_INDEX = 2;
 	
-	private static final boolean CSV_HAS_HEADER = true;
+	private static final boolean SKIP_HEADER = true;
 	
 	@Value("${developers.url}")
 	String filePath;
@@ -33,7 +33,7 @@ public class DeveloperCsvFileParser implements DeveloperFileParser {
 	public List<Developer> parseAll() {
 		List<Developer> developerList = new ArrayList<Developer>();
 		
-		Iterable<CSVRecord> records = csvFileParser.parse(filePath, CSV_HAS_HEADER);		
+		Iterable<CSVRecord> records = csvFileParser.parse(filePath, SKIP_HEADER);		
 		for (CSVRecord record : records) {
 		    Developer developer = mapToDeveloper(record);
 		    developerList.add(developer);
@@ -48,7 +48,7 @@ public class DeveloperCsvFileParser implements DeveloperFileParser {
 			throw new IllegalArgumentException("nameInJira must not be null.");
 		}
 		
-		Iterable<CSVRecord> records = csvFileParser.parse(filePath, CSV_HAS_HEADER);	
+		Iterable<CSVRecord> records = csvFileParser.parse(filePath, SKIP_HEADER);	
 		
 		for (CSVRecord record : records) {
 			if (nameInJira.equals(record.get(NAME_IN_JIRA_INDEX))) {

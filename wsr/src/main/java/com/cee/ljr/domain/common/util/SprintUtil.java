@@ -1,6 +1,11 @@
 package com.cee.ljr.domain.common.util;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.commons.lang3.math.NumberUtils;
+
+import com.cee.ljr.domain.common.Sprint;
 
 public class SprintUtil {
 
@@ -17,16 +22,31 @@ public class SprintUtil {
 		
 		int sprintNumberBeginIndex = sprintName.lastIndexOf("Sprint ") + "Sprint ".length();
 		
-		if (sprintNumberBeginIndex <= 0) {
+		if (sprintNumberBeginIndex <= 0 ) {
 			throw new IllegalArgumentException("sprintName [" + sprintName + "] is invalid. Must be in the following format: [project name] Sprint [#]");
 		}		
 
-		String numberStr = sprintName.substring(sprintNumberBeginIndex);
+		String numberStr = "";
+		try {
+			numberStr = sprintName.substring(sprintNumberBeginIndex);
+		} catch (StringIndexOutOfBoundsException siobe) {
+			throw new IllegalArgumentException("sprintName [" + sprintName + "] is invalid. Must be in the following format: [project name] Sprint [#]");
+		}
 		
 		if (!NumberUtils.isDigits(numberStr)) {
 			throw new IllegalArgumentException("sprintName [" + sprintName + "] is invalid. Must be in the following format: [project name] Sprint [#]");
 		}
 		
 		return new Integer(numberStr);
+	}
+	
+	public static List<String> getSprintNames(List<Sprint> sprints) {
+		List<String> names = new ArrayList<String>();
+		
+		for (Sprint sprint : sprints) {
+			names.add(sprint.getName());
+		}
+		
+		return names;
 	}
 }
