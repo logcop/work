@@ -42,7 +42,7 @@ public class DateUtil {
 	
 	public static final String DATE_STRING_FORMAT = "dd MMM yyyy";	
 	public static final String WEEK_ENDING_DATE_FORMAT = "MM/dd/yyyy";
-	public static final String JIRA_SPRINT_DATE_FORMAT = "dd/MMM/yy hh:mm aa";
+	public static final String JIRA_SPRINT_DATE_FORMAT = "MM/dd/yyyy HH:mm";
 	public static final String JIRA_WORKLOG_DATE_FORMAT = "dd/MMM/yy hh:mm aa";
 	public static final String TIME_DATE_STRING_FORMAT = "HH:mm:ss:SS  dd MMM yyyy";
 	public static final DateFormat DATE_FORMATER = new SimpleDateFormat(DATE_STRING_FORMAT);

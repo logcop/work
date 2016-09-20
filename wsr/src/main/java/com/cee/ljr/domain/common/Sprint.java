@@ -3,9 +3,10 @@ package com.cee.ljr.domain.common;
 import java.util.Date;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.math.NumberUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.cee.ljr.domain.common.util.SprintUtil;
 
 /**
  * @author chuck
@@ -23,7 +24,8 @@ public class Sprint {
 		this.name = name;
 		this.startDate = startDate;
 		this.endDate = endDate;
-	}	
+		this.number = SprintUtil.getNumberFromName(name);
+	}
 	
 	/**
 	 * @return the name
@@ -43,13 +45,6 @@ public class Sprint {
 	 * @return the number
 	 */
 	public int getNumber() {
-		if (number == null) {
-			String numberStr = name.substring(name.lastIndexOf("Sprint ") + "Sprint ".length());
-			log.debug("getNumber = {}", numberStr);
-			if (NumberUtils.isDigits(numberStr)) {
-				number = new Integer(numberStr);
-			}
-		}
 		return number;
 	}
 

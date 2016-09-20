@@ -21,6 +21,6 @@ public class DeveloperSprintReportGenerator {
 		//WeeklyStatusReport statusReport = srService.getWeeklyStatusReport(weekStartDate, weekEndingDate);
 		//docxGenerator.generateDocument(statusReport);
 		//List<String> developerNames = DevNameUtil.getFullName(firstName)
-		//DeveloperSprintReport developerSprintReport = developerSprintReportService.getReport(sprintNumber);
+		//List<DeveloperSprintReport> developerSprintReports = developerSprintReportService.getReports(sprintNumber);
 	}
 }

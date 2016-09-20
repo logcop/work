@@ -7,4 +7,6 @@ import com.cee.ljr.domain.common.Developer;
 public interface DeveloperFileParser {
 	
 	List<Developer> parseAll();
+	
+	Developer parseForName(String nameInJira);
 }

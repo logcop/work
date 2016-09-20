@@ -1,6 +1,5 @@
 package com.cee.ljr.mapping;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -12,13 +11,12 @@ import org.springframework.stereotype.Component;
 
 import com.cee.ljr.domain.common.Epic;
 import com.cee.ljr.domain.common.Sprint;
-import com.cee.ljr.domain.common.SprintFactory;
 import com.cee.ljr.domain.common.Story;
 import com.cee.ljr.domain.common.Task;
 import com.cee.ljr.domain.common.WorkLog;
 import com.cee.ljr.domain.jira.IssueType;
 import com.cee.ljr.domain.jira.JiraIssue;
-import com.cee.ljr.domain.report.WeeklyStatusReportFactory;
+import com.cee.ljr.intg.dao.SprintDao;
 import com.cee.ljr.utils.DateUtil;
 
 @Component
@@ -26,7 +24,8 @@ public class JiraIssueMapper {
 	private static final Logger log = LoggerFactory.getLogger(JiraIssueMapper.class);
 	
 	@Autowired
-	SprintFactory sprintFactory;
+	SprintDao sprintDao;
+	//SprintFactory sprintFactory;
 	
 	public static final String WORK_LOG_DATE_FORMAT = DateUtil.JIRA_WORKLOG_DATE_FORMAT;
 	private static final int NUM_OF_WORK_LOG_ATTRBS = 4;
@@ -133,11 +132,6 @@ public class JiraIssueMapper {
 	}
 	
 	public List<Sprint> createSprints(List<String> sprintNames) {
-		List<Sprint> sprints = new ArrayList<Sprint>();
-		for (String sprintName : sprintNames) {
-			Sprint sprint = sprintFactory.getSprint(sprintName);
-			sprints.add(sprint);
-		}
-		return sprints;
+		return sprintDao.getAllByNames(sprintNames);
 	}
 }

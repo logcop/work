@@ -1,5 +1,7 @@
 package com.cee.ljr.domain.common;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+
 public class Developer {
 
 	private String nameInJira;	
@@ -33,5 +35,10 @@ public class Developer {
 	
 	public String getFullName() {
 		return firstName + " " + lastName;
+	}
+	
+	@Override
+	public String toString() {
+		return ToStringBuilder.reflectionToString(this);
 	}
 }

@@ -18,7 +18,7 @@ import com.cee.ljr.intg.fileparser.impl.DeveloperCsvFileParser;
 public class DeveloperCsvFileParserTest {
 	
 	@Autowired
-	DeveloperCsvFileParser developerCsvFileParser;// = new DeveloperCsvFileParser();
+	DeveloperCsvFileParser developerCsvFileParser;
 	
 	@Test
 	public void testParseAll() {
@@ -26,7 +26,18 @@ public class DeveloperCsvFileParserTest {
 		
 		Assert.assertNotNull(developers);
 		Assert.assertFalse(developers.isEmpty());
-		System.out.println(developers);
+		//System.out.println(developers);		
+	}
+	
+
+	@Test
+	public void testParseForName() {
+		String nameInJira = "Chuck";
 		
+		Developer developer = developerCsvFileParser.parseForName(nameInJira);
+		
+		Assert.assertNotNull(developer);
+		Assert.assertEquals(nameInJira, developer.getNameInJira());
+		//System.out.println(developer);		
 	}
 }
