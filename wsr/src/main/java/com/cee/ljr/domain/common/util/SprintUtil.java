@@ -14,11 +14,17 @@ public class SprintUtil {
 		if (sprintName == null) {
 			throw new IllegalArgumentException("sprintName must not be null");
 		}
-		....need to make checks here, for some reason the wsr generator is giving this bad value...
-		String numberStr = sprintName.substring(sprintName.lastIndexOf("Sprint ") + "Sprint ".length());
+		
+		int sprintNumberBeginIndex = sprintName.lastIndexOf("Sprint ") + "Sprint ".length();
+		
+		if (sprintNumberBeginIndex <= 0) {
+			throw new IllegalArgumentException("sprintName [" + sprintName + "] is invalid. Must be in the following format: [project name] Sprint [#]");
+		}		
+
+		String numberStr = sprintName.substring(sprintNumberBeginIndex);
 		
 		if (!NumberUtils.isDigits(numberStr)) {
-			throw new IllegalArgumentException("sprintName is invalid. Must be in the following format: [project name] Sprint [#]");
+			throw new IllegalArgumentException("sprintName [" + sprintName + "] is invalid. Must be in the following format: [project name] Sprint [#]");
 		}
 		
 		return new Integer(numberStr);
