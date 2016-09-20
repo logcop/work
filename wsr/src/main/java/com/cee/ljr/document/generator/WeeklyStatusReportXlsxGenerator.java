@@ -1,4 +1,4 @@
-package com.cee.ljr.spreadsheet.generator;
+package com.cee.ljr.document.generator;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -26,8 +26,8 @@ import com.cee.ljr.domain.common.Task;
 import com.cee.ljr.domain.report.WeeklyStatusReport;
 
 @Component
-public class XlsxWsrGenerator {
-	private static final Logger log = LoggerFactory.getLogger(XlsxWsrGenerator.class);
+public class WeeklyStatusReportXlsxGenerator {
+	private static final Logger log = LoggerFactory.getLogger(WeeklyStatusReportXlsxGenerator.class);
 	
 	private static final String WsrPath = System.getProperty("user.dir") + "/report.xlsx";
 	private static final int epicColIndex = 0;

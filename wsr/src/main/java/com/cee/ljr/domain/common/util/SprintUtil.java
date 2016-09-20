@@ -23,18 +23,21 @@ public class SprintUtil {
 		int sprintNumberBeginIndex = sprintName.lastIndexOf("Sprint ") + "Sprint ".length();
 		
 		if (sprintNumberBeginIndex <= 0 ) {
-			throw new IllegalArgumentException("sprintName [" + sprintName + "] is invalid. Must be in the following format: [project name] Sprint [#]");
+			throw new IllegalArgumentException("sprintName [" + sprintName 
+					+ "] is invalid. Must be in the following format: [project name] Sprint [#]");
 		}		
 
 		String numberStr = "";
 		try {
 			numberStr = sprintName.substring(sprintNumberBeginIndex);
 		} catch (StringIndexOutOfBoundsException siobe) {
-			throw new IllegalArgumentException("sprintName [" + sprintName + "] is invalid. Must be in the following format: [project name] Sprint [#]");
+			throw new IllegalArgumentException("sprintName [" + sprintName 
+					+ "] is invalid. Must be in the following format: [project name] Sprint [#]");
 		}
 		
 		if (!NumberUtils.isDigits(numberStr)) {
-			throw new IllegalArgumentException("sprintName [" + sprintName + "] is invalid. Must be in the following format: [project name] Sprint [#]");
+			throw new IllegalArgumentException("sprintName [" + sprintName 
+					+ "] is invalid. Must be in the following format: [project name] Sprint [#]");
 		}
 		
 		return new Integer(numberStr);

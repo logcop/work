@@ -1,4 +1,4 @@
-package com.cee.ljr.document.element;
+package com.cee.ljr.document.docx;
 
 import org.docx4j.wml.ObjectFactory;
 import org.docx4j.wml.P;

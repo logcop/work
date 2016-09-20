@@ -3,7 +3,9 @@ package com.cee.ljr.mapping;
 import java.util.Date;
 
 import org.apache.commons.lang3.StringUtils;
+
 import static org.junit.Assert.*;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +14,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.cee.ljr.config.ApplicationConfig;
 import com.cee.ljr.domain.common.WorkLog;
-import com.cee.ljr.mapping.JiraIssueMapper;
+import com.cee.ljr.intg.mapping.JiraIssueMapper;
 import com.cee.ljr.utils.DateUtil;
 
 @RunWith(SpringJUnit4ClassRunner.class)

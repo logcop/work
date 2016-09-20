@@ -6,7 +6,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import com.cee.ljr.config.ApplicationConfig;
-import com.cee.ljr.document.DocxGenerator;
+import com.cee.ljr.document.generator.WeeklyStatusReportDocxGenerator;
 import com.cee.ljr.domain.report.WeeklyStatusReport;
 import com.cee.ljr.service.WeeklyStatusReportService;
 
@@ -21,11 +21,11 @@ public class WSRproofOfConcept {
 		ApplicationContext ctx = new AnnotationConfigApplicationContext(ApplicationConfig.class);
 
 		WeeklyStatusReportService srService = ctx.getBean(WeeklyStatusReportService.class);
-		DocxGenerator docxGenerator = ctx.getBean(DocxGenerator.class);
+		WeeklyStatusReportDocxGenerator weeklyStatusReportDocxGenerator = ctx.getBean(WeeklyStatusReportDocxGenerator.class);
 
 		// Sprint will be passed into the production code, lives here for now..
 		WeeklyStatusReport weeklyStatusReport = srService.getWeeklyStatusReport(new Date(), new Date());
-		docxGenerator.generateDocument(weeklyStatusReport);
+		weeklyStatusReportDocxGenerator.generateDocument(weeklyStatusReport);
 		
 		/*WordprocessingMLPackage wordMLPackage = WordprocessingMLPackage.createPackage();
 		// Delete the Styles part, since it clutters up our output

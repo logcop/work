@@ -1,4 +1,4 @@
-package com.cee.ljr.mapping;
+package com.cee.ljr.intg.mapping;
 
 import java.util.Date;
 import java.util.List;

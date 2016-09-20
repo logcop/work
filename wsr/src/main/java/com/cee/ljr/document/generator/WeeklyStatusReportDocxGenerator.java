@@ -1,4 +1,4 @@
-package com.cee.ljr.document;
+package com.cee.ljr.document.generator;
 
 import java.io.File;
 import java.math.BigInteger;
@@ -38,8 +38,8 @@ import com.cee.ljr.domain.report.WeeklyStatusReport;
 import com.cee.ljr.utils.DateUtil;
 
 @Component
-public class DocxGenerator {
-	private static final Logger LOG = LoggerFactory.getLogger(DocxGenerator.class);
+public class WeeklyStatusReportDocxGenerator {
+	private static final Logger LOG = LoggerFactory.getLogger(WeeklyStatusReportDocxGenerator.class);
 	private static final String WrsPath = System.getProperty("user.dir") + "/JIRA.docx";
 	
 	private static ObjectFactory objectFactory = new ObjectFactory();

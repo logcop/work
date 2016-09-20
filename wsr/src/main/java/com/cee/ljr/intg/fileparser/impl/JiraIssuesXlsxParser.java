@@ -15,8 +15,8 @@ import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.stereotype.Component;
 
+import com.cee.ljr.document.xslx.PoiXlsxUtil;
 import com.cee.ljr.domain.jira.JiraIssue;
-import com.cee.ljr.spreadsheet.util.PoiXlsxUtil;
 @Component
 public class JiraIssuesXlsxParser {
 	private static final int HEADER_ROW = 0;

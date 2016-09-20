@@ -1,4 +1,4 @@
-package com.cee.ljr.document;
+package com.cee.ljr.document.docx;
 
 public final class WordXMLTemplate {
 

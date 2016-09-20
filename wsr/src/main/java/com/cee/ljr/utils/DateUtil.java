@@ -92,6 +92,12 @@ public class DateUtil {
 		return cal.getTime();
 	}
 	
+	/**
+	 * Creates a week start date from the given string. The week start date must be in 
+	 * conform to the <code>DateUtil.WEEK_ENDING_DATE_FORMAT</code>. 
+	 * @param dateString The start date string
+	 * @return a week start Date.
+	 */
 	public static Date getWeekStartDate(String weekEndingDateString) {
 		if (!isDateByFormat(WEEK_ENDING_DATE_FORMAT, weekEndingDateString)) {
 			throw new IllegalArgumentException("String \"" + weekEndingDateString + 
@@ -100,6 +106,7 @@ public class DateUtil {
 		
 		Date weekEndingDate = toDate(WEEK_ENDING_DATE_FORMAT, weekEndingDateString);
 		Date weekStartDate = DateUtils.addDays(weekEndingDate, -6);
+		
 		Calendar cal = Calendar.getInstance();
 		cal.setTime(weekStartDate);
 		cal.set(Calendar.HOUR, 0);

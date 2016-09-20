@@ -1,4 +1,4 @@
-package com.cee.ljr.document.element;
+package com.cee.ljr.document.docx;
 
 import java.util.List;
 

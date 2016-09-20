@@ -4,7 +4,7 @@ import org.docx4j.XmlUtils;
 import org.docx4j.openpackaging.packages.WordprocessingMLPackage;
 import org.docx4j.openpackaging.parts.WordprocessingML.MainDocumentPart;
 
-import com.cee.ljr.document.WordXMLTemplate;
+import com.cee.ljr.document.docx.WordXMLTemplate;
 
 /**
  * Creates a WordprocessingML document from scratch,

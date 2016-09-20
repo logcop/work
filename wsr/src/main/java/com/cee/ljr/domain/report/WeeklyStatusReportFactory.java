@@ -17,7 +17,7 @@ import com.cee.ljr.domain.jira.IssueType;
 import com.cee.ljr.domain.jira.JiraIssue;
 import com.cee.ljr.domain.jira.JiraIssues;
 import com.cee.ljr.domain.jira.JiraIssuesFactory;
-import com.cee.ljr.mapping.JiraIssueMapper;
+import com.cee.ljr.intg.mapping.JiraIssueMapper;
 import com.cee.ljr.properties.WeeklyStatusReportProperties;
 
 @Component

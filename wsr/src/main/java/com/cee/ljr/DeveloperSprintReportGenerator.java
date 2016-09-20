@@ -1,10 +1,13 @@
 package com.cee.ljr;
 
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.cee.ljr.domain.report.DeveloperSprintReport;
 import com.cee.ljr.service.DeveloperSprintReportService;
 
 @Component
@@ -21,6 +24,6 @@ public abstract class DeveloperSprintReportGenerator {
 		//WeeklyStatusReport statusReport = srService.getWeeklyStatusReport(weekStartDate, weekEndingDate);
 		//docxGenerator.generateDocument(statusReport);
 		//List<String> developerNames = DevNameUtil.getFullName(firstName)
-		//List<DeveloperSprintReport> developerSprintReports = developerSprintReportService.getReports(sprintNumber);
+		List<DeveloperSprintReport> developerSprintReports = developerSprintReportService.getReports(sprintNumber);
 	}
 }

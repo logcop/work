@@ -16,16 +16,10 @@ import com.cee.ljr.domain.report.DeveloperSprintReport;
 import com.cee.ljr.intg.dao.DeveloperDao;
 import com.cee.ljr.intg.dao.JiraIssueDao;
 import com.cee.ljr.intg.dao.SprintDao;
-import com.cee.ljr.mapping.JiraIssueMapper;
+import com.cee.ljr.intg.mapping.JiraIssueMapper;
 
 @Service
 public class DeveloperSprintReportService {
-	
-	@Autowired
-	JiraIssueDao jiraIssueDao;
-	
-	@Autowired
-	JiraIssueMapper jiraIssueMapper;
 	
 	@Autowired
 	DeveloperDao developerDao;
@@ -33,8 +27,12 @@ public class DeveloperSprintReportService {
 	@Autowired
 	SprintDao sprintDao;
 	
-	//@Autowired
-	//DeveloperSprintReportFactory developerSprintReportFactory;
+	@Autowired
+	JiraIssueDao jiraIssueDao;
+	
+	@Autowired
+	JiraIssueMapper jiraIssueMapper;
+	
 	
 	public List<DeveloperSprintReport> getReports(int sprintNumber) {
 		List<DeveloperSprintReport> developerSprintReports = new ArrayList<DeveloperSprintReport>();		
@@ -50,6 +48,7 @@ public class DeveloperSprintReportService {
 		return developerSprintReports;
 	}
 	
+	
 	public DeveloperSprintReport getReport(String developerName, int sprintNumber) {
 		List<Task> tasks = new ArrayList<Task>();
 		Developer developer = developerDao.getByNameInJira(developerName);
@@ -63,6 +62,7 @@ public class DeveloperSprintReportService {
 			tasks.add(task);
 		}
 		
+		// just need 1 sprint right now because they all have the same start and end dates.
 		Sprint aSprint = sprints.get(0);
 		Date sprintStartDate = aSprint.getStartDate();
 		Date sprintEndDate = aSprint.getEndDate();
