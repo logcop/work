@@ -1,4 +1,4 @@
-package com.cee.ljr;
+package com.cee.ljr.report.generator;
 
 import java.util.List;
 
