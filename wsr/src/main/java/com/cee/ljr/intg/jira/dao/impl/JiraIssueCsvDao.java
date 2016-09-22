@@ -32,7 +32,7 @@ public class JiraIssueCsvDao implements JiraIssueDao{
 	}
 	
 	public List<JiraIssue> getEpics(List<String> epicKeys) {
-		
+		return jiraIssuesCsvFileParser.parseEpics(csvPaths, epicKeys);
 	}
 	
 }

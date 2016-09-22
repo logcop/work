@@ -16,14 +16,12 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.stereotype.Component;
 
 import com.cee.ljr.document.xslx.PoiXlsxUtil;
+import com.cee.ljr.intg.jira.domain.JiraAttribute;
 import com.cee.ljr.intg.jira.domain.JiraIssue;
 @Component
 public class JiraIssuesXlsxParser {
 	private static final int HEADER_ROW = 0;
-	private static final int START_ROW = 1;
-
-	private Map<Integer, String> indexToAttributeNameMap;
-	
+	private static final int START_ROW = 1;	
 	
 	public List<JiraIssue> parseXlsx(String[] xlsPaths) {
 		List<JiraIssue> jiraIssues = new ArrayList<JiraIssue>();
@@ -45,11 +43,11 @@ public class JiraIssuesXlsxParser {
 
 			XSSFSheet sheet = workbook.getSheetAt(0);
 			
-			indexToAttributeNameMap = createIndexMap(sheet);
+			Map<Integer, JiraAttribute> indexToAttributeMap = createIndexToAttributeMap(sheet);
 			
 			for (Row row : sheet) {				
 				if (row.getRowNum() >= START_ROW) {					
-					jiraIssues.add(process(row));
+					jiraIssues.add(process(row, indexToAttributeMap));
 				}
 			}
 			
@@ -62,29 +60,29 @@ public class JiraIssuesXlsxParser {
 		return jiraIssues;
 	}
 	
-	private JiraIssue process(Row row) {
+	private JiraIssue process(Row row, Map<Integer, JiraAttribute> indexToAttributeNameMap) {
 		JiraIssue jiraIssue = new JiraIssue();
 		
 		for (Cell cell : row) {
 			int index = cell.getColumnIndex();
-			String attributeName = indexToAttributeNameMap.get(index);
+			JiraAttribute attribute = indexToAttributeNameMap.get(index);
 			String value = PoiXlsxUtil.getStringValue(row, index);
-			jiraIssue.addAttribute(attributeName, value);
+			jiraIssue.addAttribute(attribute, value);
 		}
 		
 		return jiraIssue;
 	}
 	
 	
-	private Map<Integer, String> createIndexMap(XSSFSheet sheet) {
+	private Map<Integer, JiraAttribute> createIndexToAttributeMap(XSSFSheet sheet) {
 		Row attributeRow = sheet.getRow(HEADER_ROW);
 		int numOfCellsInRow = attributeRow.getLastCellNum();
 		
-		Map<Integer, String> indexToAttributeMap = new HashMap<Integer, String>(numOfCellsInRow, 1.0f);
+		Map<Integer, JiraAttribute> indexToAttributeMap = new HashMap<Integer, JiraAttribute>(numOfCellsInRow, 1.0f);
 		for (Cell cell : attributeRow) {
 			String attributeName = PoiXlsxUtil.getStrippedCellValue(cell);
 			Integer index = cell.getColumnIndex();
-			indexToAttributeMap.put(index, attributeName);
+			indexToAttributeMap.put(index, JiraAttribute.get(attributeName));
 		}
 		
 		return indexToAttributeMap;

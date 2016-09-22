@@ -17,6 +17,7 @@ public class DescriptiveTaskCsvDao {
 	
 	public List<DescriptiveTask> getAllByDeveloperAndSprints(String developerName, List<String> sprintNames) {
 		List<JiraIssue> tasks = jiraIssueDao.getTasksByDeveloperAndSprints(developerName, sprintNames);
+		
 		List<JiraIssue> epics = jiraIssueDao.getEpics(epicKeys);
 	}
 }

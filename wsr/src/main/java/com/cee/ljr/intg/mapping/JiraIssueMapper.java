@@ -83,10 +83,7 @@ public class JiraIssueMapper {
 	public WorkLog createWorkLog(String workLogString) {
 		WorkLog workLog = new WorkLog();
 		String [] splitBySemiColonValues = workLogString.split(";");
-		// log.debug("split worklog str = " + ToStringBuilder.reflectionToString(delimitedBySemiColonString));
 		// start the processing if worklog has required number of potential attributes.
-		// log.debug("delimitedBySemiColonString.length = " + delimitedBySemiColonString.length);
-		// log.debug("NUM_OF_WORK_LOG_ATTRBS = " + NUM_OF_WORK_LOG_ATTRBS);
 		if (splitBySemiColonValues.length >= NUM_OF_WORK_LOG_ATTRBS) {			
 			boolean foundDate = false;
 			boolean foundOwner = false;

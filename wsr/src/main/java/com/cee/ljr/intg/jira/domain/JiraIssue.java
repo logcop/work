@@ -10,37 +10,42 @@ import org.springframework.util.CollectionUtils;
 
 public class JiraIssue {
 	
-	private Map<String, List<String>> attributeNameValuesMap = new HashMap<String, List<String>>(75,1.0f);
+	private Map<JiraAttribute, List<String>> attributeToValuesMap = new HashMap<JiraAttribute, List<String>>(75,1.0f);
 		
 
 	public JiraIssue() {
 		// TODO Auto-generated constructor stub
 	}
 	
-	public void addAttribute(String name, List<String> values) {		
-		if (attributeNameValuesMap.containsKey(name)) {
-			attributeNameValuesMap.get(name).addAll(values);
+	public void addAttribute(JiraAttribute jiraAttribute, List<String> values) {		
+		if (attributeToValuesMap.containsKey(jiraAttribute)) {
+			attributeToValuesMap.get(jiraAttribute).addAll(values);
 		}
 		else {
-			attributeNameValuesMap.put(name, values);
+			attributeToValuesMap.put(jiraAttribute, values);
 		}
 	}
 	
-	public void addAttribute(String name, String value) {
-		if (attributeNameValuesMap.containsKey(name)) {
-			List<String> values = attributeNameValuesMap.get(name);
+	public void addAttribute(JiraAttribute jiraAttribute, String value) {
+		if (attributeToValuesMap.containsKey(jiraAttribute)) {
+			List<String> values = attributeToValuesMap.get(jiraAttribute);
 			values.add(value);
 		}
 		else {
 			List<String> values = new ArrayList<String>();
 			values.add(value);
-			attributeNameValuesMap.put(name, values);
+			attributeToValuesMap.put(jiraAttribute, values);
 		}
 	}
 	
-	public String getValue(String name) {		
+	/**
+	 * Gets the
+	 * @param name
+	 * @return
+	 */
+	public String getValue(JiraAttribute attribute) {		
 		String value = null;
-		List<String> values = attributeNameValuesMap.get(name);
+		List<String> values = attributeToValuesMap.get(attribute);
 		if (!CollectionUtils.isEmpty(values)) {
 			value = values.get(0);
 		}
@@ -50,8 +55,8 @@ public class JiraIssue {
 		return value;
 	}
 	
-	public List<String> getValues(String name) {
-		List<String> values = attributeNameValuesMap.get(name);
+	public List<String> getValues(JiraAttribute attribute) {
+		List<String> values = attributeToValuesMap.get(attribute);
 		
 		if (values == null) {
 			return new ArrayList<String>();
