@@ -7,23 +7,30 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.cee.ljr.document.generator.DeveloperSprintReportXlsxGenerator;
 import com.cee.ljr.domain.report.DeveloperSprintReport;
 import com.cee.ljr.service.DeveloperSprintReportService;
 
 @Component
-public abstract class DeveloperSprintReportGenerator {
+public class DeveloperSprintReportGenerator {
 	private static final Logger log = LoggerFactory.getLogger(DeveloperSprintReportGenerator.class);
 	
 	@Autowired
-	DeveloperSprintReportService developerSprintReportService;
+	DeveloperSprintReportService dsrService;
 	
-	//@Autowired
+	@Autowired
+	DeveloperSprintReportXlsxGenerator dsrGenerator;
 	
 	
-	public void generateAll(int sprintNumber) {
+	public void generateAll(int sprintNumber, String pathToReports) {
 		//WeeklyStatusReport statusReport = srService.getWeeklyStatusReport(weekStartDate, weekEndingDate);
 		//docxGenerator.generateDocument(statusReport);
 		//List<String> developerNames = DevNameUtil.getFullName(firstName)
-		List<DeveloperSprintReport> developerSprintReports = developerSprintReportService.getReports(sprintNumber);
+		List<DeveloperSprintReport> dsrList = dsrService.getReports(sprintNumber);
+		
+		for (DeveloperSprintReport developerSprintReport : dsrList) {
+			dsrGenerator.generate(developerSprintReport, pathToReports);
+		}
+		
 	}
 }

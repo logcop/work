@@ -11,8 +11,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.cee.ljr.domain.jira.JiraIssue;
 import com.cee.ljr.intg.fileparser.CsvFileParser;
+import com.cee.ljr.intg.jira.domain.JiraIssue;
 import com.cee.ljr.utils.FileUtil;
 
 @Component
@@ -29,7 +29,7 @@ public class JiraIssuesCsvFileParser {
 	
 	
 	
-	public List<JiraIssue> parseAllByDeveloperAndSprints(String csvPaths, String developerName, List<String> sprintNames) {
+	public List<JiraIssue> parseTasksByDeveloperAndSprints(String csvPaths, String developerName, List<String> sprintNames) {
 		List<JiraIssue> jiraIssues = new ArrayList<JiraIssue>();
 		
 		List<JiraIssue> allIssues = parseAll(csvPaths);

@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 
 import com.cee.ljr.domain.common.Developer;
 import com.cee.ljr.domain.common.Task;
@@ -58,10 +59,15 @@ public class DeveloperSprintReport {
 		return tasks;
 	}
 	
-	
 	@Override
 	public String toString() {
-		return ToStringBuilder.reflectionToString(this);
+		ToStringBuilder sb = new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE);
+		sb.append("sprintNumber", sprintNumber);
+		sb.append("sprintStartDate", sprintStartDate);
+		sb.append("sprintEndDate", sprintEndDate);
+		sb.append("developer", developer);
+		sb.append("tasks", tasks);
+		return sb.toString();
 	}
 	
 

@@ -13,17 +13,17 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
 
-import com.cee.ljr.domain.jira.JiraIssue;
 import com.cee.ljr.domain.report.WeeklyStatusReport;
 import com.cee.ljr.domain.report.WeeklyStatusReportFactory;
-import com.cee.ljr.intg.dao.JiraIssueDao;
+import com.cee.ljr.intg.jira.dao.JiraIssueDao;
+import com.cee.ljr.intg.jira.domain.JiraIssue;
 
 /**
  * @author chuck
  *
  */
 @Service
-@PropertySource("classpath:/properties/weekly-status-report.properties")
+@PropertySource("classpath:/properties/report.properties")
 public class WeeklyStatusReportService {
 	private static final Logger log = LoggerFactory.getLogger(WeeklyStatusReportService.class);
 	
@@ -33,7 +33,7 @@ public class WeeklyStatusReportService {
 	@Autowired
 	WeeklyStatusReportFactory weeklyStatusReportFactory;
 	
-	@Value("${report.title}")
+	@Value("${wsr.report.title}")
 	private String reportTitle;
 			
 	public WeeklyStatusReport getWeeklyStatusReport(Date weekStartDate, Date weekendingDate) {

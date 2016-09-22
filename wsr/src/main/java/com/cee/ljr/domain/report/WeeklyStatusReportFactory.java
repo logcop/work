@@ -13,19 +13,19 @@ import com.cee.ljr.domain.common.Project;
 import com.cee.ljr.domain.common.Sprint;
 import com.cee.ljr.domain.common.Story;
 import com.cee.ljr.domain.common.Task;
-import com.cee.ljr.domain.jira.IssueType;
-import com.cee.ljr.domain.jira.JiraIssue;
-import com.cee.ljr.domain.jira.JiraIssues;
-import com.cee.ljr.domain.jira.JiraIssuesFactory;
+import com.cee.ljr.intg.jira.domain.IssueType;
+import com.cee.ljr.intg.jira.domain.JiraIssue;
+import com.cee.ljr.intg.jira.domain.JiraIssues;
+import com.cee.ljr.intg.jira.domain.JiraIssuesFactory;
 import com.cee.ljr.intg.mapping.JiraIssueMapper;
-import com.cee.ljr.properties.WeeklyStatusReportProperties;
+import com.cee.ljr.properties.ReportProperties;
 
 @Component
 public class WeeklyStatusReportFactory {
 	private static final Logger log = LoggerFactory.getLogger(WeeklyStatusReportFactory.class);
 	
 	@Autowired 
-	WeeklyStatusReportProperties srProps;
+	ReportProperties srProps;
 	
 	@Autowired
 	JiraIssuesFactory jiraIssuesFactory;
@@ -37,7 +37,7 @@ public class WeeklyStatusReportFactory {
 		JiraIssues jiraIssues = jiraIssuesFactory.getJiraIssues(jiraIssueList);
 		
 		WeeklyStatusReport weeklyStatusReport = new WeeklyStatusReport(
-				srProps.getReportTitle(), 
+				srProps.getWeeklyStatusReportTitle(), 
 				srProps.getReportClassification(), 
 				createSprint(), 
 				createAuthor(),

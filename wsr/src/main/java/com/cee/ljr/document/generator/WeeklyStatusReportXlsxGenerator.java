@@ -19,8 +19,7 @@ import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.PropertySource;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
@@ -29,20 +28,17 @@ import com.cee.ljr.domain.common.Project;
 import com.cee.ljr.domain.common.Story;
 import com.cee.ljr.domain.common.Task;
 import com.cee.ljr.domain.report.WeeklyStatusReport;
+import com.cee.ljr.properties.ReportProperties;
 import com.cee.ljr.utils.FileUtil;
 
 @Component
-@PropertySource("classpath:/properties/weekly-status-report.properties")
 public class WeeklyStatusReportXlsxGenerator {
 	private static final Logger log = LoggerFactory.getLogger(WeeklyStatusReportXlsxGenerator.class);
 	
 	public static final DateFormat weekEndingDateFormater = new SimpleDateFormat("yyyyMMdd");
 	
-	@Value("${default.report.path}")
-	private String defaultReportPath;
-	@Value("${report.title}")
-	private String reportTitle; 
-	
+	@Autowired
+	ReportProperties props;
 	
 	private static final int epicColIndex = 0;
 	private static final int storyColIndex = 1;
@@ -91,7 +87,7 @@ public class WeeklyStatusReportXlsxGenerator {
 	
 	private String buildFilePath(String reportPath, Date weekEndingDate) {
 		if (reportPath == null) {
-			reportPath = defaultReportPath;
+			reportPath = props.getReportPath();
 		}
 		if (!FileUtil.isValidPath(reportPath)) {
 			log.error("report path [{}] is invalid!", reportPath);
@@ -107,7 +103,7 @@ public class WeeklyStatusReportXlsxGenerator {
 		String dateString = weekEndingDateFormater.format(weekEndingDate);
 		
 		return new StringBuilder()
-					.append(reportTitle)
+					.append(props.getWeeklyStatusReportTitle())
 					.append(" WE ")
 					.append(dateString)
 					.append(".xlsx")
@@ -115,7 +111,7 @@ public class WeeklyStatusReportXlsxGenerator {
 	}
 		
 	private void generateSpreadsheet(WeeklyStatusReport weeklyStatusReport, String reportPath) {
-		log.info("{} generating.", reportTitle);
+		log.info("{} generating.", props.getWeeklyStatusReportTitle());
 		Workbook wb = new XSSFWorkbook();
 		Date startDate = weeklyStatusReport.getWeekStartDate();
 		Date endDate = weeklyStatusReport.getWeekEndingDate();
@@ -137,7 +133,7 @@ public class WeeklyStatusReportXlsxGenerator {
 			fileOut = new FileOutputStream(filePath);
 	        wb.write(fileOut);
 	        fileOut.close();
-	        log.info("{} saved to {}.", reportTitle, filePath);
+	        log.info("{} saved to {}.", props.getWeeklyStatusReportTitle(), filePath);
 		}
 		catch (IOException ioe) {
 			log.error("Unable to create new workbook.", ioe);

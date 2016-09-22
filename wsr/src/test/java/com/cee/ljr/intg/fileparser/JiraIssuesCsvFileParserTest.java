@@ -14,10 +14,10 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import com.cee.ljr.config.ApplicationConfig;
 import com.cee.ljr.domain.common.Sprint;
 import com.cee.ljr.domain.common.util.SprintUtil;
-import com.cee.ljr.domain.jira.JiraIssue;
 import com.cee.ljr.intg.dao.impl.DeveloperCsvDao;
 import com.cee.ljr.intg.dao.impl.SprintCsvDao;
 import com.cee.ljr.intg.fileparser.impl.JiraIssuesCsvFileParser;
+import com.cee.ljr.intg.jira.domain.JiraIssue;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = ApplicationConfig.class)
@@ -54,7 +54,7 @@ public class JiraIssuesCsvFileParserTest {
 		List<String> sprintNames = SprintUtil.getSprintNames(sprints);
 		
 		List<JiraIssue> jiraIssues = 
-				jiraIssuesCsvFileParser.parseAllByDeveloperAndSprints(csvPaths, "Chuck", sprintNames);
+				jiraIssuesCsvFileParser.parseTasksByDeveloperAndSprints(csvPaths, "Chuck", sprintNames);
 		
 		Assert.assertNotNull(jiraIssues);
 		Assert.assertFalse(jiraIssues.isEmpty());

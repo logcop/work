@@ -4,7 +4,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import com.cee.ljr.config.ApplicationConfig;
-import com.cee.ljr.report.generator.WeeklyStatusReportGenerator;
+import com.cee.ljr.report.generator.DeveloperSprintReportGenerator;
 
 public class LogcopJiraReports {
 	
@@ -14,12 +14,13 @@ public class LogcopJiraReports {
 		
 		// weekly status report generation
 		String weekEndDate = "9/11/2016";
-		String wsrReportPath = null;
-		WeeklyStatusReportGenerator srGenerator = ctx.getBean(WeeklyStatusReportGenerator.class);
-		srGenerator.generateV2(weekEndDate, wsrReportPath);
+		String pathToReports = null;
+		//WeeklyStatusReportGenerator wsrGenerator = ctx.getBean(WeeklyStatusReportGenerator.class);
+		//wsrGenerator.generateV2(weekEndDate, pathToReports);
 		
-		//String sprintNumber = "13";
-		//srGenerator.generateV1(weekEndDate);
+		int sprintNumber = 10;
+		DeveloperSprintReportGenerator dsrGenerator = ctx.getBean(DeveloperSprintReportGenerator.class);
+		dsrGenerator.generateAll(sprintNumber, pathToReports);
 		
 	}
 	

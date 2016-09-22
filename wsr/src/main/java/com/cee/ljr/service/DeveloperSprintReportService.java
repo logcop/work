@@ -11,11 +11,11 @@ import com.cee.ljr.domain.common.Developer;
 import com.cee.ljr.domain.common.Sprint;
 import com.cee.ljr.domain.common.Task;
 import com.cee.ljr.domain.common.util.SprintUtil;
-import com.cee.ljr.domain.jira.JiraIssue;
 import com.cee.ljr.domain.report.DeveloperSprintReport;
 import com.cee.ljr.intg.dao.DeveloperDao;
-import com.cee.ljr.intg.dao.JiraIssueDao;
 import com.cee.ljr.intg.dao.SprintDao;
+import com.cee.ljr.intg.jira.dao.JiraIssueDao;
+import com.cee.ljr.intg.jira.domain.JiraIssue;
 import com.cee.ljr.intg.mapping.JiraIssueMapper;
 
 @Service
@@ -55,7 +55,7 @@ public class DeveloperSprintReportService {
 		List<Sprint> sprints = sprintDao.getByNumber(sprintNumber);
 		List<String> sprintNames = SprintUtil.getSprintNames(sprints);
 		
-		List<JiraIssue> jiraIssues = jiraIssueDao.getAllByDeveloperAndSprints(developerName, sprintNames);
+		List<JiraIssue> jiraIssues = jiraIssueDao.getTasksByDeveloperAndSprints(developerName, sprintNames);
 		
 		for (JiraIssue jiraIssue : jiraIssues) {
 			Task task = jiraIssueMapper.createTask(jiraIssue);

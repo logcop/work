@@ -217,7 +217,7 @@ public class Task extends BaseIssue {
 	public void setParentId(String parentId) {
 		this.parentId = parentId;
 	}
-	
+
 	@Override
 	public String toStringLight() {
 		ToStringBuilder sb = new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE);

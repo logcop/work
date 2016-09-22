@@ -5,7 +5,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.cee.ljr.domain.jira.IssueType;
+import com.cee.ljr.intg.jira.domain.IssueType;
 
 public class Story extends BaseIssue {
 	//private static final Logger //log = LoggerFactory.getLogger(Story.class);

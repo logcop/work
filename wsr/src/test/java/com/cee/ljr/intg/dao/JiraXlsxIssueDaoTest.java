@@ -12,7 +12,8 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.cee.ljr.config.ApplicationConfig;
-import com.cee.ljr.domain.jira.JiraIssue;
+import com.cee.ljr.intg.jira.dao.JiraIssueDao;
+import com.cee.ljr.intg.jira.domain.JiraIssue;
 
 
 @RunWith(SpringJUnit4ClassRunner.class)

@@ -1,4 +1,4 @@
-package com.cee.ljr.intg.dao.impl;
+package com.cee.ljr.intg.jira.dao.impl;
 
 import java.util.List;
 
@@ -6,9 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 
-import com.cee.ljr.domain.jira.JiraIssue;
-import com.cee.ljr.intg.dao.JiraIssueDao;
 import com.cee.ljr.intg.fileparser.impl.JiraIssuesXlsxParser;
+import com.cee.ljr.intg.jira.dao.JiraIssueDao;
+import com.cee.ljr.intg.jira.domain.JiraIssue;
 
 //@Component
 @PropertySource("classpath:/properties/data-access.properties")
@@ -27,7 +27,7 @@ public class JiraXlsxIssueDao implements JiraIssueDao{
 	}
 
 	@Override
-	public List<JiraIssue> getAllByDeveloperAndSprints(String developerName, List<String> sprintNames) {
+	public List<JiraIssue> getTasksByDeveloperAndSprints(String developerName, List<String> sprintNames) {
 		// TODO Auto-generated method stub
 		return null;
 	}	

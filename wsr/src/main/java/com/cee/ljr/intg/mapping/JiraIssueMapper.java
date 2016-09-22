@@ -14,9 +14,9 @@ import com.cee.ljr.domain.common.Sprint;
 import com.cee.ljr.domain.common.Story;
 import com.cee.ljr.domain.common.Task;
 import com.cee.ljr.domain.common.WorkLog;
-import com.cee.ljr.domain.jira.IssueType;
-import com.cee.ljr.domain.jira.JiraIssue;
 import com.cee.ljr.intg.dao.SprintDao;
+import com.cee.ljr.intg.jira.domain.IssueType;
+import com.cee.ljr.intg.jira.domain.JiraIssue;
 import com.cee.ljr.utils.DateUtil;
 
 @Component
@@ -64,6 +64,7 @@ public class JiraIssueMapper {
 		task.setStoryPoints(taskJiraIssue.getStoryPoints());
 		task.setStatus(taskJiraIssue.getStatus());
 		task.setType(taskJiraIssue.getType());
+		task.setEpicKey(taskJiraIssue.getEpicKey());
 		String timeSpentString = taskJiraIssue.getTimeSpent();
 		if (NumberUtils.isDigits(timeSpentString)) {
 			task.setTimeSpentInSeconds(Integer.valueOf(timeSpentString));

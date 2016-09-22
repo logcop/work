@@ -1,4 +1,4 @@
-package com.cee.ljr.domain.jira;
+package com.cee.ljr.intg.jira.domain;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -9,6 +9,13 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * Mappings for JiraIssue. Think of it as a tool used to join issues.
+ * For example a Story to a task. Epic to Task. SubTask to Task, ect..
+ * 
+ * @author chuck
+ *
+ */
 public class JiraIssues {
 	Logger log = LoggerFactory.getLogger(JiraIssues.class);
 	

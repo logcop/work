@@ -5,38 +5,38 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 @Component
-public class WeeklyStatusReportProperties {
+public class ReportProperties {
 
-	private String reportTitle;
+	private String wsrReportTitle;
 	private String reportClassification;
 	private String authorName;
 	private String authorTitle;
 	private String authorType;
-	private String docxPath;
+	private String reportPath;
 
 	@Autowired
-	public WeeklyStatusReportProperties(
-			@Value("${report.title}") String reportTitle,
+	public ReportProperties(
+			@Value("${wsr.report.title}") String wsrReportTitle,
 			@Value("${report.classification}") String reportClassification,
 			@Value("${author.name}") String authorName,
 			@Value("${author.title}") String authorTitle,
 			@Value("${author.type}") String authorType,
-			@Value("${docx.path}") String docxPath) {
+			@Value("${default.report.path}") String reportPath) {
 		// Validation can go here if needed, throwing IllegalArgumentException
 		// if it fails..
-		this.reportTitle = reportTitle;
+		this.wsrReportTitle = wsrReportTitle;
 ;		this.reportClassification = reportClassification;
 		this.authorName = authorName;
 		this.authorTitle = authorTitle;
 		this.authorType = authorType;
-		this.docxPath = docxPath;
+		this.reportPath = reportPath;
 	}
 
 	/**
 	 * @return the reportTitle
 	 */
-	public String getReportTitle() {
-		return reportTitle;
+	public String getWeeklyStatusReportTitle() {
+		return wsrReportTitle;
 	}
 
 	/**
@@ -67,12 +67,13 @@ public class WeeklyStatusReportProperties {
 	public String getAuthorType() {
 		return authorType;
 	}
+	
 
 	/**
-	 * @return the docxPath
+	 * @return the reportPath
 	 */
-	public String getDocxPath() {
-		return docxPath;
+	public String getReportPath() {
+		return reportPath;
 	}
 
 }

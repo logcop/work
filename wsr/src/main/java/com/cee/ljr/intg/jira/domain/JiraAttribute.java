@@ -1,4 +1,4 @@
-package com.cee.ljr.domain.jira;
+package com.cee.ljr.intg.jira.domain;
 
 public class JiraAttribute {
 
