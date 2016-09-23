@@ -110,6 +110,11 @@ public class WeeklyStatusReportXlsxGenerator {
 					.toString();
 	}
 		
+	/**
+	 * Generates a Weekly Status Report Document from the given object to the given path.
+	 * @param weeklyStatusReport
+	 * @param reportPath
+	 */
 	private void generateSpreadsheet(WeeklyStatusReport weeklyStatusReport, String reportPath) {
 		log.info("{} generating.", props.getWeeklyStatusReportTitle());
 		Workbook wb = new XSSFWorkbook();

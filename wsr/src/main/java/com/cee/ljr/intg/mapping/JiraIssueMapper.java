@@ -1,5 +1,6 @@
 package com.cee.ljr.intg.mapping;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -79,6 +80,15 @@ public class JiraIssueMapper {
 		//log.debug("returning task: {}", task.toStringLight());
 		return task;
 	}	
+	
+	public List<WorkLog> createWorkLogs(List<String> workLogStrings) {
+		List<WorkLog> workLogs = new ArrayList<WorkLog>();
+		for (String workLogStr : workLogStrings) {
+			WorkLog workLog = createWorkLog(workLogStr);
+			workLogs.add(workLog);
+		}
+		return workLogs;
+	}
 	
 	public WorkLog createWorkLog(String workLogString) {
 		WorkLog workLog = new WorkLog();

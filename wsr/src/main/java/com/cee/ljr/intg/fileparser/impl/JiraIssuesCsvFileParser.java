@@ -1,6 +1,7 @@
 package com.cee.ljr.intg.fileparser.impl;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -14,10 +15,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.cee.ljr.domain.common.WorkLog;
+import com.cee.ljr.domain.common.util.SprintUtil;
 import com.cee.ljr.intg.fileparser.CsvFileParser;
 import com.cee.ljr.intg.jira.domain.JiraAttribute;
 import com.cee.ljr.intg.jira.domain.JiraIssue;
 import com.cee.ljr.intg.mapping.JiraIssueMapper;
+import com.cee.ljr.utils.DateUtil;
 import com.cee.ljr.utils.FileUtil;
 
 @Component
@@ -29,6 +32,9 @@ public class JiraIssuesCsvFileParser {
 	@Autowired
 	CsvFileParser<CSVRecord> csvFileParser;	
 	
+	@Autowired
+	JiraIssueMapper jiraIssueMapper;
+	
 	//private Map<Integer, String> indexToAttributeNameMap;
 	//private Map<String, List<Integer>> attributeNameToListOfIndexesMap;	
 	
@@ -36,11 +42,15 @@ public class JiraIssuesCsvFileParser {
 	public List<JiraIssue> parseTasksByDeveloperAndSprints(String csvPaths, String developerName, List<String> sprintNames) {
 		List<JiraIssue> jiraIssues = new ArrayList<JiraIssue>();
 		
+		Date startDate = DateUtil.get
+		
 		List<JiraIssue> allIssues = new ArrayList<JiraIssue>();
 		for (String csvPath : csvPaths.split(";")) {
 			List<JiraIssue> containsDevelopers = parseForAttributeWithValue(csvPath, JiraAttribute.CUSTOM_FIELD_ASSIGNED_DEVELOPER, developerName);
 			for (JiraIssue jiraIssue : containsDevelopers) {
-				List<WorkLog> workLogs = JiraIssueMapper jiraIssue.getWorkLog();
+				List<WorkLog> workLogs = 
+						jiraIssueMapper.createWorkLogs(jiraIssue.getWorkLog());
+				
 			}
 		}
 				parseAll(csvPaths);
