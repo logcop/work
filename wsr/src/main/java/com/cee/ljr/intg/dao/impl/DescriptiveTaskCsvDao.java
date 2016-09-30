@@ -1,23 +1,93 @@
 package com.cee.ljr.intg.dao.impl;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
 
+import com.cee.file.csv.CSVRecord;
+import com.cee.file.csv.criteria.Criteria;
+import com.cee.file.csv.criteria.condition.Condition;
+import com.cee.file.csv.criteria.expression.Expression;
+import com.cee.file.csv.test.util.DateUtil;
 import com.cee.ljr.domain.common.DescriptiveTask;
-import com.cee.ljr.intg.jira.dao.impl.JiraIssueCsvDao;
-import com.cee.ljr.intg.jira.domain.JiraIssue;
+import com.cee.ljr.domain.common.Developer;
+import com.cee.ljr.intg.dao.DescriptiveTaskDao;
+import com.cee.ljr.intg.fileparser.impl.CsvReaderFileParser;
+import com.cee.ljr.intg.jira.domain.IssueType;
+import com.cee.ljr.intg.jira.domain.JiraAttribute;
+import com.cee.ljr.intg.mapping.DescriptiveTaskMapper;
 
 @Component
-public class DescriptiveTaskCsvDao {
+@PropertySource("classpath:/properties/data-access.properties")
+public class DescriptiveTaskCsvDao implements DescriptiveTaskDao {
 	
 	@Autowired
-	JiraIssueCsvDao jiraIssueDao;
+	CsvReaderFileParser fileParser;
 	
-	public List<DescriptiveTask> getAllByDeveloperAndSprints(String developerName, List<String> sprintNames) {
-		List<JiraIssue> tasks = jiraIssueDao.getTasksByDeveloperAndSprints(developerName, sprintNames);
+	@Autowired
+	DescriptiveTaskMapper mapper;
+	
+	@Value("${jira.csv.urls}")
+	String csvPaths;
+	
+	public List<DescriptiveTask> getAllByDeveloperBetweenDates(Developer developer, Date beginDate, Date endDate) {		
+		DateFormat dateFormater = new SimpleDateFormat(DateUtil.JIRA_WORKLOG_DATE_FORMAT);
 		
-		List<JiraIssue> epics = jiraIssueDao.getEpics(epicKeys);
+		Criteria criteria = new Criteria(
+			Expression.and (
+				Condition.containsOne(
+						JiraAttribute.ISSUE_TYPE, 
+						new ArrayList<String>(Arrays.asList(IssueType.TASK, IssueType.SUB_TASK, IssueType.BUG))),
+				Expression.and(
+						Condition.eq(JiraAttribute.CUSTOM_FIELD_ASSIGNED_DEVELOPER, developerName),				
+						Condition.between(JiraAttribute.LOG_WORK, beginDate, endDate, dateFormater)
+				)
+			)
+		);
+		
+		
+		
+		Iterable<CSVRecord> tasks = fileParser.parse(csvPaths, criteria);
+		
+		//List<DescriptiveTask> tasks = mapper.map(recordsByDeveloperAndSprints);
+		
+		
 	}
+	
+	private Map<String, CSVRecord> getAssociatedEpics(Iterable<CSVRecord> taskRecords) {
+		Map<String, CSVRecord> epicMap = new HashMap<String, CSVRecord>();
+		
+		Set<String> epicKeys = new TreeSet<String>();		
+		for (CSVRecord taskRecord : taskRecords) {
+			String epicKey = taskRecord.getSingleValueFor(JiraAttribute.CUSTOM_FIELD_EPIC_LINK);
+			epicKeys.add(epicKey);
+		}
+		
+		Criteria criteria = new Criteria(
+			Expression.and (
+				Condition.eq(JiraAttribute.ISSUE_TYPE, IssueType.EPIC),
+				Condition.containsOne(JiraAttribute.ISSUE_KEY, epicKeys)
+			)
+		);
+			
+		Iterable<CSVRecord> epics = fileParser.parse(csvPaths, criteria);
+		for (CSVRecord epic : epics) {
+			epicMap.put(epic.getSingleValueFor(JiraAttribute.ISSUE_KEY), epic);
+		}
+		
+		return epicMap;
+	}
+	
 }

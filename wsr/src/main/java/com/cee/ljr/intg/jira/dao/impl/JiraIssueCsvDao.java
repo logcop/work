@@ -13,6 +13,7 @@ import com.cee.ljr.intg.jira.domain.JiraIssue;
 
 @Component
 @PropertySource("classpath:/properties/data-access.properties")
+@Deprecated
 public class JiraIssueCsvDao implements JiraIssueDao{
 
 	@Autowired
@@ -31,8 +32,8 @@ public class JiraIssueCsvDao implements JiraIssueDao{
 		return jiraIssuesCsvFileParser.parseTasksByDeveloperAndSprints(csvPaths, developerName, sprintNames);
 	}
 	
-	public List<JiraIssue> getEpics(List<String> epicKeys) {
+	/*public List<JiraIssue> getEpics(List<String> epicKeys) {
 		return jiraIssuesCsvFileParser.parseEpics(csvPaths, epicKeys);
-	}
+	}*/
 	
 }

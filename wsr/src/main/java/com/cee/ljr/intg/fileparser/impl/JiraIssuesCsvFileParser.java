@@ -7,13 +7,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.commons.csv.CSVRecord;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.cee.file.csv.CSVRecord;
 import com.cee.ljr.domain.common.WorkLog;
 import com.cee.ljr.domain.common.util.SprintUtil;
 import com.cee.ljr.intg.fileparser.CsvFileParser;
@@ -88,6 +88,36 @@ public class JiraIssuesCsvFileParser {
 			String path = FileUtil.getAbsolutePath(csvPath);
 			List<JiraIssue> issuesToAdd = parse(path);
 			jiraIssues.addAll(issuesToAdd);
+		}
+		
+		return jiraIssues;
+	}
+	
+	private List<JiraIssue> filterFor(String csvPath, Map<JiraAttribute, List<String>> attributeToListOfValuesMap ) {
+		List<JiraIssue> jiraIssues = new ArrayList<JiraIssue>();
+		
+		Iterable<CSVRecord> records = csvFileParser.parse(csvPath, false);		
+		
+		Map<JiraAttribute, List<Integer>> attributeToListOfIndexesMap = null;
+		Map<Integer, JiraAttribute> indexToAttributeMap = null;
+		 
+		int index = HEADER_ROW_INDEX;
+		for(CSVRecord record : records){
+			if (index == HEADER_ROW_INDEX) {
+				// process the header row. have to do this because some column headers repeat.
+				attributeToListOfIndexesMap = createAttributeToListOfIndexesMap(record);
+				indexToAttributeMap = createIndexToAttributeMap(record);
+			}
+			else {
+				boolean addRecord = recordContainsAllValuesForAllAttributes(record,  
+						attributeToListOfIndexesMap, attributeToListOfValuesMap );
+				
+				if (addRecord) {
+					JiraIssue jiraIssue = mapToJiraIssue(record, indexToAttributeMap);
+					jiraIssues.add(jiraIssue);
+				}
+			}
+			++index;
 		}
 		
 		return jiraIssues;

@@ -5,45 +5,101 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
 
-import org.apache.commons.csv.CSVFormat;
-import org.apache.commons.csv.CSVRecord;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
+import com.cee.file.csv.CSVFormat;
+import com.cee.file.csv.CSVRecord;
+import com.cee.file.csv.criteria.Criteria;
 import com.cee.ljr.intg.fileparser.CsvFileParser;
 import com.cee.ljr.utils.FileUtil;
 
 @Component
 public class CsvReaderFileParser implements CsvFileParser<CSVRecord> {
+	
 	private static final Logger log = LoggerFactory.getLogger(CsvReaderFileParser.class); 
 	
 	@Override
-	public Iterable<CSVRecord> parse(String filePath, boolean skipHeader) {
+	public Iterable<CSVRecord> parse(String filePath, boolean parseHeader) {
 		String path = FileUtil.getAbsolutePath(filePath);
 		
-		Reader reader = null;
+		Reader reader = createFileReader(path);		
 		
-		try {
-			reader = new FileReader(path);
-		} catch (FileNotFoundException fnfe) {
-			log.error("Could not find file: " + path, fnfe);
-		}
+		Iterable<CSVRecord> records = parseCsvFileReader(reader, parseHeader);
 		
-		CSVFormat csvFormat = getFormat(skipHeader);
-		try {
-			Iterable<CSVRecord> records = csvFormat.parse(reader);
-			return records;
-		} catch (IOException ioe) {
-			log.error("Unable to parse file: " + path, ioe);
-		}
+		closeReader(reader);
 		
-		return null;
-		
+		return records;		
 	}
 	
-	private CSVFormat getFormat(boolean skipHeader) {
-		if (skipHeader) {
+
+	@Override
+	public Iterable<CSVRecord> parse(String filePath, Criteria criteria) {
+		String path = FileUtil.getAbsolutePath(filePath);
+		
+		Reader reader = createFileReader(path);
+		
+		Iterable<CSVRecord> records = parseCsvFileReader(reader, criteria);
+		
+		closeReader(reader);
+		
+		return records;
+	}
+	
+	private Iterable<CSVRecord> parseCsvFileReader(Reader reader, Criteria criteria) {
+		Iterable<CSVRecord> records = null;
+		
+		CSVFormat csvFormat = CSVFormat.EXCEL.withHeader();
+		try {
+			records = csvFormat.parse(reader);
+		} 
+		catch (IOException ioe) {
+			log.error("Unable to create records.", ioe);
+		}
+		
+		return records;
+	}
+	
+	
+	private Iterable<CSVRecord> parseCsvFileReader(Reader reader, boolean parseHeader) {
+		Iterable<CSVRecord> records = null;
+		
+		CSVFormat csvFormat = getFormat(parseHeader);
+		try {
+			records = csvFormat.parse(reader);
+		} 
+		catch (IOException ioe) {
+			log.error("Unable to create records.", ioe);
+		}
+		
+		return records;
+	}
+	
+	
+	private Reader createFileReader(String filePath) {
+		Reader reader = null;
+		try {
+			reader = new FileReader(filePath);
+		} catch (FileNotFoundException fnfe) {
+			log.error("Could not find file: " + filePath, fnfe);
+			closeReader(reader);
+		}
+		return reader;
+	}
+	
+	
+	protected void closeReader(Reader reader) {
+		try {
+			reader.close();
+		} catch(IOException ioe) {
+			log.error("Error closing reader: " + reader, ioe);
+		}
+	}
+	
+	
+	private CSVFormat getFormat(boolean parseHeader) {
+		if (parseHeader) {
 			return CSVFormat.EXCEL.withHeader();
 		}
 		

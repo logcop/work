@@ -28,6 +28,9 @@ public class Task extends BaseIssue {
 
 	private Map<String, Task> keyToSubtaskMap = new HashMap<String, Task>();
 
+	public Task() {
+	}
+	
 	public Task(String summary) {
 		this.summary = summary;
 	}

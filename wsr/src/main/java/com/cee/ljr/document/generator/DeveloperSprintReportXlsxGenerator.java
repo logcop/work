@@ -82,16 +82,6 @@ public class DeveloperSprintReportXlsxGenerator {
 		}
 	}
 	
-	private static final int devNameColIndex = 0;
-	private static final int taskKeyColIndex = 1;
-	private static final int summaryColIndex = 2;
-	private static final int descriptionColIndex = 3;
-	private static final int sprintColIndex = 4;
-	private static final int storyPointsColIndex = 5;
-	private static final int timeSpentColIndex = 6;
-	private static final int statusColIndex = 7;
-	private static final int epicNameColIndex = 8;
-	
 	private void addTask(Sheet sheet, MutableInt nextRowIndex, Task task, Date startDate, Date endDate) {
 		Row row = sheet.createRow(nextRowIndex.intValue());
 		Cell cell = row.createCell(devNameColIndex);

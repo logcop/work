@@ -21,6 +21,7 @@ import com.cee.ljr.intg.jira.domain.JiraIssue;
 import com.cee.ljr.utils.DateUtil;
 
 @Component
+@Deprecated
 public class JiraIssueMapper {	
 	private static final Logger log = LoggerFactory.getLogger(JiraIssueMapper.class);
 	
@@ -65,7 +66,7 @@ public class JiraIssueMapper {
 		task.setStoryPoints(taskJiraIssue.getStoryPoints());
 		task.setStatus(taskJiraIssue.getStatus());
 		task.setType(taskJiraIssue.getType());
-		task.setEpicKey(taskJiraIssue.getEpicKey());
+		//task.setEpicKey(taskJiraIssue.getEpicKey());
 		String timeSpentString = taskJiraIssue.getTimeSpent();
 		if (NumberUtils.isDigits(timeSpentString)) {
 			task.setTimeSpentInSeconds(Integer.valueOf(timeSpentString));
