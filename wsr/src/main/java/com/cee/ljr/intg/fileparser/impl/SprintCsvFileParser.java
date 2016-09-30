@@ -3,12 +3,12 @@ package com.cee.ljr.intg.fileparser.impl;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.csv.CSVRecord;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
 
+import com.cee.file.csv.CSVRecord;
 import com.cee.ljr.domain.common.Sprint;
 import com.cee.ljr.domain.common.util.SprintUtil;
 import com.cee.ljr.intg.fileparser.CsvFileParser;

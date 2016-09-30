@@ -1,11 +1,9 @@
 package com.cee.ljr.intg.fileparser.impl;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
@@ -15,12 +13,10 @@ import org.springframework.stereotype.Component;
 
 import com.cee.file.csv.CSVRecord;
 import com.cee.ljr.domain.common.WorkLog;
-import com.cee.ljr.domain.common.util.SprintUtil;
 import com.cee.ljr.intg.fileparser.CsvFileParser;
 import com.cee.ljr.intg.jira.domain.JiraAttribute;
 import com.cee.ljr.intg.jira.domain.JiraIssue;
 import com.cee.ljr.intg.mapping.JiraIssueMapper;
-import com.cee.ljr.utils.DateUtil;
 import com.cee.ljr.utils.FileUtil;
 
 @Component
@@ -42,7 +38,7 @@ public class JiraIssuesCsvFileParser {
 	public List<JiraIssue> parseTasksByDeveloperAndSprints(String csvPaths, String developerName, List<String> sprintNames) {
 		List<JiraIssue> jiraIssues = new ArrayList<JiraIssue>();
 		
-		Date startDate = DateUtil.get
+		//Date startDate = DateUtil.get
 		
 		List<JiraIssue> allIssues = new ArrayList<JiraIssue>();
 		for (String csvPath : csvPaths.split(";")) {
@@ -93,7 +89,7 @@ public class JiraIssuesCsvFileParser {
 		return jiraIssues;
 	}
 	
-	private List<JiraIssue> filterFor(String csvPath, Map<JiraAttribute, List<String>> attributeToListOfValuesMap ) {
+	/*private List<JiraIssue> filterFor(String csvPath, Map<JiraAttribute, List<String>> attributeToListOfValuesMap ) {
 		List<JiraIssue> jiraIssues = new ArrayList<JiraIssue>();
 		
 		Iterable<CSVRecord> records = csvFileParser.parse(csvPath, false);		
@@ -121,7 +117,7 @@ public class JiraIssuesCsvFileParser {
 		}
 		
 		return jiraIssues;
-	}
+	}*/
 	
 	private List<JiraIssue> parseForAttributeWithValue(String csvPath, JiraAttribute attribute, String value) {
 		List<JiraIssue> jiraIssues = new ArrayList<JiraIssue>();
@@ -137,11 +133,14 @@ public class JiraIssuesCsvFileParser {
 			}
 			else {
 				//int attributeIndex = attributeNameToIndexMap.get(attribute);
-				String valueFromRecord = record.get(attribute.value());
-				if (value.equals(valueFromRecord)) {
-					JiraIssue jiraIssue = mapToJiraIssue(record, indexToAttributeMap);
-					jiraIssues.add(jiraIssue);
+				List<String> valuesFromRecord = record.getAllValuesFor(attribute.value());
+				for (String valueFromRecord : valuesFromRecord) {
+					if (value.equals(valueFromRecord)) {
+						JiraIssue jiraIssue = mapToJiraIssue(record, indexToAttributeMap);
+						jiraIssues.add(jiraIssue);
+					}
 				}
+				
 			}
 			++index;
 		}
@@ -157,7 +156,7 @@ public class JiraIssuesCsvFileParser {
 	 * @param attributeToListOfValuesMap
 	 * @return
 	 */
-	private List<JiraIssue> filterFor(String csvPath, Map<JiraAttribute, List<String>> attributeToListOfValuesMap ) {
+	/*private List<JiraIssue> filterFor(String csvPath, Map<JiraAttribute, List<String>> attributeToListOfValuesMap ) {
 		List<JiraIssue> jiraIssues = new ArrayList<JiraIssue>();
 		
 		Iterable<CSVRecord> records = csvFileParser.parse(csvPath, false);		
@@ -185,10 +184,10 @@ public class JiraIssuesCsvFileParser {
 		}
 		
 		return jiraIssues;
-	}
+	}*/
 	
 	
-	private boolean recordContainsAllValuesForAllAttributes(CSVRecord record,  
+	/*private boolean recordContainsAllValuesForAllAttributes(CSVRecord record,  
 			Map<JiraAttribute, List<Integer>> attributeToListOfIndexesMap,
 			Map<JiraAttribute, List<String>> attributeToListOfValuesMap ) {
 		
@@ -205,7 +204,7 @@ public class JiraIssuesCsvFileParser {
 			}
 		}
 		return true;
-	}
+	}*/
 	
 	
 	/**
@@ -215,7 +214,7 @@ public class JiraIssuesCsvFileParser {
 	 * @param attributeIndexes
 	 * @return
 	 */
-	private boolean recordContainsAllValuesForAttribute(
+	/*private boolean recordContainsAllValuesForAttribute(
 			CSVRecord record, List<String> values, List<Integer> attributeIndexes) {
 		
 		for (String value : values) {
@@ -226,16 +225,16 @@ public class JiraIssuesCsvFileParser {
 			}
 		}
 		return true;
-	}
+	}*/
 	
-	private boolean valueFound(CSVRecord record, String filterValue, List<Integer> attributeIndexes) {
+	/*private boolean valueFound(CSVRecord record, String filterValue, List<Integer> attributeIndexes) {
 		for (Integer index : attributeIndexes) {
 			if (filterValue.equals(record.get(index))) {
 				return true;
 			}
 		}
 		return false;
-	}
+	}*/
 	
 	private List<JiraIssue> parse(String csvPath) {
 		List<JiraIssue> jiraIssues = new ArrayList<JiraIssue>();
@@ -308,7 +307,7 @@ public class JiraIssuesCsvFileParser {
 	}		
 	
 	
-	private Map<JiraAttribute, List<Integer>> createAttributeToListOfIndexesMap(CSVRecord record) {		
+	/*private Map<JiraAttribute, List<Integer>> createAttributeToListOfIndexesMap(CSVRecord record) {		
 		Map<JiraAttribute, List<Integer>> attributeToListOfIndexesMap = 
 				new HashMap<JiraAttribute, List<Integer>>(record.size(), 1.0f);
 		
@@ -327,5 +326,5 @@ public class JiraIssuesCsvFileParser {
 		}
 		
 		return attributeToListOfIndexesMap;
-	}
+	}*/
 }

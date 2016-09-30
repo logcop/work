@@ -14,14 +14,19 @@ public class DescriptiveTasksDaoImpl implements DescriptiveTaskDao {
 	@Autowired
 	DescriptiveTaskCsvDao dtCsvDao;
 	
+	@Autowired
+	EpicCsvDao epicCsvDao;
+	
 	public DescriptiveTasksDaoImpl() {
 		// TODO Auto-generated constructor stub
 	}
 
 	@Override
 	public List<DescriptiveTask> getAllSprintTasksForDeveloper(String developerName, List<String> sprintNames) {
-		List<DescriptiveTask> tasksToJoin = dtCsvDao.getAllByDeveloperAndSprints(developerName, sprintNames);
+		List<DescriptiveTask> tasksToJoin = dtCsvDao.getTasksByDeveloperAndSprints(developerName, sprintNames);
 		return null;
 	}
+	
+	private List<String> getEpicKeys(List<Desci>)
 
 }

@@ -23,7 +23,6 @@ import com.cee.file.csv.criteria.expression.Expression;
 import com.cee.file.csv.test.util.DateUtil;
 import com.cee.ljr.domain.common.DescriptiveTask;
 import com.cee.ljr.domain.common.Developer;
-import com.cee.ljr.intg.dao.DescriptiveTaskDao;
 import com.cee.ljr.intg.fileparser.impl.CsvReaderFileParser;
 import com.cee.ljr.intg.jira.domain.IssueType;
 import com.cee.ljr.intg.jira.domain.JiraAttribute;
@@ -31,7 +30,7 @@ import com.cee.ljr.intg.mapping.DescriptiveTaskMapper;
 
 @Component
 @PropertySource("classpath:/properties/data-access.properties")
-public class DescriptiveTaskCsvDao implements DescriptiveTaskDao {
+public class DescriptiveTaskCsvDao {
 	
 	@Autowired
 	CsvReaderFileParser fileParser;
@@ -42,7 +41,7 @@ public class DescriptiveTaskCsvDao implements DescriptiveTaskDao {
 	@Value("${jira.csv.urls}")
 	String csvPaths;
 	
-	public List<DescriptiveTask> getAllByDeveloperBetweenDates(Developer developer, Date beginDate, Date endDate) {		
+	public List<DescriptiveTask> getTasksByDeveloperAndSprints(Developer developer, Date beginDate, Date endDate) {		
 		DateFormat dateFormater = new SimpleDateFormat(DateUtil.JIRA_WORKLOG_DATE_FORMAT);
 		
 		Criteria criteria = new Criteria(
@@ -51,20 +50,19 @@ public class DescriptiveTaskCsvDao implements DescriptiveTaskDao {
 						JiraAttribute.ISSUE_TYPE, 
 						new ArrayList<String>(Arrays.asList(IssueType.TASK, IssueType.SUB_TASK, IssueType.BUG))),
 				Expression.and(
-						Condition.eq(JiraAttribute.CUSTOM_FIELD_ASSIGNED_DEVELOPER, developerName),				
+						Condition.eq(JiraAttribute.CUSTOM_FIELD_ASSIGNED_DEVELOPER, developer.getNameInJira()),				
 						Condition.between(JiraAttribute.LOG_WORK, beginDate, endDate, dateFormater)
 				)
 			)
 		);
+				
+		Iterable<CSVRecord> taskRecords = fileParser.parse(csvPaths, criteria);
 		
+		public
 		
-		
-		Iterable<CSVRecord> tasks = fileParser.parse(csvPaths, criteria);
-		
-		//List<DescriptiveTask> tasks = mapper.map(recordsByDeveloperAndSprints);
-		
-		
+		return mapper.map(taskRecords);
 	}
+	
 	
 	private Map<String, CSVRecord> getAssociatedEpics(Iterable<CSVRecord> taskRecords) {
 		Map<String, CSVRecord> epicMap = new HashMap<String, CSVRecord>();
@@ -81,7 +79,7 @@ public class DescriptiveTaskCsvDao implements DescriptiveTaskDao {
 				Condition.containsOne(JiraAttribute.ISSUE_KEY, epicKeys)
 			)
 		);
-			
+		
 		Iterable<CSVRecord> epics = fileParser.parse(csvPaths, criteria);
 		for (CSVRecord epic : epics) {
 			epicMap.put(epic.getSingleValueFor(JiraAttribute.ISSUE_KEY), epic);
