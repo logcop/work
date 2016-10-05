@@ -3,10 +3,13 @@ package com.cee.ljr.intg.mapping;
 import java.util.HashSet;
 import java.util.Set;
 
-import com.cee.file.csv.CSVRecord;
-import com.cee.file.csv.test.util.JiraAttribute;
-import com.cee.ljr.domain.common.Epic;
+import org.springframework.stereotype.Component;
 
+import com.cee.file.csv.CSVRecord;
+import com.cee.ljr.domain.common.Epic;
+import com.cee.ljr.intg.jira.domain.JiraAttribute;
+
+@Component
 public class EpicMapper {
 
 	public static Epic mapRecord(CSVRecord epicRecord) {

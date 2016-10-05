@@ -55,13 +55,22 @@ public class CsvReaderFileParser implements CsvFileParser<CSVRecord> {
 		
 		Iterable<CSVRecord> records = parseCsvFileReader(reader, criteria);
 		
-		closeReader(reader);
-		
-		if (records.iterator().hasNext()) {
-			return records.iterator().next();
+		CSVRecord record = null;
+		if (records.iterator().hasNext()) {			
+			record = records.iterator().next();
 		}
 		
-		return null;
+		closeReader(reader);
+		
+		return record;
+	}	
+	
+	public void closeReader(Reader reader) {
+		try {
+			reader.close();
+		} catch(IOException ioe) {
+			log.error("Error closing reader: " + reader, ioe);
+		}
 	}
 	
 	private Iterable<CSVRecord> parseCsvFileReader(Reader reader, Criteria criteria) {
@@ -103,15 +112,6 @@ public class CsvReaderFileParser implements CsvFileParser<CSVRecord> {
 			closeReader(reader);
 		}
 		return reader;
-	}
-	
-	
-	protected void closeReader(Reader reader) {
-		try {
-			reader.close();
-		} catch(IOException ioe) {
-			log.error("Error closing reader: " + reader, ioe);
-		}
 	}
 	
 	

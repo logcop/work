@@ -6,6 +6,8 @@ package com.cee.ljr.intg.mapping;
 import java.util.Set;
 import java.util.TreeSet;
 
+import org.springframework.stereotype.Component;
+
 import com.cee.file.csv.CSVRecord;
 import com.cee.ljr.domain.common.Developer;
 import com.cee.ljr.intg.fileparser.impl.DeveloperHeader;
@@ -14,6 +16,7 @@ import com.cee.ljr.intg.fileparser.impl.DeveloperHeader;
  * @author chuck
  *
  */
+@Component
 public class DeveloperMapper {
 
 	public Set<Developer> map(Iterable<CSVRecord> records) {
