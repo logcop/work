@@ -49,7 +49,7 @@ public class JiraIssues {
 		}
 		else if (IssueType.STORY.equals(issueType)) {
 			//log.debug("Adding Story jiraIssue:/n {}", jiraIssue);
-			List<String> linkedTasks = jiraIssue.getValues(JiraAttribute.OUTWARD_ISSUE_LINK_PROBLEM_INCIDENT);
+			List<String> linkedTasks = jiraIssue.getAllValues(JiraAttribute.OUTWARD_ISSUE_LINK_PROBLEM_INCIDENT);
 			// map this association so we can look up a story related to a task.
 			for (String taskKey : linkedTasks) {
 				if(!taskKeyToStoryKeyMap.containsKey(taskKey)) {

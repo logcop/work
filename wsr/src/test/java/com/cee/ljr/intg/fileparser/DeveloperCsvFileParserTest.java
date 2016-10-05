@@ -1,7 +1,5 @@
 package com.cee.ljr.intg.fileparser;
 
-import java.util.List;
-
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -9,8 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import com.cee.file.csv.CSVRecord;
 import com.cee.ljr.config.ApplicationConfig;
-import com.cee.ljr.domain.common.Developer;
 import com.cee.ljr.intg.fileparser.impl.DeveloperCsvFileParser;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -22,10 +20,10 @@ public class DeveloperCsvFileParserTest {
 	
 	@Test
 	public void testParseAll() {
-		List<Developer> developers = developerCsvFileParser.parseAll();
+		Iterable<CSVRecord> developers = developerCsvFileParser.parseAll();
 		
 		Assert.assertNotNull(developers);
-		Assert.assertFalse(developers.isEmpty());
+		Assert.assertTrue(developers.iterator().hasNext());
 		//System.out.println(developers);		
 	}
 	
@@ -34,10 +32,8 @@ public class DeveloperCsvFileParserTest {
 	public void testParseForName() {
 		String nameInJira = "Chuck";
 		
-		Developer developer = developerCsvFileParser.parseForName(nameInJira);
+		CSVRecord developer = developerCsvFileParser.parseForName(nameInJira);
 		
 		Assert.assertNotNull(developer);
-		Assert.assertEquals(nameInJira, developer.getNameInJira());
-		//System.out.println(developer);		
 	}
 }

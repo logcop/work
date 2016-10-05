@@ -9,6 +9,7 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.cee.ljr.domain.common.Developer;
 import com.cee.ljr.domain.common.Epic;
 import com.cee.ljr.domain.common.Project;
 import com.cee.ljr.domain.common.Sprint;
@@ -98,8 +99,8 @@ public class WeeklyStatusReport {
 						.append("\t\t\tTask Total Hours Logged: ").append(task.getTotalHoursWorked() + "\n")
 						.append("\t\t\tTime Spent: ").append(task.getTimeSpentInHours() + "\n")
 						.append("\t\t\tStatus: ").append(task.getStatus() + "\n");
-						for(String developer : task.getDevelopers()) {
-							sb.append("\t\t\tDeveloper: ").append(developer + "\n");
+						for(Developer developer : task.getDevelopers()) {
+							sb.append("\t\t\tDeveloper: ").append(developer.getFullName() + "\n");
 						}
 					}
 				}

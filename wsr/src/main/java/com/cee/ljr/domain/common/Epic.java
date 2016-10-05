@@ -21,6 +21,11 @@ public class Epic extends BaseIssue {
 		this.name = name;
 	}
 	
+	public Epic(String key, String name) {
+		this.key = key;
+		this.name = name;
+	}
+	
 	@Override
 	public float getTotalHoursWorked() {
 		if (totalHoursWorked <=0 ) {

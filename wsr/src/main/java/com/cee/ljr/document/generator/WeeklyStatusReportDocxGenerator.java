@@ -29,6 +29,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
+import com.cee.ljr.domain.common.Developer;
 import com.cee.ljr.domain.common.Epic;
 import com.cee.ljr.domain.common.Project;
 import com.cee.ljr.domain.common.Sprint;
@@ -182,14 +183,14 @@ public class WeeklyStatusReportDocxGenerator {
 	}
 	
 	
-	public static final void addDevelopers(Collection<String> developers, MainDocumentPart mdp, String taskFontSize) {
+	public static final void addDevelopers(Collection<Developer> developers, MainDocumentPart mdp, String taskFontSize) {
 		String developerLabel = "";
 		String developerValue = "";
 		
 		if(CollectionUtils.isEmpty(developers) || developers.size() == 1) {			
 			developerLabel = "          Developer: ";
 			if(!CollectionUtils.isEmpty(developers)) {
-				developerValue = developers.iterator().next();
+				developerValue = developers.iterator().next().getFullName();
 			}
 			
 		} else {
@@ -197,8 +198,8 @@ public class WeeklyStatusReportDocxGenerator {
 			developerLabel = "          Developers: ";
 			
 			StringBuilder sb = new StringBuilder();
-			for (String developer : developers) {
-				sb.append(developer).append(", ");
+			for (Developer developer : developers) {
+				sb.append(developer.getFullName()).append(", ");
 			}
 			sb.delete(sb.length() -2, sb.length() -1); // get rid of last ','
 			developerValue = sb.toString();

@@ -1,8 +1,10 @@
 package com.cee.ljr.intg.mapping;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.commons.lang3.math.NumberUtils;
 import org.slf4j.Logger;
@@ -10,11 +12,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.cee.ljr.domain.common.Developer;
 import com.cee.ljr.domain.common.Epic;
 import com.cee.ljr.domain.common.Sprint;
 import com.cee.ljr.domain.common.Story;
 import com.cee.ljr.domain.common.Task;
 import com.cee.ljr.domain.common.WorkLog;
+import com.cee.ljr.intg.dao.DeveloperDao;
 import com.cee.ljr.intg.dao.SprintDao;
 import com.cee.ljr.intg.jira.domain.IssueType;
 import com.cee.ljr.intg.jira.domain.JiraIssue;
@@ -27,7 +31,9 @@ public class JiraIssueMapper {
 	
 	@Autowired
 	SprintDao sprintDao;
-	//SprintFactory sprintFactory;
+	
+	@Autowired
+	DeveloperDao developerDao;
 	
 	public static final String WORK_LOG_DATE_FORMAT = DateUtil.JIRA_WORKLOG_DATE_FORMAT;
 	private static final int NUM_OF_WORK_LOG_ATTRBS = 4;
@@ -71,9 +77,10 @@ public class JiraIssueMapper {
 		if (NumberUtils.isDigits(timeSpentString)) {
 			task.setTimeSpentInSeconds(Integer.valueOf(timeSpentString));
 		}
-		List<Sprint> sprints = createSprints(taskJiraIssue.getSprints());
+		Set<Sprint> sprints = sprintDao.getAllByNames(taskJiraIssue.getSprints());
 		task.setSprints(sprints);
-		task.setDevelopers(taskJiraIssue.getDevelopers());
+		Set<Developer> developers = developerDao.getByKeys(taskJiraIssue.getDevelopers());
+		task.setDevelopers(developers);
 		for(String workLogString : taskJiraIssue.getWorkLog()) {
 			WorkLog workLog = createWorkLog(workLogString);
 			task.addWorkLog(workLog);
@@ -82,7 +89,7 @@ public class JiraIssueMapper {
 		return task;
 	}	
 	
-	public List<WorkLog> createWorkLogs(List<String> workLogStrings) {
+	public List<WorkLog> createWorkLogs(Collection<String> workLogStrings) {
 		List<WorkLog> workLogs = new ArrayList<WorkLog>();
 		for (String workLogStr : workLogStrings) {
 			WorkLog workLog = createWorkLog(workLogStr);
@@ -138,9 +145,5 @@ public class JiraIssueMapper {
 			}
 		}
 		return workLog;
-	}
-	
-	public List<Sprint> createSprints(List<String> sprintNames) {
-		return sprintDao.getAllByNames(sprintNames);
 	}
 }

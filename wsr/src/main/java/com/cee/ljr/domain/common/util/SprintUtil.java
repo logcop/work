@@ -1,6 +1,7 @@
 package com.cee.ljr.domain.common.util;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import org.apache.commons.lang3.math.NumberUtils;
@@ -43,7 +44,7 @@ public class SprintUtil {
 		return new Integer(numberStr);
 	}
 	
-	public static List<String> getSprintNames(List<Sprint> sprints) {
+	public static List<String> getSprintNames(Collection<Sprint> sprints) {
 		List<String> names = new ArrayList<String>();
 		
 		for (Sprint sprint : sprints) {

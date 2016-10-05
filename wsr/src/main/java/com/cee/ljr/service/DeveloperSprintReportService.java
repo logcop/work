@@ -3,6 +3,7 @@ package com.cee.ljr.service;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -37,7 +38,7 @@ public class DeveloperSprintReportService {
 	public List<DeveloperSprintReport> getReports(int sprintNumber) {
 		List<DeveloperSprintReport> developerSprintReports = new ArrayList<DeveloperSprintReport>();		
 		
-		List<Developer> developers =  developerDao.getAll();
+		Set<Developer> developers =  developerDao.getAll();
 		
 		for (Developer developer : developers) {
 			String developerName = developer.getNameInJira();
@@ -52,7 +53,7 @@ public class DeveloperSprintReportService {
 	public DeveloperSprintReport getReport(String developerName, int sprintNumber) {
 		List<Task> tasks = new ArrayList<Task>();
 		Developer developer = developerDao.getByNameInJira(developerName);
-		List<Sprint> sprints = sprintDao.getByNumber(sprintNumber);
+		Set<Sprint> sprints = sprintDao.getByNumber(sprintNumber);
 		List<String> sprintNames = SprintUtil.getSprintNames(sprints);
 		
 		List<JiraIssue> jiraIssues = jiraIssueDao.getTasksByDeveloperAndSprints(developerName, sprintNames);
@@ -63,7 +64,7 @@ public class DeveloperSprintReportService {
 		}
 		
 		// just need 1 sprint right now because they all have the same start and end dates.
-		Sprint aSprint = sprints.get(0);
+		Sprint aSprint = sprints.iterator().next();
 		Date sprintStartDate = aSprint.getStartDate();
 		Date sprintEndDate = aSprint.getEndDate();
 		

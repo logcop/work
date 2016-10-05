@@ -1,12 +1,12 @@
 package com.cee.ljr.intg.fileparser;
 
-import java.util.List;
+import java.util.Collection;
 
-import com.cee.ljr.domain.common.Developer;
-
-public interface DeveloperFileParser {
+public interface DeveloperFileParser<T> {
 	
-	List<Developer> parseAll();
+	Iterable<T> parseAll();
 	
-	Developer parseForName(String nameInJira);
+	T parseForName(String nameInJira);
+	
+	Iterable<T> parseByKeys(Collection<String> keys);
 }

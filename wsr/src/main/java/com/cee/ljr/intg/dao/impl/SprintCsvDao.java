@@ -1,6 +1,8 @@
 package com.cee.ljr.intg.dao.impl;
 
-import java.util.List;
+import java.util.Collection;
+import java.util.Date;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -19,43 +21,43 @@ public class SprintCsvDao implements SprintDao {
 	private SprintFileParser<CSVRecord> sprintFileParser;
 	
 	@Override
-	public List<Sprint> getAll() {
+	public Set<Sprint> getAll() {
 		Iterable<CSVRecord> records = sprintFileParser.parseAll();
 		
-		List<Sprint> sprints = SprintMapper.mapRecords(records);
+		Set<Sprint> sprints = SprintMapper.mapRecords(records);
 		
 		return sprints;
 	}
 
 	
 	@Override
-	public List<Sprint> getByNumber(int sprintNumber) {
+	public Set<Sprint> getByNumber(int sprintNumber) {
 		Iterable<CSVRecord> records = sprintFileParser.parseByNumber(sprintNumber);
 		
-		List<Sprint> sprints = SprintMapper.mapRecords(records);
+		Set<Sprint> sprints = SprintMapper.mapRecords(records);
 		
 		return sprints;
 	}
 	
 	
 	@Override
-	public List<Sprint> getAllByNames(List<String> sprintNames) {
+	public Set<Sprint> getAllByNames(Collection<String> sprintNames) {
 		Iterable<CSVRecord> records = sprintFileParser.parseByNames(sprintNames);
 		
-		List<Sprint> sprints = SprintMapper.mapRecords(records);
+		Set<Sprint> sprints = SprintMapper.mapRecords(records);
 		
 		return sprints;
 	}
 	
 	
-	/*public List<Sprint> getAllBetweenDates(Date beginDate, Date endDate) {
+	public Set<Sprint> getAllBetweenDates(Date beginDate, Date endDate) {
 		Iterable<CSVRecord> records = sprintFileParser.parseBetweenDates(beginDate, endDate);
 		
-		List<Sprint> sprints = SprintMapper.mapRecords(records);
+		Set<Sprint> sprints = SprintMapper.mapRecords(records);
 		
 		return sprints;
-	}*/
-
+	}
+	
 	
 	@Override
 	public Sprint getByName(String sprintName) {
@@ -64,6 +66,16 @@ public class SprintCsvDao implements SprintDao {
 		Sprint sprint = SprintMapper.mapRecord(record);
 		
 		return sprint;
+	}
+	
+	
+	@Override
+	public Set<Sprint> getByKeys(Collection<String> sprintKeys) {
+		Iterable<CSVRecord> records = sprintFileParser.parseByKeys(sprintKeys);
+		
+		Set<Sprint> sprints = SprintMapper.mapRecords(records);
+		
+		return sprints;
 	}
 
 }

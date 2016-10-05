@@ -2,25 +2,25 @@ package com.cee.ljr.domain.common;
 
 public class DescriptiveTask extends Task {
 
-	private String epicName;
+	private Epic epic;
 	
 	public DescriptiveTask() {
 		super();
 	}
 	
 	/**
-	 * @return the epicName
+	 * @return the epic
 	 */
-	public String getEpicName() {
-		return epicName;
+	public Epic getEpic() {
+		return epic;
 	}
 
 
 	/**
-	 * @param epicName the epicName to set
+	 * @param epic the epic to set
 	 */
-	public void setEpicName(String epicName) {
-		this.epicName = epicName;
+	public void setEpic(Epic epic) {
+		this.epic = epic;
 	}
 
 

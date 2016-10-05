@@ -1,7 +1,7 @@
 package com.cee.ljr.intg.mapping;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 import com.cee.file.csv.CSVRecord;
 import com.cee.ljr.domain.common.Sprint;
@@ -18,8 +18,8 @@ public abstract class SprintMapper {
 	}
 	
 	
-	public static List<Sprint> mapRecords(Iterable<CSVRecord> sprintRecords) {
-		List<Sprint> sprints = new ArrayList<Sprint>();
+	public static Set<Sprint> mapRecords(Iterable<CSVRecord> sprintRecords) {
+		Set<Sprint> sprints = new TreeSet<Sprint>();
 		
 		for (CSVRecord sprintRecord : sprintRecords) {
 				sprints.add(mapRecord(sprintRecord));

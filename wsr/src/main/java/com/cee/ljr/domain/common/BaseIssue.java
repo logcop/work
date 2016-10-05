@@ -1,7 +1,7 @@
 package com.cee.ljr.domain.common;
 
 import java.util.Date;
-import java.util.List;
+import java.util.Set;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -9,16 +9,16 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 public abstract class BaseIssue {
 	//private static final Logger log = LoggerFactory.getLogger(BaseIssue.class);
 	
-	private String summary;
-	private String key;
-	private String id;
-	private String issueType;
-	private String status;
-	private String priority;
-	private String created;
-	private String updated;
-	private String description;
-	private List<Sprint> sprints;
+	protected String summary;
+	protected String key;
+	protected String id;
+	protected String issueType;
+	protected String status;
+	protected String priority;
+	protected String created;
+	protected String updated;
+	protected String description;
+	protected Set<Sprint> sprints;
 	
 	
 	
@@ -156,13 +156,13 @@ public abstract class BaseIssue {
 	/**
 	 * @return the sprints
 	 */
-	public List<Sprint> getSprints() {
+	public Set<Sprint> getSprints() {
 		return sprints;
 	}
 	/**
 	 * @param sprints the sprints to set
 	 */
-	public void setSprints(List<Sprint> sprints) {
+	public void setSprints(Set<Sprint> sprints) {
 		this.sprints = sprints;
 	}
 	

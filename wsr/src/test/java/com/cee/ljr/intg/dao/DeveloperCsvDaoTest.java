@@ -1,6 +1,6 @@
 package com.cee.ljr.intg.dao;
 
-import java.util.List;
+import java.util.Set;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -23,7 +23,7 @@ public class DeveloperCsvDaoTest {
 	
 	@Test
 	public void testGetAll() {
-		List<Developer> developerList = developerCsvDao.getAll();
+		Set<Developer> developerList = developerCsvDao.getAll();
 		
 		Assert.assertNotNull(developerList);
 		Assert.assertFalse(developerList.isEmpty());

@@ -1,16 +1,19 @@
 package com.cee.ljr.intg.dao;
 
-import java.util.List;
+import java.util.Collection;
+import java.util.Set;
 
 import com.cee.ljr.domain.common.Sprint;
 
 public interface SprintDao {
 	
-	List<Sprint> getAll();
+	Set<Sprint> getAll();
 	
-	List<Sprint> getByNumber(int sprintNumber);
+	Set<Sprint> getByNumber(int sprintNumber);
 	
-	List<Sprint> getAllByNames(List<String> sprintNames);
+	Set<Sprint> getAllByNames(Collection<String> sprintNames);
+	
+	Set<Sprint> getByKeys(Collection<String> sprintKeys);
 	
 	Sprint getByName(String sprintName);
 	

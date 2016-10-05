@@ -1,7 +1,6 @@
 package com.cee.ljr.intg.fileparser.impl;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Collection;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -9,17 +8,14 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
 
 import com.cee.file.csv.CSVRecord;
-import com.cee.ljr.domain.common.Developer;
+import com.cee.file.csv.criteria.Criteria;
+import com.cee.file.csv.criteria.condition.Condition;
 import com.cee.ljr.intg.fileparser.CsvFileParser;
 import com.cee.ljr.intg.fileparser.DeveloperFileParser;
 
 @Component
 @PropertySource("classpath:/properties/data-access.properties")
-public class DeveloperCsvFileParser implements DeveloperFileParser {
-	
-	private static final int NAME_IN_JIRA_INDEX = 0;
-	private static final int FIRST_NAME_INDEX = 1;
-	private static final int LAST_NAME_INDEX = 2;
+public class DeveloperCsvFileParser implements DeveloperFileParser<CSVRecord> {
 	
 	private static final boolean SKIP_HEADER = true;
 	
@@ -29,42 +25,40 @@ public class DeveloperCsvFileParser implements DeveloperFileParser {
 	@Autowired
 	CsvFileParser<CSVRecord> csvFileParser;
 	
-	@Override
-	public List<Developer> parseAll() {
-		List<Developer> developerList = new ArrayList<Developer>();
-		
-		Iterable<CSVRecord> records = csvFileParser.parse(filePath, SKIP_HEADER);		
-		for (CSVRecord record : records) {
-		    Developer developer = mapToDeveloper(record);
-		    developerList.add(developer);
-		}
-
-		return developerList;
-	}
 	
 	@Override
-	public Developer parseForName(String nameInJira) {
+	public Iterable<CSVRecord> parseAll() {
+		
+		Iterable<CSVRecord> records = csvFileParser.parse(filePath, SKIP_HEADER);		
+		
+		return records;
+	}
+	
+	
+	@Override
+	public CSVRecord parseForName(String nameInJira) {
 		if (nameInJira == null) {
 			throw new IllegalArgumentException("nameInJira must not be null.");
 		}
 		
-		Iterable<CSVRecord> records = csvFileParser.parse(filePath, SKIP_HEADER);	
+		Criteria criteria = new Criteria(
+				Condition.eq(DeveloperHeader.KEY, nameInJira)
+		);
 		
-		for (CSVRecord record : records) {
-			if (nameInJira.equals(record.get(NAME_IN_JIRA_INDEX))) {
-				return mapToDeveloper(record);
-			}
-		}
+		CSVRecord record = csvFileParser.parseForSingleRecord(filePath, criteria);	
 		
-		return null;
+		return record;
 	}
+
 	
-	
-	private Developer mapToDeveloper(CSVRecord record) {
-		String jiraName = record.get(NAME_IN_JIRA_INDEX);
-	    String firstName = record.get(FIRST_NAME_INDEX);
-	    String lastName = record.get(LAST_NAME_INDEX);
-	    
-	    return new Developer(jiraName, firstName, lastName);
+	@Override
+	public Iterable<CSVRecord> parseByKeys(Collection<String> keys) {
+		Criteria criteria = new Criteria(
+				Condition.containsOne(DeveloperHeader.KEY, keys)
+		);
+		
+		Iterable<CSVRecord> records = csvFileParser.parse(filePath, criteria);
+		
+		return records;
 	}
 }

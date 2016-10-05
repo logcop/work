@@ -1,11 +1,11 @@
 package com.cee.ljr.domain.common;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -23,7 +23,7 @@ public class Task extends BaseIssue {
 	private int hoursWorkedBetween = 0;
 	private float totalHoursWorked = 0;
 	
-	private List<String> developers = new ArrayList<String>();
+	private Set<Developer> developers = new TreeSet<Developer>();
 	private Map<Date, WorkLog> dateToWorkLogMap = new HashMap<Date, WorkLog>();
 
 	private Map<String, Task> keyToSubtaskMap = new HashMap<String, Task>();
@@ -166,14 +166,14 @@ public class Task extends BaseIssue {
 	/**
 	 * @return the developers
 	 */
-	public List<String> getDevelopers() {
+	public Set<Developer> getDevelopers() {
 		return developers;
 	}
 
 	/**
 	 * @param developers the developers to set
 	 */
-	public void setDevelopers(List<String> developers) {
+	public void setDevelopers(Set<Developer> developers) {
 		this.developers = developers;
 	}
 

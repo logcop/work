@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.springframework.util.CollectionUtils;
@@ -55,7 +57,19 @@ public class JiraIssue {
 		return value;
 	}
 	
-	public List<String> getValues(JiraAttribute attribute) {
+	public Set<String> getDistinctValues(JiraAttribute attribute) {
+		List<String> values = attributeToValuesMap.get(attribute);
+		
+		Set<String> valueSet = new TreeSet<String>();
+		
+		for (String value : values) {
+			valueSet.add(value);
+		}
+		
+		return valueSet;
+	}
+	
+	public List<String> getAllValues(JiraAttribute attribute) {
 		List<String> values = attributeToValuesMap.get(attribute);
 		
 		if (values == null) {
@@ -98,8 +112,8 @@ public class JiraIssue {
 		return getValue(JiraAttribute.PROJECT_NAME);
 	}
 	
-	public List<String> getSprints() {
-		return getValues(JiraAttribute.SPRINT);
+	public Set<String> getSprints() {
+		return getDistinctValues(JiraAttribute.SPRINT);
 	}
 	
 	public String getEpicName() {
@@ -119,11 +133,11 @@ public class JiraIssue {
 	}
 	
 	public List<String> getLinkedIssueKeys() {
-		return getValues(JiraAttribute.OUTWARD_ISSUE_LINK_PROBLEM_INCIDENT);
+		return getAllValues(JiraAttribute.OUTWARD_ISSUE_LINK_PROBLEM_INCIDENT);
 	}
 	
-	public List<String> getDevelopers() {
-		return getValues(JiraAttribute.CUSTOM_FIELD_ASSIGNED_DEVELOPER);
+	public Set<String> getDevelopers() {
+		return getDistinctValues(JiraAttribute.CUSTOM_FIELD_ASSIGNED_DEVELOPER);
 	}
 	
 
@@ -131,8 +145,8 @@ public class JiraIssue {
 		return getValue(JiraAttribute.CUSTOM_FIELD_STORY_POINTS);
 	}
 	
-	public List<String> getWorkLog() {
-		return getValues(JiraAttribute.LOG_WORK);
+	public Set<String> getWorkLog() {
+		return getDistinctValues(JiraAttribute.LOG_WORK);
 	}
 
 

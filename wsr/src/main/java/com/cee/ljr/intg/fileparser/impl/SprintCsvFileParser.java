@@ -2,8 +2,8 @@ package com.cee.ljr.intg.fileparser.impl;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Collection;
 import java.util.Date;
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -47,7 +47,7 @@ public class SprintCsvFileParser extends BaseCsvFileParser implements SprintFile
 	
 	
 	@Override
-	public Iterable<CSVRecord> parseByNames(List<String> sprintNames) {		
+	public Iterable<CSVRecord> parseByNames(Collection<String> sprintNames) {		
 		Criteria criteria = new Criteria(
 				Condition.containsOne(
 						SprintHeader.SPRINT_NAME, 
@@ -76,20 +76,21 @@ public class SprintCsvFileParser extends BaseCsvFileParser implements SprintFile
 
 
 	@Override
-	public Iterable<CSVRecord> parseDateBetweenSprintStartAndEnd(Date date) {
+	public Iterable<CSVRecord> parseBetweenDates(Date beginDate, Date endDate) {
 		DateFormat dateFormater = 
 				new SimpleDateFormat(Sprint.DATE_FORMAT);
 		
 		Criteria criteria = new Criteria(
-			Expression.and(
-					Condition.gt(
-							SprintHeader.START_DATE, 
-							date, 
-							dateFormater), 
-					Condition.lt(
-							SprintHeader.START_DATE, 
-							date, 
-							dateFormater))
+			// begin date OR end date is between sprint start and end dates	
+			Expression.or( 
+					// beginDate is between sprint start and end dates
+					Expression.and( 
+							Condition.gt(SprintHeader.START_DATE, beginDate, dateFormater), 
+							Condition.lt(SprintHeader.END_DATE, beginDate, dateFormater)),
+					// end date is between sprint start and end dates
+					Expression.and( 
+							Condition.gt(SprintHeader.START_DATE, endDate, dateFormater), 
+							Condition.lt(SprintHeader.END_DATE, endDate, dateFormater)))
 		);		
 		
 		Iterable<CSVRecord> records = csvFileParser.parse(filePath, criteria);
@@ -97,5 +98,15 @@ public class SprintCsvFileParser extends BaseCsvFileParser implements SprintFile
 		return records;
 	}
 	
+	@Override
+	public Iterable<CSVRecord> parseByKeys(Collection<String> sprintKeys) {
+		Criteria criteria = new Criteria(
+				Condition.containsOne(SprintHeader.SPRINT_NAME, sprintKeys)
+		);		
+		
+		Iterable<CSVRecord> records = csvFileParser.parse(filePath, criteria);
+		
+		return records;
+	}
 	
 }
