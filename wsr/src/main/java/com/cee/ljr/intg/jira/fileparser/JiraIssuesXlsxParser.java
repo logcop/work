@@ -1,4 +1,4 @@
-package com.cee.ljr.intg.fileparser.impl;
+package com.cee.ljr.intg.jira.fileparser;
 
 import java.io.File;
 import java.io.FileInputStream;

@@ -1,16 +1,19 @@
 package com.cee.ljr.intg.fileparser;
 
+import java.util.Date;
 import java.util.List;
 
-import com.cee.ljr.domain.common.Sprint;
+import com.cee.file.csv.CSVRecord;
 
-public interface SprintFileParser {
+public interface SprintFileParser<T> {
 
-	List<Sprint> parseAll();
+	Iterable<T> parseAll();
 	
-	List<Sprint> parseByNumber(int sprintNumber);
+	Iterable<T> parseByNumber(int sprintNumber);
 	
-	List<Sprint> parseByNames(List<String> sprintNames);
+	Iterable<T> parseByNames(List<String> sprintNames);
 	
-	Sprint parseByName(String sprintName);
+	Iterable<CSVRecord> parseDateBetweenSprintStartAndEnd(Date date);
+	
+	T parseByName(String sprintName);
 }

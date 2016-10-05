@@ -42,30 +42,13 @@ public class DateUtil {
 	
 	public static final String DATE_STRING_FORMAT = "dd MMM yyyy";	
 	public static final String WEEK_ENDING_DATE_FORMAT = "MM/dd/yyyy";
-	public static final String JIRA_SPRINT_DATE_FORMAT = "MM/dd/yyyy HH:mm";
+	//public static final String SPRINT_DATE_FORMAT = "MM/dd/yyyy HH:mm";
 	public static final String JIRA_WORKLOG_DATE_FORMAT = "dd/MMM/yy hh:mm aa";
 	public static final String TIME_DATE_STRING_FORMAT = "HH:mm:ss:SS  dd MMM yyyy";
 	public static final DateFormat DATE_FORMATER = new SimpleDateFormat(DATE_STRING_FORMAT);
 	public static final DateFormat TIME_DATE_FORMATER = new SimpleDateFormat(TIME_DATE_STRING_FORMAT);
 
 	private DateUtil() {
-	}
-	
-	public static Date getSprintDate(String dateString) {
-		if (!isDateByFormat(JIRA_SPRINT_DATE_FORMAT, dateString)) {
-			throw new IllegalArgumentException("String \"" + dateString + 
-					"\" must be in the following format - '" + JIRA_SPRINT_DATE_FORMAT + "'");
-		}
-		Date date = toDate(JIRA_SPRINT_DATE_FORMAT, dateString);
-		Calendar cal = Calendar.getInstance();
-		cal.setTime(date);
-		cal.set(Calendar.HOUR, 05);
-		cal.set(Calendar.AM_PM, Calendar.AM);
-		cal.set(Calendar.MINUTE, 30);
-		cal.set(Calendar.SECOND, 00);
-		cal.set(Calendar.MILLISECOND, 000);
-		
-		return cal.getTime();
 	}
 	
 	/**

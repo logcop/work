@@ -1,7 +1,5 @@
 package com.cee.ljr.intg.fileparser;
 
-import java.util.List;
-
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -9,8 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import com.cee.file.csv.CSVRecord;
 import com.cee.ljr.config.ApplicationConfig;
-import com.cee.ljr.domain.common.Sprint;
 import com.cee.ljr.intg.fileparser.impl.SprintCsvFileParser;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -22,19 +20,17 @@ public class SprintCsvFileParserTest {
 	
 	@Test
 	public void testParseAll() {
-		List<Sprint> sprints = sprintCsvFileParser.parseAll();
+		Iterable<CSVRecord> sprintRecords = sprintCsvFileParser.parseAll();
 		
-		Assert.assertNotNull(sprints);
-		Assert.assertFalse(sprints.isEmpty());
-		System.out.println(sprints);		
+		Assert.assertNotNull(sprintRecords);
+		Assert.assertTrue(sprintRecords.iterator().hasNext());
 	}
 	
 	@Test
 	public void testParseByNumber() {
-		List<Sprint> sprints = sprintCsvFileParser.parseByNumber(1);
+		Iterable<CSVRecord> sprintRecords = sprintCsvFileParser.parseByNumber(1);
 		
-		Assert.assertNotNull(sprints);
-		Assert.assertFalse(sprints.isEmpty());
-		System.out.println(sprints);		
+		Assert.assertNotNull(sprintRecords);
+		Assert.assertTrue(sprintRecords.iterator().hasNext());
 	}
 }

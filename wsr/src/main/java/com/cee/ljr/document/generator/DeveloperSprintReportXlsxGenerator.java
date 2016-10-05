@@ -64,7 +64,7 @@ public class DeveloperSprintReportXlsxGenerator {
 		createHeader(sheet, nextRowIndex);
 		
 		for (Task task : tasks) {
-			addTask(sheet, nextRowIndex, task, startDate, endDate);
+			addTask(sheet, nextRowIndex, task, sprintStartDate, sprintEndDate);
 		}
 		
 		
@@ -85,7 +85,7 @@ public class DeveloperSprintReportXlsxGenerator {
 	private void addTask(Sheet sheet, MutableInt nextRowIndex, Task task, Date startDate, Date endDate) {
 		Row row = sheet.createRow(nextRowIndex.intValue());
 		Cell cell = row.createCell(devNameColIndex);
-		cell.setCellValue(task.getDevelopers());
+		//cell.setCellValue(task.getDevelopers());
 		cell = row.createCell(taskKeyColIndex);
 		cell.setCellValue(task.getKey());
 		cell = row.createCell(summaryColIndex);
@@ -93,7 +93,7 @@ public class DeveloperSprintReportXlsxGenerator {
 		cell = row.createCell(descriptionColIndex);
 		cell.setCellValue(task.getDescription());
 		cell = row.createCell(sprintColIndex);
-		cell.setCellValue(task.getSprints());
+		//cell.setCellValue(task.getSprints());
 		cell = row.createCell(storyPointsColIndex);
 		cell.setCellValue(task.getStoryPoints());
 		cell = row.createCell(timeSpentColIndex);

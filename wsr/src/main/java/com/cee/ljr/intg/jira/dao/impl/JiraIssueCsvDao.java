@@ -7,9 +7,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
 
-import com.cee.ljr.intg.fileparser.impl.JiraIssuesCsvFileParser;
 import com.cee.ljr.intg.jira.dao.JiraIssueDao;
 import com.cee.ljr.intg.jira.domain.JiraIssue;
+import com.cee.ljr.intg.jira.fileparser.JiraIssuesCsvFileParser;
 
 @Component
 @PropertySource("classpath:/properties/data-access.properties")

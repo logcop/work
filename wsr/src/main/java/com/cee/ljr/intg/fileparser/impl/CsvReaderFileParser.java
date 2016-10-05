@@ -47,12 +47,29 @@ public class CsvReaderFileParser implements CsvFileParser<CSVRecord> {
 		return records;
 	}
 	
+	@Override
+	public CSVRecord parseForSingleRecord(String filePath, Criteria criteria) {
+		String path = FileUtil.getAbsolutePath(filePath);
+		
+		Reader reader = createFileReader(path);
+		
+		Iterable<CSVRecord> records = parseCsvFileReader(reader, criteria);
+		
+		closeReader(reader);
+		
+		if (records.iterator().hasNext()) {
+			return records.iterator().next();
+		}
+		
+		return null;
+	}
+	
 	private Iterable<CSVRecord> parseCsvFileReader(Reader reader, Criteria criteria) {
 		Iterable<CSVRecord> records = null;
 		
 		CSVFormat csvFormat = CSVFormat.EXCEL.withHeader();
 		try {
-			records = csvFormat.parse(reader);
+			records = csvFormat.parse(reader, criteria);
 		} 
 		catch (IOException ioe) {
 			log.error("Unable to create records.", ioe);

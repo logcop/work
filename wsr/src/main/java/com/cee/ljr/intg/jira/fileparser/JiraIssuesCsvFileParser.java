@@ -1,7 +1,6 @@
-package com.cee.ljr.intg.fileparser.impl;
+package com.cee.ljr.intg.jira.fileparser;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -15,15 +14,14 @@ import org.springframework.stereotype.Component;
 
 import com.cee.file.csv.CSVRecord;
 import com.cee.ljr.domain.common.WorkLog;
-import com.cee.ljr.domain.common.util.SprintUtil;
 import com.cee.ljr.intg.fileparser.CsvFileParser;
 import com.cee.ljr.intg.jira.domain.JiraAttribute;
 import com.cee.ljr.intg.jira.domain.JiraIssue;
 import com.cee.ljr.intg.mapping.JiraIssueMapper;
-import com.cee.ljr.utils.DateUtil;
 import com.cee.ljr.utils.FileUtil;
 
 @Component
+@Deprecated
 public class JiraIssuesCsvFileParser {
 	private static final Logger log = LoggerFactory.getLogger(JiraIssuesCsvFileParser.class);
 	
@@ -38,11 +36,11 @@ public class JiraIssuesCsvFileParser {
 	//private Map<Integer, String> indexToAttributeNameMap;
 	//private Map<String, List<Integer>> attributeNameToListOfIndexesMap;	
 	
-	
+	@Deprecated
 	public List<JiraIssue> parseTasksByDeveloperAndSprints(String csvPaths, String developerName, List<String> sprintNames) {
 		List<JiraIssue> jiraIssues = new ArrayList<JiraIssue>();
 		
-		Date startDate = DateUtil.get
+		//Date startDate = DateUtil.get
 		
 		List<JiraIssue> allIssues = new ArrayList<JiraIssue>();
 		for (String csvPath : csvPaths.split(";")) {
@@ -50,6 +48,7 @@ public class JiraIssuesCsvFileParser {
 			for (JiraIssue jiraIssue : containsDevelopers) {
 				List<WorkLog> workLogs = 
 						jiraIssueMapper.createWorkLogs(jiraIssue.getWorkLog());
+				// STOPPED HERE. THiS CLASS WON'T BE USED.......
 				
 			}
 		}
@@ -81,6 +80,7 @@ public class JiraIssuesCsvFileParser {
 	 * @param csvPaths The path(s) of the files to parse.
 	 * @return A list of jira issues.
 	 */
+	@Deprecated
 	public List<JiraIssue> parseAll(String csvPaths) {
 		List<JiraIssue> jiraIssues = new ArrayList<JiraIssue>();
 		
@@ -93,7 +93,8 @@ public class JiraIssuesCsvFileParser {
 		return jiraIssues;
 	}
 	
-	private List<JiraIssue> filterFor(String csvPath, Map<JiraAttribute, List<String>> attributeToListOfValuesMap ) {
+
+	/*private List<JiraIssue> filterForFINISHME(String csvPath, Map<JiraAttribute, List<String>> attributeToListOfValuesMap ) {
 		List<JiraIssue> jiraIssues = new ArrayList<JiraIssue>();
 		
 		Iterable<CSVRecord> records = csvFileParser.parse(csvPath, false);		
@@ -121,7 +122,7 @@ public class JiraIssuesCsvFileParser {
 		}
 		
 		return jiraIssues;
-	}
+	}*/
 	
 	private List<JiraIssue> parseForAttributeWithValue(String csvPath, JiraAttribute attribute, String value) {
 		List<JiraIssue> jiraIssues = new ArrayList<JiraIssue>();
@@ -137,7 +138,7 @@ public class JiraIssuesCsvFileParser {
 			}
 			else {
 				//int attributeIndex = attributeNameToIndexMap.get(attribute);
-				String valueFromRecord = record.get(attribute.value());
+				String valueFromRecord = record.getSingleValueFor(attribute);
 				if (value.equals(valueFromRecord)) {
 					JiraIssue jiraIssue = mapToJiraIssue(record, indexToAttributeMap);
 					jiraIssues.add(jiraIssue);

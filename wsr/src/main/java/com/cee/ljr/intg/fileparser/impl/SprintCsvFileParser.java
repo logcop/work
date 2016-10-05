@@ -1,113 +1,100 @@
 package com.cee.ljr.intg.fileparser.impl;
 
-import java.util.ArrayList;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
-import org.apache.commons.csv.CSVRecord;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
 
+import com.cee.file.csv.CSVRecord;
+import com.cee.file.csv.criteria.Criteria;
+import com.cee.file.csv.criteria.condition.Condition;
+import com.cee.file.csv.criteria.expression.Expression;
 import com.cee.ljr.domain.common.Sprint;
-import com.cee.ljr.domain.common.util.SprintUtil;
-import com.cee.ljr.intg.fileparser.CsvFileParser;
 import com.cee.ljr.intg.fileparser.SprintFileParser;
-import com.cee.ljr.utils.DateUtil;
 
 
 @Component
-@PropertySource("classpath:/properties/data-access.properties")
-public class SprintCsvFileParser implements SprintFileParser {
-
-	private static final int NAME_INDEX = 0;
-	private static final int START_DATE_INDEX = 1;
-	private static final int END_DATE_INDEX = 2;
+public class SprintCsvFileParser extends BaseCsvFileParser implements SprintFileParser<CSVRecord> {
 	
 	private static final boolean SKIP_HEADER = true;
 	
 	@Value("${sprints.url}")
 	String filePath;
 	
-	@Autowired
-	CsvFileParser<CSVRecord> csvFileParser;
-	
 	@Override
-	public List<Sprint> parseAll() {
-		List<Sprint> sprintList = new ArrayList<Sprint>();
-		
+	public Iterable<CSVRecord> parseAll() {
 		Iterable<CSVRecord> records = csvFileParser.parse(filePath, SKIP_HEADER);
-		for (CSVRecord record : records) {
-			Sprint sprint = mapToSprint(record);
-			sprintList.add(sprint);
-		}
 
-		return sprintList;
+		return records;
+	}	
+
+
+	@Override
+	public Iterable<CSVRecord> parseByNumber(int sprintNumber) {
+		Criteria criteria = new Criteria(
+				Condition.like(
+						SprintHeader.SPRINT_NAME, 
+						Integer.toString(sprintNumber))
+		);		
+		
+		Iterable<CSVRecord> records = csvFileParser.parse(filePath, criteria);
+		
+		return records;
 	}
 	
-
-
-	@Override
-	public List<Sprint> parseByNumber(int sprintNumber) {
-		List<Sprint> sprintList = new ArrayList<Sprint>();
-		
-		Iterable<CSVRecord> records = csvFileParser.parse(filePath, SKIP_HEADER);
-		for (CSVRecord record : records) {
-			String name = record.get(NAME_INDEX);
-			int number = SprintUtil.getNumberFromName(name);
-			
-			if (number == sprintNumber) {
-				Sprint sprint = mapToSprint(record);
-				sprintList.add(sprint);
-			}
-		}
-
-		return sprintList;
-	}
 	
 	@Override
-	public List<Sprint> parseByNames(List<String> sprintNames) {
-		List<Sprint> sprintList = new ArrayList<Sprint>();
+	public Iterable<CSVRecord> parseByNames(List<String> sprintNames) {		
+		Criteria criteria = new Criteria(
+				Condition.containsOne(
+						SprintHeader.SPRINT_NAME, 
+						sprintNames)
+		);		
 		
-		Iterable<CSVRecord> records = csvFileParser.parse(filePath, SKIP_HEADER);
-		for (CSVRecord record : records) {
-			String name = record.get(NAME_INDEX);
-			for (String sprintName : sprintNames) {
-				if (sprintName.equals(name)) {
-					Sprint sprint = mapToSprint(record);
-					sprintList.add(sprint);
-				}
-			}
-		}
-
-		return sprintList;
+		Iterable<CSVRecord> records = csvFileParser.parse(filePath, criteria);
+		
+		return records;
 	}
 
 
 	@Override
-	public Sprint parseByName(String sprintName) {
-		Sprint sprint = null;
+	public CSVRecord parseByName(String sprintName) {
 		
-		Iterable<CSVRecord> records = csvFileParser.parse(filePath, SKIP_HEADER);
-		for (CSVRecord record : records) {
-			String name = record.get(NAME_INDEX);			
-			if (sprintName.equals(name)) {
-				sprint = mapToSprint(record);
-				break;
-			}
-		}
+		Criteria criteria = new Criteria(
+				Condition.eq(
+						SprintHeader.SPRINT_NAME, 
+						sprintName)
+		);
 		
-		return sprint;
+		CSVRecord record = csvFileParser.parseForSingleRecord(filePath, criteria);
+		
+		return record;
 	}
-	
-	
-	
-	private Sprint mapToSprint(CSVRecord record) {
-		String name = record.get(NAME_INDEX);
-		String startDateStr = record.get(START_DATE_INDEX);
-		String endDateStr = record.get(END_DATE_INDEX);
+
+
+	@Override
+	public Iterable<CSVRecord> parseDateBetweenSprintStartAndEnd(Date date) {
+		DateFormat dateFormater = 
+				new SimpleDateFormat(Sprint.DATE_FORMAT);
 		
-		return new Sprint(name, DateUtil.getSprintDate(startDateStr), DateUtil.getSprintDate(endDateStr));
+		Criteria criteria = new Criteria(
+			Expression.and(
+					Condition.gt(
+							SprintHeader.START_DATE, 
+							date, 
+							dateFormater), 
+					Condition.lt(
+							SprintHeader.START_DATE, 
+							date, 
+							dateFormater))
+		);		
+		
+		Iterable<CSVRecord> records = csvFileParser.parse(filePath, criteria);
+		
+		return records;
 	}
 	
 	

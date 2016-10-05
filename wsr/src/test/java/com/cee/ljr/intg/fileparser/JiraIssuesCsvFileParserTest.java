@@ -16,8 +16,8 @@ import com.cee.ljr.domain.common.Sprint;
 import com.cee.ljr.domain.common.util.SprintUtil;
 import com.cee.ljr.intg.dao.impl.DeveloperCsvDao;
 import com.cee.ljr.intg.dao.impl.SprintCsvDao;
-import com.cee.ljr.intg.fileparser.impl.JiraIssuesCsvFileParser;
 import com.cee.ljr.intg.jira.domain.JiraIssue;
+import com.cee.ljr.intg.jira.fileparser.JiraIssuesCsvFileParser;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = ApplicationConfig.class)

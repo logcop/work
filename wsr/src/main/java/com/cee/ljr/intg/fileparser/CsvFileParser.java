@@ -9,4 +9,6 @@ public interface CsvFileParser <T> {
 	
 	Iterable<T> parse(String filePath, Criteria criteria);
 	
+	T parseForSingleRecord(String filePath, Criteria criteria);
+	
 }
