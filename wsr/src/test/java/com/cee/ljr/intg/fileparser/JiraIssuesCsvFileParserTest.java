@@ -1,7 +1,6 @@
 package com.cee.ljr.intg.fileparser;
 
 import java.util.List;
-import java.util.Set;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -51,7 +50,7 @@ public class JiraIssuesCsvFileParserTest {
 	@Test
 	public void testparseAllByDeveloperAndSprints() {
 		//Developer developer = developerCsvDao.getByNameInJira("Chuck");
-		Set<Sprint> sprints = sprintCsvDao.getByNumber(10);
+		List<Sprint> sprints = sprintCsvDao.getByNumber(10);
 		List<String> sprintNames = SprintUtil.getSprintNames(sprints);
 		
 		List<JiraIssue> jiraIssues = 

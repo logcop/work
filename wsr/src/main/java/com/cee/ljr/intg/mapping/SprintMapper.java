@@ -1,15 +1,15 @@
 package com.cee.ljr.intg.mapping;
 
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.cee.file.csv.CSVRecord;
 import com.cee.ljr.domain.common.Sprint;
 import com.cee.ljr.intg.fileparser.impl.SprintHeader;
 
-public abstract class SprintMapper {
+public class SprintMapper {
 
-	public static Sprint mapRecord(CSVRecord sprintRecord) {
+	public Sprint map(CSVRecord sprintRecord) {
 		String name = sprintRecord.getSingleValueFor(SprintHeader.SPRINT_NAME);
 		String startDateStr = sprintRecord.getSingleValueFor(SprintHeader.START_DATE);
 		String endDateStr = sprintRecord.getSingleValueFor(SprintHeader.END_DATE);
@@ -18,11 +18,11 @@ public abstract class SprintMapper {
 	}
 	
 	
-	public static Set<Sprint> mapRecords(Iterable<CSVRecord> sprintRecords) {
-		Set<Sprint> sprints = new TreeSet<Sprint>();
+	public List<Sprint> map(Iterable<CSVRecord> sprintRecords) {
+		List<Sprint> sprints = new ArrayList<Sprint>();
 		
 		for (CSVRecord sprintRecord : sprintRecords) {
-				sprints.add(mapRecord(sprintRecord));
+				sprints.add(map(sprintRecord));
 		}
 		
 		return sprints;

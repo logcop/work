@@ -1,7 +1,7 @@
 package com.cee.ljr.domain.common;
 
 import java.util.Date;
-import java.util.Set;
+import java.util.List;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -18,7 +18,7 @@ public abstract class BaseIssue {
 	protected String created;
 	protected String updated;
 	protected String description;
-	protected Set<Sprint> sprints;
+	protected List<Sprint> sprints;
 	
 	
 	
@@ -156,13 +156,13 @@ public abstract class BaseIssue {
 	/**
 	 * @return the sprints
 	 */
-	public Set<Sprint> getSprints() {
+	public List<Sprint> getSprints() {
 		return sprints;
 	}
 	/**
 	 * @param sprints the sprints to set
 	 */
-	public void setSprints(Set<Sprint> sprints) {
+	public void setSprints(List<Sprint> sprints) {
 		this.sprints = sprints;
 	}
 	

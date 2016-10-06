@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
-import java.util.Set;
 
 import org.apache.commons.lang3.math.NumberUtils;
 import org.slf4j.Logger;
@@ -77,9 +76,9 @@ public class JiraIssueMapper {
 		if (NumberUtils.isDigits(timeSpentString)) {
 			task.setTimeSpentInSeconds(Integer.valueOf(timeSpentString));
 		}
-		Set<Sprint> sprints = sprintDao.getAllByNames(taskJiraIssue.getSprints());
+		List<Sprint> sprints = sprintDao.getAllByNames(taskJiraIssue.getSprints());
 		task.setSprints(sprints);
-		Set<Developer> developers = developerDao.getByKeys(taskJiraIssue.getDevelopers());
+		List<Developer> developers = developerDao.getByKeys(taskJiraIssue.getDevelopers());
 		task.setDevelopers(developers);
 		for(String workLogString : taskJiraIssue.getWorkLog()) {
 			WorkLog workLog = createWorkLog(workLogString);

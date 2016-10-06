@@ -2,18 +2,21 @@ package com.cee.ljr.intg.fileparser;
 
 import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 
-public interface SprintFileParser<T> {
+import com.cee.ljr.domain.common.Sprint;
 
-	Iterable<T> parseAll();
+public interface SprintFileParser {
+
+	List<Sprint> parseAll();
 	
-	Iterable<T> parseByNumber(int sprintNumber);
+	List<Sprint> parseByNumber(int sprintNumber);
 	
-	Iterable<T> parseByNames(Collection<String> sprintNames);
+	List<Sprint> parseByNames(Collection<String> sprintNames);
 	
-	Iterable<T> parseBetweenDates(Date beginDate, Date endDate);
+	List<Sprint> parseBetweenDates(Date beginDate, Date endDate);
 	
-	Iterable<T> parseByKeys(Collection<String> sprintKeys);
+	List<Sprint> parseByKeys(Collection<String> sprintKeys);
 	
-	T parseByName(String sprintName);
+	Sprint parseByName(String sprintName);
 }

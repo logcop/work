@@ -3,7 +3,6 @@ package com.cee.ljr.service;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -38,7 +37,7 @@ public class DeveloperSprintReportService {
 	public List<DeveloperSprintReport> getReports(int sprintNumber) {
 		List<DeveloperSprintReport> developerSprintReports = new ArrayList<DeveloperSprintReport>();		
 		
-		Set<Developer> developers =  developerDao.getAll();
+		List<Developer> developers =  developerDao.getAll();
 		
 		for (Developer developer : developers) {
 			String developerName = developer.getNameInJira();
@@ -53,7 +52,7 @@ public class DeveloperSprintReportService {
 	public DeveloperSprintReport getReport(String developerName, int sprintNumber) {
 		List<Task> tasks = new ArrayList<Task>();
 		Developer developer = developerDao.getByNameInJira(developerName);
-		Set<Sprint> sprints = sprintDao.getByNumber(sprintNumber);
+		List<Sprint> sprints = sprintDao.getByNumber(sprintNumber);
 		List<String> sprintNames = SprintUtil.getSprintNames(sprints);
 		
 		List<JiraIssue> jiraIssues = jiraIssueDao.getTasksByDeveloperAndSprints(developerName, sprintNames);

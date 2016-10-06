@@ -1,26 +1,11 @@
 package com.cee.ljr.intg.fileparser.impl;
 
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.Reader;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
-import com.cee.file.csv.CSVFormat;
-import com.cee.file.csv.CSVRecord;
-import com.cee.file.csv.criteria.Criteria;
-import com.cee.ljr.intg.fileparser.CsvFileParser;
-import com.cee.ljr.utils.FileUtil;
-
 @Component
-public class CsvReaderFileParser implements CsvFileParser<CSVRecord> {
+public class CsvReaderFileParser  {
 	
-	private static final Logger log = LoggerFactory.getLogger(CsvReaderFileParser.class); 
-	
-	@Override
+	/*@Override
 	public Iterable<CSVRecord> parse(String filePath, boolean parseHeader) {
 		String path = FileUtil.getAbsolutePath(filePath);
 		
@@ -63,14 +48,6 @@ public class CsvReaderFileParser implements CsvFileParser<CSVRecord> {
 		closeReader(reader);
 		
 		return record;
-	}	
-	
-	public void closeReader(Reader reader) {
-		try {
-			reader.close();
-		} catch(IOException ioe) {
-			log.error("Error closing reader: " + reader, ioe);
-		}
 	}
 	
 	private Iterable<CSVRecord> parseCsvFileReader(Reader reader, Criteria criteria) {
@@ -100,26 +77,5 @@ public class CsvReaderFileParser implements CsvFileParser<CSVRecord> {
 		}
 		
 		return records;
-	}
-	
-	
-	private Reader createFileReader(String filePath) {
-		Reader reader = null;
-		try {
-			reader = new FileReader(filePath);
-		} catch (FileNotFoundException fnfe) {
-			log.error("Could not find file: " + filePath, fnfe);
-			closeReader(reader);
-		}
-		return reader;
-	}
-	
-	
-	private CSVFormat getFormat(boolean parseHeader) {
-		if (parseHeader) {
-			return CSVFormat.EXCEL.withHeader();
-		}
-		
-		return CSVFormat.EXCEL;
-	}
+	}*/
 }

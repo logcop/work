@@ -3,8 +3,8 @@
  */
 package com.cee.ljr.intg.mapping;
 
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.stereotype.Component;
 
@@ -19,8 +19,8 @@ import com.cee.ljr.intg.fileparser.impl.DeveloperHeader;
 @Component
 public class DeveloperMapper {
 
-	public Set<Developer> map(Iterable<CSVRecord> records) {
-		Set<Developer> developers = new TreeSet<Developer>();
+	public List<Developer> map(Iterable<CSVRecord> records) {
+		List<Developer> developers = new ArrayList<Developer>();
 		
 		for (CSVRecord record : records) {
 			Developer developer = map(record);

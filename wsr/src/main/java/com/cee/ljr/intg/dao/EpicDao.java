@@ -3,8 +3,7 @@
  */
 package com.cee.ljr.intg.dao;
 
-import java.util.Collection;
-import java.util.Set;
+import java.util.List;
 
 import com.cee.ljr.domain.common.Epic;
 
@@ -14,7 +13,7 @@ import com.cee.ljr.domain.common.Epic;
  */
 public interface EpicDao {
 	
-	Set<Epic> getByKeys(Collection<String> keys);
+	List<Epic> getByKeys(String filePaths, List<String> keys);
 	
-	Epic getByKey(String key);
+	Epic getByKey(String filePaths, String key);
 }

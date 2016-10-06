@@ -1,6 +1,6 @@
 package com.cee.ljr.intg.dao;
 
-import java.util.Set;
+import java.util.List;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -23,7 +23,7 @@ public class SprintCsvDaoTest {
 	
 	@Test
 	public void testGetAll() {
-		Set<Sprint> sprintList = sprintCsvDao.getAll();
+		List<Sprint> sprintList = sprintCsvDao.getAll();
 		
 		Assert.assertNotNull(sprintList);
 		Assert.assertFalse(sprintList.isEmpty());
@@ -34,7 +34,7 @@ public class SprintCsvDaoTest {
 	public void testGetByNumber() {
 		int sprintNumber = 1;
 		
-		Set<Sprint> sprintList = sprintCsvDao.getByNumber(sprintNumber);
+		List<Sprint> sprintList = sprintCsvDao.getByNumber(sprintNumber);
 		
 		Assert.assertNotNull(sprintList);
 		Assert.assertFalse(sprintList.isEmpty());

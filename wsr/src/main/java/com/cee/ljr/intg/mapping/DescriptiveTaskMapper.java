@@ -3,7 +3,6 @@ package com.cee.ljr.intg.mapping;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -16,7 +15,6 @@ import com.cee.ljr.domain.common.Sprint;
 import com.cee.ljr.intg.dao.DeveloperDao;
 import com.cee.ljr.intg.dao.EpicDao;
 import com.cee.ljr.intg.dao.SprintDao;
-import com.cee.ljr.intg.fileparser.impl.SprintHeader;
 import com.cee.ljr.intg.jira.domain.JiraAttribute;
 
 @Component
@@ -31,26 +29,17 @@ public class DescriptiveTaskMapper {
 	@Autowired
 	DeveloperDao developerDao;
 	
-	public List<DescriptiveTask> map(Iterable<CSVRecord> taskRecords) {		
+	public List<DescriptiveTask> map(String filePaths, Iterable<CSVRecord> taskRecords) {		
 		List<DescriptiveTask> tasks = new ArrayList<DescriptiveTask>();
-		for (CSVRecord record : taskRecords) {
-			String epicKey = record.getSingleValueFor(JiraAttribute.CUSTOM_FIELD_EPIC_LINK);			
-			Epic epic = epicDao.getByKey(epicKey);
-			
-			List<String> developerKeys = record.getAllValuesFor(JiraAttribute.CUSTOM_FIELD_ASSIGNED_DEVELOPER);
-			Set<Developer> developers = developerDao.getByKeys(developerKeys);
-			
-			List<String> sprintKeys = record.getAllValuesFor(SprintHeader.SPRINT_NAME);
-			Set<Sprint> sprints = sprintDao.getAllByNames(sprintKeys);
-			
-			tasks.add(map(record));
+		for (CSVRecord record : taskRecords) {			
+			tasks.add(map(filePaths, record));
 		}
 		
 		return tasks;
 	}
 	
 		
-	public DescriptiveTask map(CSVRecord taskRecord) {
+	public DescriptiveTask map(String filePaths, CSVRecord taskRecord) {
 		DescriptiveTask task = new DescriptiveTask();
 		
 		task.setCreated(taskRecord.getSingleValueFor(JiraAttribute.CREATED));
@@ -67,25 +56,25 @@ public class DescriptiveTaskMapper {
 		task.setUpdated(taskRecord.getSingleValueFor(JiraAttribute.UPDATED));
 
 		task.setDevelopers(getDevelopers(taskRecord));
-		task.setEpic(getEpic(taskRecord));
+		task.setEpic(getEpic(filePaths, taskRecord));
 		task.setSprints(getSprints(taskRecord));
 		
 		return task;
 	}
 	
-	private Set<Sprint> getSprints(CSVRecord taskRecord) {
+	private List<Sprint> getSprints(CSVRecord taskRecord) {
 		Collection<String> sprintKeys = taskRecord.getAllValuesFor(JiraAttribute.CUSTOM_FIELD_EPIC_LINK);
 		
 		return sprintDao.getByKeys(sprintKeys);
 	}
 	
-	private Epic getEpic(CSVRecord taskRecord) {
+	private Epic getEpic(String filePaths, CSVRecord taskRecord) {
 		String epicKey = taskRecord.getSingleValueFor(JiraAttribute.CUSTOM_FIELD_EPIC_LINK);
 		
-		return epicDao.getByKey(epicKey);
+		return epicDao.getByKey(filePaths, epicKey);
 	}
 	
-	private Set<Developer> getDevelopers(CSVRecord taskRecord) {
+	private List<Developer> getDevelopers(CSVRecord taskRecord) {
 		List<String> developerKeys = taskRecord.getAllValuesFor(JiraAttribute.CUSTOM_FIELD_ASSIGNED_DEVELOPER);
 		
 		return developerDao.getByKeys(developerKeys);
