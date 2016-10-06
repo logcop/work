@@ -26,10 +26,10 @@ public class JiraXlsxIssueDao implements JiraIssueDao{
 		return jiraIssuesXlsxParser.parseXlsx(xlsxPaths);
 	}
 
-	@Override
+	/*@Override
 	public List<JiraIssue> getTasksByDeveloperAndSprints(String developerName, List<String> sprintNames) {
 		// TODO Auto-generated method stub
 		return null;
-	}	
+	}	*/
 
 }

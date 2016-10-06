@@ -13,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.cee.file.csv.CSVRecord;
-import com.cee.ljr.domain.common.WorkLog;
 import com.cee.ljr.intg.fileparser.CsvFileParser;
 import com.cee.ljr.intg.jira.domain.JiraAttribute;
 import com.cee.ljr.intg.jira.domain.JiraIssue;
@@ -36,8 +35,8 @@ public class JiraIssuesCsvFileParser {
 	//private Map<Integer, String> indexToAttributeNameMap;
 	//private Map<String, List<Integer>> attributeNameToListOfIndexesMap;	
 	
-	@Deprecated
-	public List<JiraIssue> parseTasksByDeveloperAndSprints(String csvPaths, String developerName, List<String> sprintNames) {
+	//@Deprecated
+	/*public List<JiraIssue> parseTasksByDeveloperAndSprints(String csvPaths, String developerName, List<String> sprintNames) {
 		List<JiraIssue> jiraIssues = new ArrayList<JiraIssue>();
 		
 		//Date startDate = DateUtil.get
@@ -67,10 +66,6 @@ public class JiraIssuesCsvFileParser {
 		}
 		
 		return jiraIssues;
-	}
-	
-	/*parseEpics(String csvPaths, List<String> epicKeys) {
-		List<JiraIssue> allIssues = parseAll()
 	}*/
 	
 	
@@ -92,37 +87,6 @@ public class JiraIssuesCsvFileParser {
 		
 		return jiraIssues;
 	}
-	
-
-	/*private List<JiraIssue> filterForFINISHME(String csvPath, Map<JiraAttribute, List<String>> attributeToListOfValuesMap ) {
-		List<JiraIssue> jiraIssues = new ArrayList<JiraIssue>();
-		
-		Iterable<CSVRecord> records = csvFileParser.parse(csvPath, false);		
-		
-		Map<JiraAttribute, List<Integer>> attributeToListOfIndexesMap = null;
-		Map<Integer, JiraAttribute> indexToAttributeMap = null;
-		 
-		int index = HEADER_ROW_INDEX;
-		for(CSVRecord record : records){
-			if (index == HEADER_ROW_INDEX) {
-				// process the header row. have to do this because some column headers repeat.
-				attributeToListOfIndexesMap = createAttributeToListOfIndexesMap(record);
-				indexToAttributeMap = createIndexToAttributeMap(record);
-			}
-			else {
-				boolean addRecord = recordContainsAllValuesForAllAttributes(record,  
-						attributeToListOfIndexesMap, attributeToListOfValuesMap );
-				
-				if (addRecord) {
-					JiraIssue jiraIssue = mapToJiraIssue(record, indexToAttributeMap);
-					jiraIssues.add(jiraIssue);
-				}
-			}
-			++index;
-		}
-		
-		return jiraIssues;
-	}*/
 	
 	private List<JiraIssue> parseForAttributeWithValue(String csvPath, JiraAttribute attribute, String value) {
 		List<JiraIssue> jiraIssues = new ArrayList<JiraIssue>();
@@ -258,16 +222,7 @@ public class JiraIssuesCsvFileParser {
 		}
 		
 		return jiraIssues;
-	}	
-	
-	/**
-	 * Takes the header
-	 * @param record
-	 */
-	/*private void processHeaderRow(CSVRecord record) {
-		indexToAttributeNameMap = createIndexMap(record);
-		attributeNameToListOfIndexesMap = createAttributeMap(record);
-	}*/
+	}
 	
 	/**
 	 * Creates a JiraIssue from a CSVRecord. iterates over the record and puts all values

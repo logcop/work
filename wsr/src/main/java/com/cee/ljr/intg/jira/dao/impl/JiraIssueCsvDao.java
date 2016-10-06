@@ -27,10 +27,10 @@ public class JiraIssueCsvDao implements JiraIssueDao{
 		return jiraIssuesCsvFileParser.parseAll(csvPaths);		
 	}
 	
-	@Override
-	public List<JiraIssue> getTasksByDeveloperAndSprints(String developerName, List<String> sprintNames) {
+	//@Override
+	/*public List<JiraIssue> getTasksByDeveloperAndSprints(String developerName, List<String> sprintNames) {
 		return jiraIssuesCsvFileParser.parseTasksByDeveloperAndSprints(csvPaths, developerName, sprintNames);
-	}
+	}*/
 	
 	/*public List<JiraIssue> getEpics(List<String> epicKeys) {
 		return jiraIssuesCsvFileParser.parseEpics(csvPaths, epicKeys);

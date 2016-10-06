@@ -3,10 +3,13 @@ package com.cee.ljr.intg.mapping;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.stereotype.Component;
+
 import com.cee.file.csv.CSVRecord;
 import com.cee.ljr.domain.common.Sprint;
 import com.cee.ljr.intg.fileparser.impl.SprintHeader;
 
+@Component
 public class SprintMapper {
 
 	public Sprint map(CSVRecord sprintRecord) {

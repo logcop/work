@@ -9,6 +9,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import com.cee.file.csv.CSVRecord;
 import com.cee.file.csv.criteria.Criteria;
@@ -20,6 +21,7 @@ import com.cee.ljr.intg.jira.domain.JiraAttribute;
 import com.cee.ljr.intg.mapping.DescriptiveTaskMapper;
 import com.cee.ljr.utils.DateUtil;
 
+@Component
 public class DescriptiveTaskCsvFileParser extends BaseCsvFileParser<DescriptiveTask> {
 
 	private static final boolean WITH_HEADER = true;

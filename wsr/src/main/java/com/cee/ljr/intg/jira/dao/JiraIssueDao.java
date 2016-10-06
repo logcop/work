@@ -9,5 +9,5 @@ public interface JiraIssueDao {
 	
 	List<JiraIssue> getAllIssues();
 	
-	List<JiraIssue> getTasksByDeveloperAndSprints(String developerName, List<String> sprintNames);
+	//List<JiraIssue> getTasksByDeveloperAndSprints(String developerName, List<String> sprintNames);
 }
