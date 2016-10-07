@@ -22,11 +22,11 @@ public class DeveloperSprintReportGenerator {
 	DeveloperSprintReportXlsxGenerator dsrGenerator;
 	
 	
-	public void generateAll(int sprintNumber, String pathToReports) {
+	public void generateAll(int sprintNumber, String pathToReports, String pathToJiraCsvs) {
 		//WeeklyStatusReport statusReport = srService.getWeeklyStatusReport(weekStartDate, weekEndingDate);
 		//docxGenerator.generateDocument(statusReport);
 		//List<String> developerNames = DevNameUtil.getFullName(firstName)
-		List<DeveloperSprintReport> dsrList = dsrService.getReports(sprintNumber);
+		List<DeveloperSprintReport> dsrList = dsrService.getReports(pathToJiraCsvs, sprintNumber);
 		
 		for (DeveloperSprintReport developerSprintReport : dsrList) {
 			dsrGenerator.generate(developerSprintReport, pathToReports);

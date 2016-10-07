@@ -15,7 +15,7 @@ import com.cee.ljr.intg.jira.domain.JiraIssue;
 import com.cee.ljr.utils.FileUtil;
 
 @Component
-public class CsvReaderFileParser extends BaseCsvFileParser<JiraIssue>{
+public class CsvReaderFileParser extends BaseCsvFileParser<JiraIssue>  {
 	private static final Logger log = LoggerFactory.getLogger(CsvReaderFileParser.class);
 	
 	private static final boolean WITH_HEADER = true;
@@ -27,7 +27,7 @@ public class CsvReaderFileParser extends BaseCsvFileParser<JiraIssue>{
 	public Iterable<CSVRecord> parse(String filePath, boolean parseHeader) {
 		String path = FileUtil.getAbsolutePath(filePath);
 		
-		Reader reader = createFileReader(path);		
+		Reader reader = getFileReader(path);		
 		
 		Iterable<CSVRecord> records = parseCsvFileReader(reader, parseHeader);
 		
@@ -40,7 +40,7 @@ public class CsvReaderFileParser extends BaseCsvFileParser<JiraIssue>{
 	public Iterable<CSVRecord> parse(String filePath, Criteria criteria) {
 		String path = FileUtil.getAbsolutePath(filePath);
 		
-		Reader reader = createFileReader(path);
+		Reader reader = getFileReader(path);
 		
 		Iterable<CSVRecord> records = parseCsvFileReader(reader, criteria);
 		
@@ -53,7 +53,7 @@ public class CsvReaderFileParser extends BaseCsvFileParser<JiraIssue>{
 	public CSVRecord parseForSingleRecord(String filePath, Criteria criteria) {
 		String path = FileUtil.getAbsolutePath(filePath);
 		
-		Reader reader = createFileReader(path);
+		Reader reader = getFileReader(path);
 		
 		Iterable<CSVRecord> records = parseCsvFileReader(reader, criteria);
 		
@@ -85,7 +85,7 @@ public class CsvReaderFileParser extends BaseCsvFileParser<JiraIssue>{
 	private Iterable<CSVRecord> parseCsvFileReader(Reader reader, boolean parseHeader) {
 		Iterable<CSVRecord> records = null;
 		
-		CSVFormat csvFormat = getFormat(parseHeader);
+		CSVFormat csvFormat = getFormat();
 		try {
 			records = csvFormat.parse(reader);
 		} 

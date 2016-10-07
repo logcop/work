@@ -51,7 +51,9 @@ public class SprintCsvFileParser extends BaseCsvFileParser<Sprint> implements Sp
 						Integer.toString(sprintNumber))
 		);
 		
-		return parseForAll(filePath, criteria);
+		List<Sprint> sprints = parseForAll(filePath, criteria);
+		
+		return sprints;
 	}
 	
 	

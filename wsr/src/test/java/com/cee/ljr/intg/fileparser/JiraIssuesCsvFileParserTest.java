@@ -12,8 +12,6 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.cee.ljr.config.ApplicationConfig;
-import com.cee.ljr.domain.common.Sprint;
-import com.cee.ljr.domain.common.util.SprintUtil;
 import com.cee.ljr.intg.dao.impl.DeveloperCsvDao;
 import com.cee.ljr.intg.dao.impl.SprintCsvDao;
 import com.cee.ljr.intg.jira.domain.JiraIssue;
@@ -47,7 +45,7 @@ public class JiraIssuesCsvFileParserTest {
 		}
 	}
 	
-	@Test
+	/*@Test
 	public void testparseAllByDeveloperAndSprints() {
 		//Developer developer = developerCsvDao.getByNameInJira("Chuck");
 		List<Sprint> sprints = sprintCsvDao.getByNumber(10);
@@ -63,5 +61,5 @@ public class JiraIssuesCsvFileParserTest {
 			System.out.println("Key: " + jiraIssue.getKey() + " Devs: " + jiraIssue.getDevelopers() + " Sprints: " + jiraIssue.getSprints());
 		}
 		System.out.println("Found " + jiraIssues.size() + " jira issues.");
-	}
+	}*/
 }

@@ -15,12 +15,13 @@ public class LogcopJiraReports {
 		// weekly status report generation
 		String weekEndDate = "9/11/2016";
 		String pathToReports = null;
+		String pathToJiraCsvs = "C:/wsr_dev/JIRA1.csv;C:/wsr_dev/JIRA2.csv;C:/wsr_dev/JIRA3.csv";
 		//WeeklyStatusReportGenerator wsrGenerator = ctx.getBean(WeeklyStatusReportGenerator.class);
 		//wsrGenerator.generateV2(weekEndDate, pathToReports);
 		
 		int sprintNumber = 10;
 		DeveloperSprintReportGenerator dsrGenerator = ctx.getBean(DeveloperSprintReportGenerator.class);
-		dsrGenerator.generateAll(sprintNumber, pathToReports);
+		dsrGenerator.generateAll(sprintNumber, pathToReports, pathToJiraCsvs);
 		
 	}
 	

@@ -10,13 +10,11 @@ import org.springframework.stereotype.Service;
 import com.cee.ljr.domain.common.DescriptiveTask;
 import com.cee.ljr.domain.common.Developer;
 import com.cee.ljr.domain.common.Sprint;
-import com.cee.ljr.domain.common.Task;
 import com.cee.ljr.domain.common.util.SprintUtil;
 import com.cee.ljr.domain.report.DeveloperSprintReport;
 import com.cee.ljr.intg.dao.DescriptiveTaskDao;
 import com.cee.ljr.intg.dao.DeveloperDao;
 import com.cee.ljr.intg.dao.SprintDao;
-import com.cee.ljr.intg.jira.domain.JiraIssue;
 
 @Service
 public class DeveloperSprintReportService {
@@ -37,14 +35,14 @@ public class DeveloperSprintReportService {
 	//JiraIssueMapper jiraIssueMapper;
 	
 	
-	public List<DeveloperSprintReport> getReports(int sprintNumber) {
+	public List<DeveloperSprintReport> getReports(String csvPaths, int sprintNumber) {
 		List<DeveloperSprintReport> developerSprintReports = new ArrayList<DeveloperSprintReport>();		
 		
 		List<Developer> developers =  developerDao.getAll();
 		
 		for (Developer developer : developers) {
 			String developerName = developer.getNameInJira();
-			DeveloperSprintReport developerSprintReport = getReport(developerName, sprintNumber);
+			DeveloperSprintReport developerSprintReport = getReport(csvPaths, developerName, sprintNumber);
 			developerSprintReports.add(developerSprintReport);
 		}
 		
@@ -74,24 +72,25 @@ public class DeveloperSprintReportService {
 		return new DeveloperSprintReport(sprintNumber, sprintStartDate, sprintEndDate, developer, tasks);
 	}*/
 	
-	public DeveloperSprintReport getReport(String developerName, int sprintNumber) {
-		List<Task> tasks = new ArrayList<Task>();
+	public DeveloperSprintReport getReport(String csvPaths, String developerName, int sprintNumber) {
+		//List<Task> tasks = new ArrayList<Task>();
 		Developer developer = developerDao.getByNameInJira(developerName);
 		List<Sprint> sprints = sprintDao.getByNumber(sprintNumber);
+		// just need 1 sprint right now because they all have the same start and end dates.
+				Sprint aSprint = sprints.iterator().next();
+				Date sprintStartDate = aSprint.getStartDate();
+				Date sprintEndDate = aSprint.getEndDate();
 		List<String> sprintNames = SprintUtil.getSprintNames(sprints);
 		
-		List<DescriptiveTask> tasks = taskDao.getTasksByDeveloperBetweenDates(developer, beginDate, endDate)
+		List<DescriptiveTask> tasks = taskDao.getAllByDeveloperBetweenDates(csvPaths, developer, sprintStartDate, sprintEndDate);
 				//jiraIssueDao.getTasksByDeveloperAndSprints(developerName, sprintNames);
 		
-		for (JiraIssue jiraIssue : jiraIssues) {
+		/*for (JiraIssue jiraIssue : jiraIssues) {
 			Task task = jiraIssueMapper.createTask(jiraIssue);
 			tasks.add(task);
-		}
+		}*/
 		
-		// just need 1 sprint right now because they all have the same start and end dates.
-		Sprint aSprint = sprints.iterator().next();
-		Date sprintStartDate = aSprint.getStartDate();
-		Date sprintEndDate = aSprint.getEndDate();
+		
 		
 		return new DeveloperSprintReport(sprintNumber, sprintStartDate, sprintEndDate, developer, tasks);
 	}

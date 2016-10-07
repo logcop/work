@@ -16,6 +16,7 @@ import org.springframework.context.annotation.PropertySource;
 import com.cee.file.csv.CSVFormat;
 import com.cee.file.csv.CSVRecord;
 import com.cee.file.csv.criteria.Criteria;
+import com.cee.ljr.utils.FileUtil;
 
 /**
  * @author chuck
@@ -108,13 +109,13 @@ public abstract class BaseCsvFileParser<T> {
 	
 	protected Reader getFileReader(String filePath) {
 		Reader reader = null;
-		
+		String absolutePath = FileUtil.getAbsolutePath(filePath);
 		try {
-			reader = new FileReader(filePath);
+			reader = new FileReader(absolutePath);
 		} 
 		catch (FileNotFoundException fnfe) {
 			log.error("Could not find file: " + filePath, fnfe);
-			closeReader(reader);
+			//closeReader(reader);
 		}
 		return reader;
 	}

@@ -8,10 +8,11 @@ import org.springframework.stereotype.Component;
 
 import com.cee.ljr.domain.common.DescriptiveTask;
 import com.cee.ljr.domain.common.Developer;
+import com.cee.ljr.intg.dao.DescriptiveTaskDao;
 import com.cee.ljr.intg.fileparser.impl.DescriptiveTaskCsvFileParser;
 
 @Component
-public class DescriptiveTaskCsvDao {
+public class DescriptiveTaskCsvDao implements DescriptiveTaskDao {
 	
 	@Autowired
 	DescriptiveTaskCsvFileParser fileParser;

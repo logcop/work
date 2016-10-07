@@ -15,13 +15,14 @@ import com.cee.ljr.domain.report.DeveloperSprintReport;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = ApplicationConfig.class)
 public class DeveloperSprintReportServiceTest {
-
+	private static final String pathToJiraCsvs = "C:/wsr_dev/JIRA1.csv;C:/wsr_dev/JIRA2.csv;C:/wsr_dev/JIRA3.csv";
+	
 	@Autowired
 	DeveloperSprintReportService developerSprintReportService;
 	
 	@Test
 	public void testGetReport() {
-		DeveloperSprintReport developerSprintReport = developerSprintReportService.getReport("Chuck", 10);
+		DeveloperSprintReport developerSprintReport = developerSprintReportService.getReport(pathToJiraCsvs,"Chuck", 10);
 		
 		Assert.assertNotNull(developerSprintReport);
 		System.out.println(developerSprintReport);
@@ -29,7 +30,7 @@ public class DeveloperSprintReportServiceTest {
 	
 	@Test
 	public void testGetAllReports() {
-		List<DeveloperSprintReport> developerSprintReports = developerSprintReportService.getReports(10);
+		List<DeveloperSprintReport> developerSprintReports = developerSprintReportService.getReports(pathToJiraCsvs, 10);
 		
 		Assert.assertNotNull(developerSprintReports);
 		Assert.assertFalse(developerSprintReports.isEmpty());

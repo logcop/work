@@ -10,5 +10,5 @@ public interface DescriptiveTaskDao {
 
 	//List<DescriptiveTask> getAllSprintTasksForDeveloper(String developerName, List<String> sprintNames);
 	
-	public List<DescriptiveTask> getTasksByDeveloperBetweenDates(Developer developer, Date beginDate, Date endDate);
+	public List<DescriptiveTask> getAllByDeveloperBetweenDates(String csvPaths, Developer developer, Date beginDate, Date endDate);
 }

@@ -13,7 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.cee.file.csv.CSVRecord;
-import com.cee.ljr.intg.fileparser.CsvFileParser;
+import com.cee.ljr.intg.fileparser.impl.CsvReaderFileParser;
 import com.cee.ljr.intg.jira.domain.JiraAttribute;
 import com.cee.ljr.intg.jira.domain.JiraIssue;
 import com.cee.ljr.intg.mapping.JiraIssueMapper;
@@ -27,7 +27,7 @@ public class JiraIssuesCsvFileParser {
 	private static final int HEADER_ROW_INDEX = 0;
 	
 	@Autowired
-	CsvFileParser<CSVRecord> csvFileParser;	
+	CsvReaderFileParser csvFileParser;	
 	
 	@Autowired
 	JiraIssueMapper jiraIssueMapper;

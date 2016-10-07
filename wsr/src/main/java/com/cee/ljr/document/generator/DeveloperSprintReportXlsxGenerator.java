@@ -17,6 +17,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.cee.ljr.domain.common.DescriptiveTask;
 import com.cee.ljr.domain.common.Developer;
 import com.cee.ljr.domain.common.Task;
 import com.cee.ljr.domain.report.DeveloperSprintReport;
@@ -53,7 +54,7 @@ public class DeveloperSprintReportXlsxGenerator {
 		log.info("Developer Sprint Report generating.");
 		Workbook wb = new XSSFWorkbook();
 		Developer developer = dsr.getDeveloper();
-		List<Task> tasks = dsr.getTasks();
+		List<DescriptiveTask> tasks = dsr.getTasks();
 		int sprintNumber = dsr.getSprintNumber();
 		Date sprintStartDate = dsr.getSprintStartDate();
 		Date sprintEndDate = dsr.getSprintEndDate();

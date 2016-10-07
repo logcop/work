@@ -6,8 +6,8 @@ import java.util.List;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
+import com.cee.ljr.domain.common.DescriptiveTask;
 import com.cee.ljr.domain.common.Developer;
-import com.cee.ljr.domain.common.Task;
 
 public class DeveloperSprintReport {
 	
@@ -16,12 +16,12 @@ public class DeveloperSprintReport {
 	private Date sprintEndDate;
 	
 	private Developer developer;
-	private List<Task> tasks;
+	private List<DescriptiveTask> tasks;
 	
 	
 	
 	public DeveloperSprintReport(int sprintNumber, Date sprintStartDate, Date sprintEndDate, Developer developer,
-			List<Task> tasks) {
+			List<DescriptiveTask> tasks) {
 		super();
 		this.sprintNumber = sprintNumber;
 		this.sprintStartDate = sprintStartDate;
@@ -55,7 +55,7 @@ public class DeveloperSprintReport {
 
 
 
-	public List<Task> getTasks() {
+	public List<DescriptiveTask> getTasks() {
 		return tasks;
 	}
 	
