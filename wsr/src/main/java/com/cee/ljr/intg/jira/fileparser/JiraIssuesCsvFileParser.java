@@ -1,6 +1,7 @@
 package com.cee.ljr.intg.jira.fileparser;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -85,13 +86,14 @@ public class JiraIssuesCsvFileParser {
 			jiraIssues.addAll(issuesToAdd);
 		}
 		
+		
 		return jiraIssues;
 	}
 	
 	private List<JiraIssue> parseForAttributeWithValue(String csvPath, JiraAttribute attribute, String value) {
 		List<JiraIssue> jiraIssues = new ArrayList<JiraIssue>();
 		
-		Iterable<CSVRecord> records = csvFileParser.parse(csvPath, false);
+		Collection<CSVRecord> records = csvFileParser.parseCsvFileReader(csvPath, false);
 		
 		int index = 0;
 		Map<Integer, JiraAttribute> indexToAttributeMap = null;
@@ -125,7 +127,7 @@ public class JiraIssuesCsvFileParser {
 	private List<JiraIssue> filterFor(String csvPath, Map<JiraAttribute, List<String>> attributeToListOfValuesMap ) {
 		List<JiraIssue> jiraIssues = new ArrayList<JiraIssue>();
 		
-		Iterable<CSVRecord> records = csvFileParser.parse(csvPath, false);		
+		Iterable<CSVRecord> records = csvFileParser.parseCsvFileReader(csvPath, false);
 		
 		Map<JiraAttribute, List<Integer>> attributeToListOfIndexesMap = null;
 		Map<Integer, JiraAttribute> indexToAttributeMap = null;
@@ -205,7 +207,9 @@ public class JiraIssuesCsvFileParser {
 	private List<JiraIssue> parse(String csvPath) {
 		List<JiraIssue> jiraIssues = new ArrayList<JiraIssue>();
 		
-		Iterable<CSVRecord> records = csvFileParser.parse(csvPath, false);
+		Iterable<CSVRecord> records = csvFileParser.parseCsvFileReader(csvPath, false);
+		
+		//Iterable<CSVRecord> records = csvFileParser.parse(csvPath, false);
 		
 		int index = 0;
 		Map<Integer, JiraAttribute> indexToAttributeMap = null;

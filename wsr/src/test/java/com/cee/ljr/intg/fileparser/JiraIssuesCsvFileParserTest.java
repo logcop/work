@@ -41,7 +41,7 @@ public class JiraIssuesCsvFileParserTest {
 		Assert.assertNotNull(jiraIssues);
 		Assert.assertFalse(jiraIssues.isEmpty());
 		for (JiraIssue jiraIssue : jiraIssues) {
-			System.out.println(jiraIssue);
+			//ystem.out.println(jiraIssue);
 		}
 	}
 	

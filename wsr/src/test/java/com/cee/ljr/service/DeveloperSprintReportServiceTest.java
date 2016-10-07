@@ -25,7 +25,7 @@ public class DeveloperSprintReportServiceTest {
 		DeveloperSprintReport developerSprintReport = developerSprintReportService.getReport(pathToJiraCsvs,"Chuck", 10);
 		
 		Assert.assertNotNull(developerSprintReport);
-		System.out.println(developerSprintReport);
+		//ystem.out.println(developerSprintReport);
 	}
 	
 	@Test
@@ -34,11 +34,11 @@ public class DeveloperSprintReportServiceTest {
 		
 		Assert.assertNotNull(developerSprintReports);
 		Assert.assertFalse(developerSprintReports.isEmpty());
-		System.out.println("DEVELOPER SPRINT REPORTS");
-		System.out.println("------------------------");
+		//ystem.out.println("DEVELOPER SPRINT REPORTS");
+		//ystem.out.println("------------------------");
 		for (DeveloperSprintReport developerSprintReport : developerSprintReports) {
-			System.out.println(developerSprintReport);
+			//ystem.out.println(developerSprintReport);
 		}
-		System.out.println(developerSprintReports);
+		//ystem.out.println(developerSprintReports);
 	}
 }

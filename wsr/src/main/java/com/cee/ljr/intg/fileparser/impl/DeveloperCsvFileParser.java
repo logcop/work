@@ -1,6 +1,5 @@
 package com.cee.ljr.intg.fileparser.impl;
 
-import java.io.Reader;
 import java.util.Collection;
 import java.util.List;
 
@@ -64,46 +63,37 @@ public class DeveloperCsvFileParser extends BaseCsvFileParser<Developer> impleme
 
 	
 	@Override
-	protected List<Developer> parseForAll(String filePaths, Criteria criteria) {		
-		Reader reader = getFileReader(filePaths);
+	protected List<Developer> parseForAll(String filePaths, Criteria criteria) {
 		
-		Iterable<CSVRecord> records = parseForAllRecords(reader, criteria);
+		Collection<CSVRecord> records = parseForAllRecords(filePaths, criteria);
 		
 		List<Developer> developers = mapper.map(records);
-		
-		closeReader(reader);
 		
 		return developers;
 	}
 
 	
 	@Override
-	protected List<Developer> parseForAll(String filePaths) {	
-		Reader reader = getFileReader(filePaths);
+	protected List<Developer> parseForAll(String filePaths) {
 		
-		Iterable<CSVRecord> records = parseForAllRecords(reader);
+		Collection<CSVRecord> records = parseForAllRecords(filePaths);
 		
 		List<Developer> developers = mapper.map(records);
-		
-		closeReader(reader);
 		
 		return developers;
 	}
 
 	
 	@Override
-	protected Developer parseForSingle(String filePaths, Criteria criteria) {	
-		Reader reader = getFileReader(filePaths);
+	protected Developer parseForSingle(String filePaths, Criteria criteria) {
 		
-		CSVRecord record = parseForSingleRecord(reader, criteria);
+		CSVRecord record = parseForSingleRecord(filePaths, criteria);
 		
 		Developer developer = null;	
 		
 		if (record != null) {
 			developer = mapper.map(record);
 		}
-		
-		closeReader(reader);
 		
 		return developer;
 	}

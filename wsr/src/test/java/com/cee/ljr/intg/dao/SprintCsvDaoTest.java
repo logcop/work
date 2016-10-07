@@ -27,7 +27,7 @@ public class SprintCsvDaoTest {
 		
 		Assert.assertNotNull(sprintList);
 		Assert.assertFalse(sprintList.isEmpty());
-		System.out.println(sprintList);
+		//ystem.out.println(sprintList);
 	}
 	
 	@Test
@@ -38,6 +38,6 @@ public class SprintCsvDaoTest {
 		
 		Assert.assertNotNull(sprintList);
 		Assert.assertFalse(sprintList.isEmpty());
-		System.out.println(sprintList);
+		//ystem.out.println(sprintList);
 	}
 }

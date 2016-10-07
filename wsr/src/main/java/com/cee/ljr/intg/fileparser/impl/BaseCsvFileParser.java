@@ -7,6 +7,8 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -40,61 +42,85 @@ public abstract class BaseCsvFileParser<T> {
 	
 	protected abstract T parseForSingle(String filePaths, Criteria criteria);
 	
-	protected CSVRecord parseForSingleRecord(Reader reader, Criteria criteria) {
+	public CSVRecord parseForSingleRecord(String filePaths, Criteria criteria) {
 		CSVRecord record = null;
 		
-		Iterable<CSVRecord> records = parseForAllRecords(reader, criteria);
+		Collection<CSVRecord> records = parseForAllRecords(filePaths, criteria);
 		
-		if (records.iterator().hasNext()) {
-			record = records.iterator().next();
+		for (CSVRecord csvRecord : records) {
+			record = csvRecord;
+			//log.debug("found record: " + record.toString());
+			break;//just need the first one....
 		}
 		
 		return record;
 	}
 	
 	
-	protected CSVRecord parseForSingleRecord(Reader reader) {
+	public CSVRecord parseForSingleRecord(String filePaths) {
 		CSVRecord record = null;
 		
-		Iterable<CSVRecord> records = parseForAllRecords(reader);
+		Collection<CSVRecord> records = parseForAllRecords(filePaths);
 		
-		if (records.iterator().hasNext()) {
-			record = records.iterator().next();
+		for (CSVRecord csvRecord : records) {
+			record = csvRecord;
+			//log.debug("found record: " + record.toString());
+			break;//just need the first one....
 		}
 		
 		return record;
 	}
 	
 	
-	protected Iterable<CSVRecord> parseForAllRecords(Reader reader, Criteria criteria) {
-		Iterable<CSVRecord> records = null;
+	public Collection<CSVRecord> parseForAllRecords(String filePaths, Criteria criteria) {
+		List<CSVRecord> recordList = new ArrayList<CSVRecord>();
 		
-		CSVFormat format = getFormat();
-		
-		try {
-			records = format.parse(reader, criteria);
-		} 
-		catch (IOException ioe) {
-			log.error("Unable to create records.", ioe);
+		for (String filePath : filePaths.split(";")) {
+			log.debug("parsing for all records in {} meeting the following criteria: [{}]", filePath, criteria);
+			Iterable<CSVRecord> records = null;
+			
+			Reader reader = getFileReader(FileUtil.getAbsolutePath(filePath));
+			
+			CSVFormat format = getFormat();
+			
+			try {
+				records = format.parse(reader, criteria);
+			} 
+			catch (IOException ioe) {
+				throw new RuntimeException("Unable to create records.", ioe);
+			}
+			recordList.addAll(convertToList(records));
+			
+			closeReader(reader);
 		}
 		
-		return records;
+		return recordList;
 	}
 	
 	
-	protected Iterable<CSVRecord> parseForAllRecords(Reader reader) {
-		Iterable<CSVRecord> records = null;
+	public Collection<CSVRecord> parseForAllRecords(String filePaths) {
+		List<CSVRecord> recordList = new ArrayList<CSVRecord>();
 		
-		CSVFormat format = getFormat();
-		
-		try {
-			records = format.parse(reader);
-		} 
-		catch (IOException ioe) {
-			log.error("Unable to create records.", ioe);
+		for (String filePath : filePaths.split(";")) {
+			log.debug("parsing for all records in {}", filePath);
+			Iterable<CSVRecord> records = null;
+			
+			Reader reader = getFileReader(FileUtil.getAbsolutePath(filePath));
+			
+			CSVFormat format = getFormat();
+			
+			try {
+				records = format.parse(reader);
+			} 
+			catch (IOException ioe) {
+				throw new RuntimeException("Unable to create records.", ioe);
+			}
+			recordList.addAll(convertToList(records));
+			
+			closeReader(reader);
 		}
 		
-		return records;
+		return recordList;
 	}
 	
 	
@@ -114,7 +140,7 @@ public abstract class BaseCsvFileParser<T> {
 			reader = new FileReader(absolutePath);
 		} 
 		catch (FileNotFoundException fnfe) {
-			log.error("Could not find file: " + filePath, fnfe);
+			throw new RuntimeException("Could not find file: " + filePath, fnfe);
 			//closeReader(reader);
 		}
 		return reader;
@@ -126,6 +152,16 @@ public abstract class BaseCsvFileParser<T> {
 		}
 		
 		return CSVFormat.EXCEL;
+	}
+	
+	protected List<CSVRecord> convertToList(Iterable<CSVRecord> records) {
+		List<CSVRecord> recordList = new ArrayList<CSVRecord>();
+		
+		for (CSVRecord csvRecord : records) {
+			recordList.add(csvRecord);
+		}
+		
+		return recordList;
 	}
 
 }

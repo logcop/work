@@ -63,7 +63,7 @@ public class SampleDocumentPOC {
 			    String fontName = (String)pairs.getKey();
 			    PhysicalFont pf = (PhysicalFont)pairs.getValue();
 			    
-			    System.out.println("Added paragraph for " + fontName);
+			    //ystem.out.println("Added paragraph for " + fontName);
 			    addObject(wordDocumentPart, sampleText, fontName );
 	
 			    // bold, italic etc

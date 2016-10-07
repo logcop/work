@@ -28,30 +28,30 @@ public class XlsxExplorationTest extends TestCase {
 				for (Cell cell : row) {
 					CellReference cellRef = new CellReference(row.getRowNum(),
 							cell.getColumnIndex());
-					System.out.print(cellRef.formatAsString() + " "
-							+ cell.getColumnIndex());
-					System.out.print(" - ");
+					//ystem.out.print(cellRef.formatAsString() + " "
+					//		+ cell.getColumnIndex());
+					//ystem.out.print(" - ");
 
 					switch (cell.getCellType()) {
 					case Cell.CELL_TYPE_STRING:
-						System.out.println(cell.getRichStringCellValue()
-								.getString());
+						//ystem.out.println(cell.getRichStringCellValue()
+						//		.getString());
 						break;
 					case Cell.CELL_TYPE_NUMERIC:
 						if (DateUtil.isCellDateFormatted(cell)) {
-							System.out.println(cell.getDateCellValue());
+							//ystem.out.println(cell.getDateCellValue());
 						} else {
-							System.out.println(cell.getNumericCellValue());
+							//ystem.out.println(cell.getNumericCellValue());
 						}
 						break;
 					case Cell.CELL_TYPE_BOOLEAN:
-						System.out.println(cell.getBooleanCellValue());
+						//ystem.out.println(cell.getBooleanCellValue());
 						break;
 					case Cell.CELL_TYPE_FORMULA:
-						System.out.println(cell.getCellFormula());
+						//ystem.out.println(cell.getCellFormula());
 						break;
 					default:
-						System.out.println();
+						//ystem.out.println();
 					}
 				}
 			}

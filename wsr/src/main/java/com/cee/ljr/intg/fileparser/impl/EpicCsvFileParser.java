@@ -1,6 +1,5 @@
 package com.cee.ljr.intg.fileparser.impl;
 
-import java.io.Reader;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,43 +56,34 @@ public class EpicCsvFileParser extends BaseCsvFileParser<Epic>{
 	
 	@Override
 	protected List<Epic> parseForAll(String filePaths, Criteria criteria) {
-		Reader reader = getFileReader(filePaths);
 		
-		Iterable<CSVRecord> records = parseForAllRecords(reader, criteria);
+		Iterable<CSVRecord> records = parseForAllRecords(filePaths, criteria);
 		
 		List<Epic> epics = mapper.map(records);
-		
-		closeReader(reader);
 		
 		return epics;
 	}
 
 	@Override
 	protected List<Epic> parseForAll(String filePaths) {
-		Reader reader = getFileReader(filePaths);
 		
-		Iterable<CSVRecord> records = parseForAllRecords(reader);
+		Iterable<CSVRecord> records = parseForAllRecords(filePaths);
 		
 		List<Epic> epics = mapper.map(records);
-		
-		closeReader(reader);
 		
 		return epics;
 	}
 
 	@Override
 	protected Epic parseForSingle(String filePaths, Criteria criteria) {
-		Reader reader = getFileReader(filePaths);
 		
-		CSVRecord record = parseForSingleRecord(reader, criteria);
+		CSVRecord record = parseForSingleRecord(filePaths, criteria);
 		
 		Epic epic = null;	
 		
 		if (record != null) {
 			epic = mapper.map(record);
 		}
-		
-		closeReader(reader);
 		
 		return epic;
 	}

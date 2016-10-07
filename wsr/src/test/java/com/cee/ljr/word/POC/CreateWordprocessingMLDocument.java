@@ -1,6 +1,5 @@
 package com.cee.ljr.word.POC;
 
-import org.docx4j.XmlUtils;
 import org.docx4j.openpackaging.packages.WordprocessingMLPackage;
 import org.docx4j.openpackaging.parts.WordprocessingML.MainDocumentPart;
 
@@ -27,7 +26,7 @@ public class CreateWordprocessingMLDocument  {
 	    
 		
 	   	// Pretty print the main document part
-		System.out.println(XmlUtils.marshaltoString(mdp.getJaxbElement(), true, true) );
+		//ystem.out.println(XmlUtils.marshaltoString(mdp.getJaxbElement(), true, true) );
 		
 		
 		wordMLPackage.save(new java.io.File(WrsPath) );						

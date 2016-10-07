@@ -2,6 +2,8 @@ package com.cee.ljr.intg.fileparser.impl;
 
 import java.io.IOException;
 import java.io.Reader;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -12,7 +14,6 @@ import com.cee.file.csv.CSVFormat;
 import com.cee.file.csv.CSVRecord;
 import com.cee.file.csv.criteria.Criteria;
 import com.cee.ljr.intg.jira.domain.JiraIssue;
-import com.cee.ljr.utils.FileUtil;
 
 @Component
 public class CsvReaderFileParser extends BaseCsvFileParser<JiraIssue>  {
@@ -24,33 +25,33 @@ public class CsvReaderFileParser extends BaseCsvFileParser<JiraIssue>  {
 		super(WITH_HEADER);
 	}
 	
-	public Iterable<CSVRecord> parse(String filePath, boolean parseHeader) {
+	/*public Iterable<CSVRecord> parse(String filePath, boolean parseHeader) {
 		String path = FileUtil.getAbsolutePath(filePath);
 		
 		Reader reader = getFileReader(path);		
 		
 		Iterable<CSVRecord> records = parseCsvFileReader(reader, parseHeader);
 		
-		closeReader(reader);
+		//closeReader(reader);
 		
 		return records;		
-	}
+	}*/
 	
 
-	public Iterable<CSVRecord> parse(String filePath, Criteria criteria) {
+	/*public Iterable<CSVRecord> parse(String filePath, Criteria criteria) {
 		String path = FileUtil.getAbsolutePath(filePath);
 		
 		Reader reader = getFileReader(path);
 		
 		Iterable<CSVRecord> records = parseCsvFileReader(reader, criteria);
 		
-		closeReader(reader);
+		//closeReader(reader);
 		
 		return records;
-	}
+	}*/
 	
 	
-	public CSVRecord parseForSingleRecord(String filePath, Criteria criteria) {
+	/*public CSVRecord parseForSingleRecord(String filePath, Criteria criteria) {
 		String path = FileUtil.getAbsolutePath(filePath);
 		
 		Reader reader = getFileReader(path);
@@ -62,12 +63,12 @@ public class CsvReaderFileParser extends BaseCsvFileParser<JiraIssue>  {
 			record = records.iterator().next();
 		}
 		
-		closeReader(reader);
+		//closeReader(reader);
 		
 		return record;
-	}
+	}*/
 	
-	private Iterable<CSVRecord> parseCsvFileReader(Reader reader, Criteria criteria) {
+	public Iterable<CSVRecord> parseCsvFileReader(Reader reader, Criteria criteria) {
 		Iterable<CSVRecord> records = null;
 		
 		CSVFormat csvFormat = CSVFormat.EXCEL.withHeader();
@@ -82,18 +83,25 @@ public class CsvReaderFileParser extends BaseCsvFileParser<JiraIssue>  {
 	}
 	
 	
-	private Iterable<CSVRecord> parseCsvFileReader(Reader reader, boolean parseHeader) {
-		Iterable<CSVRecord> records = null;
+	public Collection<CSVRecord> parseCsvFileReader(String filePaths, boolean parseHeader) {
+		List<CSVRecord> recordList = new ArrayList<CSVRecord>();
 		
-		CSVFormat csvFormat = getFormat();
-		try {
-			records = csvFormat.parse(reader);
-		} 
-		catch (IOException ioe) {
-			log.error("Unable to create records.", ioe);
+		for (String filePath : filePaths.split(";")) {
+			Reader reader = getFileReader(filePath);
+			
+			CSVFormat csvFormat = getFormat();
+			try {
+				Iterable<CSVRecord> records = csvFormat.parse(reader);
+				recordList.addAll(convertToList(records));
+			} 
+			catch (IOException ioe) {
+				log.error("Unable to create records.", ioe);
+			}
 		}
 		
-		return records;
+		
+		
+		return recordList;
 	}
 
 	@Override

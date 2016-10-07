@@ -27,6 +27,6 @@ public class DeveloperCsvDaoTest {
 		
 		Assert.assertNotNull(developerList);
 		Assert.assertFalse(developerList.isEmpty());
-		System.out.println(developerList);
+		//ystem.out.println(developerList);
 	}
 }

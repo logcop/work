@@ -8,20 +8,21 @@ import java.nio.file.Paths;
 public class FileUtil {
 
 	public static String getAbsolutePath(String filePath) {
+		String cleanFilePath = filePath.replace("\\", "/");
 		URI uri = null;
 		
 		try {
-			uri = new URI(filePath);
+			uri = new URI(cleanFilePath);
 		} 
 		catch (URISyntaxException e) {
 			e.printStackTrace();
 		}
 		
 		if (uri.isAbsolute()) {
-			return filePath;
+			return cleanFilePath;
 		}
 		
-		return System.getProperty("user.dir") + filePath;
+		return System.getProperty("user.dir") + cleanFilePath;
 	}
 	
 	

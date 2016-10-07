@@ -1,6 +1,5 @@
 package com.cee.ljr.intg.fileparser.impl;
 
-import java.io.Reader;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Collection;
@@ -115,27 +114,20 @@ public class SprintCsvFileParser extends BaseCsvFileParser<Sprint> implements Sp
 
 	@Override
 	protected List<Sprint> parseForAll(String filePaths, Criteria criteria) {		
-		Reader reader = getFileReader(filePaths);
-		
-		Iterable<CSVRecord> records = parseForAllRecords(reader, criteria);
+		Iterable<CSVRecord> records = parseForAllRecords(filePaths, criteria);
 		
 		List<Sprint> sprints = mapper.map(records);
-		
-		closeReader(reader);
 		
 		return sprints;
 	}
 
 
 	@Override
-	protected List<Sprint> parseForAll(String filePaths) {		
-		Reader reader = getFileReader(filePaths);
+	protected List<Sprint> parseForAll(String filePaths) {
 		
-		Iterable<CSVRecord> records = parseForAllRecords(reader);
+		Iterable<CSVRecord> records = parseForAllRecords(filePaths);
 		
 		List<Sprint> sprints = mapper.map(records);
-		
-		closeReader(reader);
 		
 		return sprints;
 	}
@@ -143,17 +135,13 @@ public class SprintCsvFileParser extends BaseCsvFileParser<Sprint> implements Sp
 	
 	@Override
 	protected Sprint parseForSingle(String filePaths, Criteria criteria) {		
-		Reader reader = getFileReader(filePaths);
-		
-		CSVRecord record = parseForSingleRecord(reader, criteria);
+		CSVRecord record = parseForSingleRecord(filePaths, criteria);
 		
 		Sprint sprint = null;	
 		
 		if (record != null) {
 			sprint = mapper.map(record);
 		}
-		
-		closeReader(reader);
 		
 		return sprint;
 	}

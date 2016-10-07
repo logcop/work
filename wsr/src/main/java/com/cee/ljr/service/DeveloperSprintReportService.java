@@ -77,9 +77,9 @@ public class DeveloperSprintReportService {
 		Developer developer = developerDao.getByNameInJira(developerName);
 		List<Sprint> sprints = sprintDao.getByNumber(sprintNumber);
 		// just need 1 sprint right now because they all have the same start and end dates.
-				Sprint aSprint = sprints.iterator().next();
-				Date sprintStartDate = aSprint.getStartDate();
-				Date sprintEndDate = aSprint.getEndDate();
+		Sprint aSprint = sprints.iterator().next();
+		Date sprintStartDate = aSprint.getStartDate();
+		Date sprintEndDate = aSprint.getEndDate();
 		List<String> sprintNames = SprintUtil.getSprintNames(sprints);
 		
 		List<DescriptiveTask> tasks = taskDao.getAllByDeveloperBetweenDates(csvPaths, developer, sprintStartDate, sprintEndDate);

@@ -1,11 +1,10 @@
 package com.cee.ljr.mapping;
 
+import static org.junit.Assert.assertTrue;
+
 import java.util.Date;
 
 import org.apache.commons.lang3.StringUtils;
-
-import static org.junit.Assert.*;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,8 +38,8 @@ public class JiraIssueMapperTest {
 	@Test
 	public void testCreateWorkLog() {
 		WorkLog workLog = jiraIssueMapper.createWorkLog(NO_COMMENT_WORKLOG_STR);
-		System.out.println("workLog string = " + NO_COMMENT_WORKLOG_STR);
-		System.out.println(workLog.toString());
+		//ystem.out.println("workLog string = " + NO_COMMENT_WORKLOG_STR);
+		//ystem.out.println(workLog.toString());
 		assertTrue( StringUtils.isEmpty(workLog.getComment()));
 		assertTrue( workLog.getDate() != null);
 		assertTrue( workLog.getDate().equals(date) );

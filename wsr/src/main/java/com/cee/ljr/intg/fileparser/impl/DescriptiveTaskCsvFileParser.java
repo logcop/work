@@ -1,10 +1,10 @@
 package com.cee.ljr.intg.fileparser.impl;
 
-import java.io.Reader;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
@@ -57,28 +57,21 @@ public class DescriptiveTaskCsvFileParser extends BaseCsvFileParser<DescriptiveT
 	
 	
 	@Override
-	protected List<DescriptiveTask> parseForAll(String filePaths, Criteria criteria) {
-		Reader reader = getFileReader(filePaths);
-		
-		Iterable<CSVRecord> records = parseForAllRecords(reader, criteria);
+	protected List<DescriptiveTask> parseForAll(String filePaths, Criteria criteria) {			
+		Collection<CSVRecord> records = parseForAllRecords(filePaths, criteria);
 		
 		List<DescriptiveTask> tasks = mapper.map(filePaths, records);
-		
-		closeReader(reader);
 		
 		return tasks;
 	}
 	
 
 	@Override
-	protected List<DescriptiveTask> parseForAll(String filePaths) {		
-		Reader reader = getFileReader(filePaths);
-		
-		Iterable<CSVRecord> records = parseForAllRecords(reader);
-		
+	protected List<DescriptiveTask> parseForAll(String filePaths) {	
+			
+		Collection<CSVRecord> records = parseForAllRecords(filePaths);
+			
 		List<DescriptiveTask> tasks = mapper.map(filePaths, records);
-		
-		closeReader(reader);
 		
 		return tasks;
 	}
@@ -86,17 +79,10 @@ public class DescriptiveTaskCsvFileParser extends BaseCsvFileParser<DescriptiveT
 
 	@Override
 	protected DescriptiveTask parseForSingle(String filePaths, Criteria criteria) {
-		Reader reader = getFileReader(filePaths);
 		
-		CSVRecord record = parseForSingleRecord(reader, criteria);
+		CSVRecord record = parseForSingleRecord(filePaths, criteria);
 		
-		DescriptiveTask task = null;	
-		
-		if (record != null) {
-			task = mapper.map(filePaths, record);
-		}
-		
-		closeReader(reader);
+		DescriptiveTask task = mapper.map(filePaths, record);
 		
 		return task;
 	}
