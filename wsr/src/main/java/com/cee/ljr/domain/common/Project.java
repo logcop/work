@@ -62,6 +62,7 @@ public class Project {
 	}
 	
 	public void addEpic(Epic epic) {
+		
 		if (epic == null) {
 			throw new IllegalArgumentException("Task cannot be null.");
 		}
@@ -75,6 +76,7 @@ public class Project {
 		if (CollectionUtils.isEmpty(keyToEpicMap)) {
 			keyToEpicMap = new HashMap<String, Epic>();
 		}
+		//log.debug("keyToEpicMap.put(\n{},\n{})", epicKey, epic);
 		keyToEpicMap.put(epicKey, epic);
 		
 	}	

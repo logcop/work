@@ -75,6 +75,7 @@ public class Epic extends BaseIssue {
 		if (CollectionUtils.isEmpty(keyToStoryMap)) {
 			keyToStoryMap = new HashMap<String, Story>();
 		}
+		//log.debug("keyToStoryMap.put(\n{},\n{})", storyKey, story);
 		keyToStoryMap.put(storyKey, story);
 		
 	}

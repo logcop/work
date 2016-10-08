@@ -1,11 +1,9 @@
 package com.cee.ljr.intg.jira.fileparser;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
@@ -90,7 +88,7 @@ public class JiraIssuesCsvFileParser {
 		return jiraIssues;
 	}
 	
-	private List<JiraIssue> parseForAttributeWithValue(String csvPath, JiraAttribute attribute, String value) {
+	/*private List<JiraIssue> parseForAttributeWithValue(String csvPath, JiraAttribute attribute, String value) {
 		List<JiraIssue> jiraIssues = new ArrayList<JiraIssue>();
 		
 		Collection<CSVRecord> records = csvFileParser.parseCsvFileReader(csvPath, false);
@@ -114,7 +112,7 @@ public class JiraIssuesCsvFileParser {
 		}
 		
 		return jiraIssues;
-	}	
+	}	*/
 	
 	
 	/**
@@ -123,7 +121,7 @@ public class JiraIssuesCsvFileParser {
 	 * @param csvPath
 	 * @param attributeToListOfValuesMap
 	 * @return
-	 */
+	 *//*
 	private List<JiraIssue> filterFor(String csvPath, Map<JiraAttribute, List<String>> attributeToListOfValuesMap ) {
 		List<JiraIssue> jiraIssues = new ArrayList<JiraIssue>();
 		
@@ -152,10 +150,10 @@ public class JiraIssuesCsvFileParser {
 		}
 		
 		return jiraIssues;
-	}
+	}*/
 	
 	
-	private boolean recordContainsAllValuesForAllAttributes(CSVRecord record,  
+	/*private boolean recordContainsAllValuesForAllAttributes(CSVRecord record,  
 			Map<JiraAttribute, List<Integer>> attributeToListOfIndexesMap,
 			Map<JiraAttribute, List<String>> attributeToListOfValuesMap ) {
 		
@@ -172,7 +170,7 @@ public class JiraIssuesCsvFileParser {
 			}
 		}
 		return true;
-	}
+	}*/
 	
 	
 	/**
@@ -182,7 +180,7 @@ public class JiraIssuesCsvFileParser {
 	 * @param attributeIndexes
 	 * @return
 	 */
-	private boolean recordContainsAllValuesForAttribute(
+	/*private boolean recordContainsAllValuesForAttribute(
 			CSVRecord record, List<String> values, List<Integer> attributeIndexes) {
 		
 		for (String value : values) {
@@ -193,16 +191,16 @@ public class JiraIssuesCsvFileParser {
 			}
 		}
 		return true;
-	}
+	}*/
 	
-	private boolean valueFound(CSVRecord record, String filterValue, List<Integer> attributeIndexes) {
+	/*private boolean valueFound(CSVRecord record, String filterValue, List<Integer> attributeIndexes) {
 		for (Integer index : attributeIndexes) {
 			if (filterValue.equals(record.get(index))) {
 				return true;
 			}
 		}
 		return false;
-	}
+	}*/
 	
 	private List<JiraIssue> parse(String csvPath) {
 		List<JiraIssue> jiraIssues = new ArrayList<JiraIssue>();
@@ -216,6 +214,7 @@ public class JiraIssuesCsvFileParser {
 		for(CSVRecord record : records){
 			if (index == HEADER_ROW_INDEX) {
 				// process the header row. have to do this because some column headers repeat.
+				//log.debug("Creating index to attribute map.");
 				indexToAttributeMap = createIndexToAttributeMap(record);
 			}
 			else {
@@ -258,8 +257,14 @@ public class JiraIssuesCsvFileParser {
 		
 		indexToAttributeMap = new HashMap<Integer, JiraAttribute>(numOfCellsInRow, 1.0f);
 		
+		//log.debug("creating indexToAttributeMap for record: {} with size {}", record, record.size());
 		int index = 0;
 		for (String attributeName : record) {
+			JiraAttribute ja = JiraAttribute.get(attributeName);
+			if (ja == null) {
+				throw new RuntimeException("Cannot create JiraAttribute given attributeName = " + attributeName);
+			}
+			//log.debug("indexToAttributeMap.put({}, {})", index, JiraAttribute.get(attributeName));
 			indexToAttributeMap.put(index, JiraAttribute.get(attributeName));
 			++index;
 		}
@@ -268,7 +273,7 @@ public class JiraIssuesCsvFileParser {
 	}		
 	
 	
-	private Map<JiraAttribute, List<Integer>> createAttributeToListOfIndexesMap(CSVRecord record) {		
+	/*private Map<JiraAttribute, List<Integer>> createAttributeToListOfIndexesMap(CSVRecord record) {		
 		Map<JiraAttribute, List<Integer>> attributeToListOfIndexesMap = 
 				new HashMap<JiraAttribute, List<Integer>>(record.size(), 1.0f);
 		
@@ -287,5 +292,5 @@ public class JiraIssuesCsvFileParser {
 		}
 		
 		return attributeToListOfIndexesMap;
-	}
+	}*/
 }

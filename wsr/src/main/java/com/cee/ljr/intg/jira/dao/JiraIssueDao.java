@@ -7,7 +7,7 @@ import com.cee.ljr.intg.jira.domain.JiraIssue;
 
 public interface JiraIssueDao {
 	
-	List<JiraIssue> getAllIssues();
+	List<JiraIssue> getAllIssues(String csvPaths);
 	
 	//List<JiraIssue> getTasksByDeveloperAndSprints(String developerName, List<String> sprintNames);
 }

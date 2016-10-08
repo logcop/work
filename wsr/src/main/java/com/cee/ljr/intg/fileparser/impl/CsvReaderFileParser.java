@@ -88,7 +88,7 @@ public class CsvReaderFileParser extends BaseCsvFileParser<JiraIssue>  {
 		
 		for (String filePath : filePaths.split(";")) {
 			Reader reader = getFileReader(filePath);
-			
+			withHeader = parseHeader;
 			CSVFormat csvFormat = getFormat();
 			try {
 				Iterable<CSVRecord> records = csvFormat.parse(reader);
@@ -99,10 +99,9 @@ public class CsvReaderFileParser extends BaseCsvFileParser<JiraIssue>  {
 			}
 		}
 		
-		
-		
 		return recordList;
 	}
+	
 
 	@Override
 	protected List<JiraIssue> parseForAll(String filePaths, Criteria criteria) {

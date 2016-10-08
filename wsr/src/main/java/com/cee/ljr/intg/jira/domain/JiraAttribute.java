@@ -21,6 +21,7 @@ public enum JiraAttribute {
 	CUSTOM_FIELD_TEAM("Custom field (Team)"),
 	CUSTOM_FIELD_TEST_SESSIONS("Custom field (Test sessions)"),
 	CUSTOM_FIELD_TESTING_STATUS("Custom field (Testing status)"),
+	CUSTOM_FIELD_PARENT_LINK("Custom field (Parent Link)"),
 	DLTA_ORIG_ESTIMATE("Σ Original Estimate"),
 	DLTA_REMAIN_ESTIMATE("Σ Remaining Estimate"),
 	DLTA_TIME_SPENT("Σ Time Spent"),

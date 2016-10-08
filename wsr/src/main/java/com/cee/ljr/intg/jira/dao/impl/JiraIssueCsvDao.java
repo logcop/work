@@ -3,8 +3,6 @@ package com.cee.ljr.intg.jira.dao.impl;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
 
 import com.cee.ljr.intg.jira.dao.JiraIssueDao;
@@ -12,18 +10,14 @@ import com.cee.ljr.intg.jira.domain.JiraIssue;
 import com.cee.ljr.intg.jira.fileparser.JiraIssuesCsvFileParser;
 
 @Component
-@PropertySource("classpath:/properties/data-access.properties")
 @Deprecated
 public class JiraIssueCsvDao implements JiraIssueDao{
 
 	@Autowired
 	JiraIssuesCsvFileParser jiraIssuesCsvFileParser;
 	
-	@Value("${jira.csv.urls}")
-	String csvPaths;
-	
 	@Override
-	public List<JiraIssue> getAllIssues() {
+	public List<JiraIssue> getAllIssues(String csvPaths) {
 		return jiraIssuesCsvFileParser.parseAll(csvPaths);		
 	}
 	

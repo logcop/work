@@ -9,8 +9,9 @@ import com.cee.ljr.config.ApplicationConfig;
 import com.cee.ljr.document.generator.WeeklyStatusReportDocxGenerator;
 import com.cee.ljr.domain.report.WeeklyStatusReport;
 import com.cee.ljr.service.WeeklyStatusReportService;
+import com.cee.ljr.test.BaseTest;
 
-public class WSRproofOfConcept {
+public class WSRproofOfConcept extends BaseTest {
 	//private static ObjectFactory objectFactory = new ObjectFactory();
 	/*private static final String WrsPath = System.getProperty("user.dir")
 			+ "/WRSproofOfConcept.docx";
@@ -24,7 +25,7 @@ public class WSRproofOfConcept {
 		WeeklyStatusReportDocxGenerator weeklyStatusReportDocxGenerator = ctx.getBean(WeeklyStatusReportDocxGenerator.class);
 
 		// Sprint will be passed into the production code, lives here for now..
-		WeeklyStatusReport weeklyStatusReport = srService.getWeeklyStatusReport(new Date(), new Date());
+		WeeklyStatusReport weeklyStatusReport = srService.getWeeklyStatusReport(csvPaths, new Date(), new Date());
 		weeklyStatusReportDocxGenerator.generateDocument(weeklyStatusReport);
 		
 		/*WordprocessingMLPackage wordMLPackage = WordprocessingMLPackage.createPackage();

@@ -5,10 +5,13 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.cee.ljr.intg.jira.domain.IssueType;
 
 public class Story extends BaseIssue {
-	//private static final Logger //log = LoggerFactory.getLogger(Story.class);
+	private static final Logger log = LoggerFactory.getLogger(Story.class);
 	private String name;
 	private float hoursWorkedBetween;
 	private float totalHoursWorked;
@@ -69,6 +72,7 @@ public class Story extends BaseIssue {
 		}
 		if (IssueType.TASK.equals(task.getType()) || IssueType.BUG.equals(task.getType())) {
 			//log.debug("{} adding {} {}.", getKey(), task.getType(), task.getKey());
+			//log.debug("keyToTaskMap.put(\n{},\n{})", taskKey, task);
 			keyToTaskMap.put(taskKey, task);
 		}
 		if (IssueType.SUB_TASK.equals(task.getType())) {
