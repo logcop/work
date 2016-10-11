@@ -104,7 +104,7 @@ public class WeeklyStatusReportXlsxGenerator {
 		
 		return new StringBuilder()
 					.append(props.getWeeklyStatusReportTitle())
-					.append(" WE ")
+					.append("_WE_")
 					.append(dateString)
 					.append(".xlsx")
 					.toString();

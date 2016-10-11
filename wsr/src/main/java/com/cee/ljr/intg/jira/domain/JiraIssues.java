@@ -44,35 +44,41 @@ public class JiraIssues {
 		String issueId = jiraIssue.getValue(JiraAttribute.ISSUE_ID);
 		//log.debug("Add Issue Type = [{}]", issueType);
 		if (IssueType.EPIC.equals(issueType)) {
-			//log.debug("Adding Epic jiraIssue:/n {}", jiraIssue);
+			log.debug("Adding Epic jiraIssue....", jiraIssue);
+			//log.debug("epicsMap.put(\n{}, \n{})", issueKey, jiraIssue);
 			epicsMap.put(issueKey, jiraIssue);
 		}
 		else if (IssueType.STORY.equals(issueType)) {
-			//log.debug("Adding Story jiraIssue:/n {}", jiraIssue);
+			//log.debug("Adding Story jiraIssue...");
 			List<String> linkedTasks = jiraIssue.getAllValues(JiraAttribute.OUTWARD_ISSUE_LINK_PROBLEM_INCIDENT);
 			// map this association so we can look up a story related to a task.
 			for (String taskKey : linkedTasks) {
 				if(!taskKeyToStoryKeyMap.containsKey(taskKey)) {
+					//log.debug("taskKeyToStoryKeyMap.put(\n{}, \n{})", taskKey, issueKey);
 					taskKeyToStoryKeyMap.put(taskKey, issueKey);
 				}
 			}
 			storiesMap.put(issueKey, jiraIssue);
 		} 
 		else if (IssueType.TASK.equals(issueType)) {
-			//log.debug("Adding Task jiraIssue:/n {}", jiraIssue);
+			//log.debug("Adding Task jiraIssue...");
+			//log.debug("tasksMap.put(\n{}, \n{})", issueKey, jiraIssue);
 			tasksMap.put(issueKey, jiraIssue);
+			//log.debug("taskIdToKeyMap.put({}, {})", issueId, issueKey);
 			taskIdToKeyMap.put(issueId, issueKey);
 		} 
 		else if (IssueType.SUB_TASK.equals(issueType)) {
-			//log.debug("\nAdding key: {} \nand Sub-Task: {}/n", issueKey, jiraIssue.getSummary());
+			//log.debug("Adding Subtask jiraIssue...");
+			//log.debug("subTasksMap.put(\n{}, \n{})", issueKey, jiraIssue);
 			subTasksMap.put(issueKey, jiraIssue);
 		}
 		else if (IssueType.BUG.equals(issueType)) {
-			//log.debug("\nAdding key: {} \nand Bug: {}\n", issueKey, jiraIssue.getSummary());
+			//log.debug("Adding Bug jiraIssue...");
+			//log.debug("tasksMap.put(\n{}, \n{})", issueKey, jiraIssue);
 			bugsMap.put(issueKey, jiraIssue);
 		} 
 		else {
-			throw new RuntimeException("unsupported issue type for JiraIssue: " + jiraIssue);
+			throw new RuntimeException("unsupported issue type [" + issueType + "] for JiraIssue: " + jiraIssue);
 		}
 	}
 	

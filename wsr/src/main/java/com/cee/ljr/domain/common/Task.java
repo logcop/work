@@ -82,6 +82,7 @@ public class Task extends BaseIssue {
 	}
 	
 	public void addSubTask(Task subTask) {
+		//log.debug("keyToSubtaskMap.put(\n{},\n{})", subTask.getKey(), subTask);
 		keyToSubtaskMap.put(subTask.getKey(), subTask);
 	}
 	

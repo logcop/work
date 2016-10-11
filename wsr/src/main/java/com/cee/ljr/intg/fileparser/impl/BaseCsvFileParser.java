@@ -27,7 +27,7 @@ import com.cee.ljr.utils.FileUtil;
 @PropertySource("classpath:/properties/data-access.properties")
 public abstract class BaseCsvFileParser<T> {
 	
-	private boolean withHeader = true;
+	protected boolean withHeader = true;
 	
 	private static final Logger log = LoggerFactory.getLogger(BaseCsvFileParser.class); 
 

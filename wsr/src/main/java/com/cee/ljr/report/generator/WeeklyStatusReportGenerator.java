@@ -25,21 +25,21 @@ public class WeeklyStatusReportGenerator {
 	private WeeklyStatusReportXlsxGenerator weeklyStatusReportXlsxGenerator;
 	
 	
-	public void generateV1(String weekEndingDateStr) {
+	public void generateV1(String weekEndingDateStr, String jiraFilePaths) {
 		Date weekStartDate = DateUtil.getWeekStartDate(weekEndingDateStr);
 		Date weekEndingDate = DateUtil.getWeekEndingDate(weekEndingDateStr);
 		
-		WeeklyStatusReport weeklyStatusReport = srService.getWeeklyStatusReport(weekStartDate, weekEndingDate);
+		WeeklyStatusReport weeklyStatusReport = srService.getWeeklyStatusReport(jiraFilePaths, weekStartDate, weekEndingDate);
 		
 		weeklyStatusReportDocxGenerator.generateDocument(weeklyStatusReport);
 	}
 	
 	
-	public void generateV2(String weekEndingDateStr, String reportPath){
+	public void generateV2(String weekEndingDateStr, String reportPath, String jiraFilePaths){
 		Date weekStartDate = DateUtil.getWeekStartDate(weekEndingDateStr);
 		Date weekEndingDate = DateUtil.getWeekEndingDate(weekEndingDateStr);
 		
-		WeeklyStatusReport weeklyStatusReport = srService.getWeeklyStatusReport(weekStartDate, weekEndingDate);
+		WeeklyStatusReport weeklyStatusReport = srService.getWeeklyStatusReport(jiraFilePaths, weekStartDate, weekEndingDate);
 		
 		weeklyStatusReportXlsxGenerator.generateWsrDocument(weeklyStatusReport, reportPath);
 	}
