@@ -1,5 +1,6 @@
 package com.cee.ljr.document.generator;
 
+import java.awt.Color;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Paths;
@@ -11,11 +12,13 @@ import org.apache.commons.lang3.mutable.MutableInt;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.DataFormat;
-import org.apache.poi.ss.usermodel.IndexedColors;
+import org.apache.poi.ss.usermodel.HorizontalAlignment;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.util.CellRangeAddress;
+import org.apache.poi.xssf.usermodel.XSSFCellStyle;
+import org.apache.poi.xssf.usermodel.XSSFColor;
+import org.apache.poi.xssf.usermodel.XSSFFont;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,20 +43,35 @@ public class WeeklyStatusReportXlsxGenerator {
 	@Autowired
 	ReportProperties props;
 	
+	private static final int projectColIndex = 0;
 	private static final int epicColIndex = 0;
-	private static final int storyColIndex = 1;
-	private static final int taskSummaryColIndex = 2;
-	private static final int runningTotalLabelColIndex = 3;
-	private static final int runningTotalValueColIndex = 4;
-	private static final int weeklyTotalLabelColIndex = 5;
-	private static final int weeklyTotalValueColIndex = 6;
+	private static final int storyColIndex = 0;
+	private static final int taskSummaryColIndex = 0;
+	//private static final int mergedColIndex = 2;
+	private static final int runningTotalLabelColIndex = 1;
+	private static final int runningTotalValueColIndex = 2;
+	private static final int weeklyTotalLabelColIndex = 3;
+	private static final int weeklyTotalValueColIndex = 4;
 	
-	private static CellStyle epicCellStyle;
-	private static CellStyle storyCellStyle;
-	private static CellStyle taskCellStyle;	
-	private static CellStyle epicHoursCellStyle;
-	private static CellStyle storyHoursCellStyle;
-	private static CellStyle taskHoursCellStyle;
+	private static final XSSFColor projectFillColor = new XSSFColor(new Color(112,112,112));
+	private static final XSSFColor projectFontColor = new XSSFColor(new Color(255,255,255));
+	
+	private static final XSSFColor epicFillColor = new XSSFColor(new Color(211,211,211));
+	private static final XSSFColor epicFontColor = new XSSFColor(new Color(0,0,0));
+	
+	private static final XSSFColor storyFontColor = new XSSFColor(new Color(0,0,0));
+	private static final XSSFColor storyFillColor = new XSSFColor(new Color(236,237,225));
+	
+	private static final HorizontalAlignment storyHorizontalAlignment = HorizontalAlignment.CENTER;
+	
+	private static XSSFCellStyle  projectCellStyle;
+	private static XSSFCellStyle epicCellStyle;
+	private static XSSFCellStyle storyCellStyle;
+	private static XSSFCellStyle taskCellStyle;	
+	private static XSSFCellStyle projectHoursCellStyle;
+	private static XSSFCellStyle epicHoursCellStyle;
+	private static XSSFCellStyle storyHoursCellStyle;
+	private static XSSFCellStyle taskHoursCellStyle;
 	private static DataFormat dataFormat;
 	private static short hoursDataFormat;
 	
@@ -104,7 +122,7 @@ public class WeeklyStatusReportXlsxGenerator {
 		
 		return new StringBuilder()
 					.append(props.getWeeklyStatusReportTitle())
-					.append("_WE_")
+					.append(" WE ")
 					.append(dateString)
 					.append(".xlsx")
 					.toString();
@@ -117,7 +135,7 @@ public class WeeklyStatusReportXlsxGenerator {
 	 */
 	private void generateSpreadsheet(WeeklyStatusReport weeklyStatusReport, String reportPath) {
 		log.info("{} generating.", props.getWeeklyStatusReportTitle());
-		Workbook wb = new XSSFWorkbook();
+		XSSFWorkbook wb = new XSSFWorkbook();
 		Date startDate = weeklyStatusReport.getWeekStartDate();
 		Date endDate = weeklyStatusReport.getWeekEndingDate();
 		initializeCellStyles(wb);
@@ -145,19 +163,20 @@ public class WeeklyStatusReportXlsxGenerator {
 		}
 	}
 	
-	private void initializeCellStyles(Workbook wb) {
+	private void initializeCellStyles(XSSFWorkbook  wb) {
 		initializeHoursDataFormat(wb);
+		initializeProjectStyles(wb);
 		initializeEpicStyles(wb);
 		initializeStoryStyles(wb);
 		initializeTaskStyles(wb);
 	}
 	
-	private void initializeHoursDataFormat(Workbook wb) {
+	private void initializeHoursDataFormat(XSSFWorkbook  wb) {
 		dataFormat = wb.createDataFormat();
 		hoursDataFormat = dataFormat.getFormat("#,##0.00");		
 	}
 	
-	private void initializeTaskStyles(Workbook wb){
+	private void initializeTaskStyles(XSSFWorkbook  wb){
 		taskCellStyle = wb.createCellStyle();
 		//taskCellStyle.setFillForegroundColor(IndexedColors.SKY_BLUE.getIndex());
 		//taskCellStyle.setFillPattern(CellStyle.SOLID_FOREGROUND);
@@ -168,37 +187,103 @@ public class WeeklyStatusReportXlsxGenerator {
 		taskHoursCellStyle.setDataFormat(hoursDataFormat);
 	}
 	
-	private void initializeStoryStyles(Workbook wb){
+	private void initializeStoryStyles(XSSFWorkbook  wb){
 		storyCellStyle = wb.createCellStyle();
-		storyCellStyle.setFillForegroundColor(IndexedColors.GREY_25_PERCENT.getIndex());
+		storyCellStyle.setFillForegroundColor(storyFillColor);
 		storyCellStyle.setFillPattern(CellStyle.SOLID_FOREGROUND);
+		storyCellStyle.setAlignment(storyHorizontalAlignment);
+		
+		XSSFFont storyFont = wb.createFont();
+		storyFont.setColor(storyFontColor);
+		storyFont.setBold(true);
+		storyFont.setFontName("Cambria");
+		storyFont.setFontHeightInPoints((short) 11);
+		storyCellStyle.setFont(storyFont);
 		
 		storyHoursCellStyle = wb.createCellStyle();
-		storyHoursCellStyle.setFillForegroundColor(IndexedColors.GREY_25_PERCENT.getIndex());
+		storyHoursCellStyle.setFillForegroundColor(storyFillColor);
 		storyHoursCellStyle.setFillPattern(CellStyle.SOLID_FOREGROUND);
 		storyHoursCellStyle.setDataFormat(hoursDataFormat);
+		
+		XSSFFont storyHoursFont = wb.createFont();
+		storyHoursFont.setColor(storyFontColor);
+		storyHoursFont.setBold(true);
+		storyHoursFont.setFontName("Calibri");
+		storyHoursFont.setFontHeightInPoints((short) 11);
+		storyHoursCellStyle.setFont(storyHoursFont);
 	}
 	
-	private void initializeEpicStyles(Workbook wb) {
+	private void initializeEpicStyles(XSSFWorkbook  wb) {
 		epicCellStyle = wb.createCellStyle();
-		epicCellStyle.setFillForegroundColor(IndexedColors.SKY_BLUE.getIndex());
+		epicCellStyle.setFillForegroundColor(epicFillColor);
 		epicCellStyle.setFillPattern(CellStyle.SOLID_FOREGROUND);
 		
+		XSSFFont epicFont = wb.createFont();
+		epicFont.setColor(epicFontColor);
+		epicFont.setBold(true);
+		epicFont.setFontName("Cambria");
+		epicFont.setFontHeightInPoints((short) 13);
+		epicCellStyle.setFont(epicFont);
+		
 		epicHoursCellStyle = wb.createCellStyle();
-		epicHoursCellStyle.setFillForegroundColor(IndexedColors.SKY_BLUE.getIndex());
+		epicHoursCellStyle.setFillForegroundColor(epicFillColor);
 		epicHoursCellStyle.setFillPattern(CellStyle.SOLID_FOREGROUND);
 		epicHoursCellStyle.setDataFormat(hoursDataFormat);
+		
+		XSSFFont epicHoursFont = wb.createFont();
+		epicHoursFont.setColor(epicFontColor);
+		epicHoursFont.setBold(true);
+		epicHoursFont.setFontName("Calibri");
+		epicHoursFont.setFontHeightInPoints((short) 11);
+		epicHoursCellStyle.setFont(epicHoursFont);
 	}
 	
-	private void addProject(Workbook wb, Project project, Date startDate, Date endDate) {
+	private void initializeProjectStyles(XSSFWorkbook  wb) {
+		projectCellStyle = wb.createCellStyle();
+		projectCellStyle.setFillForegroundColor(projectFillColor);
+		projectCellStyle.setFillPattern(CellStyle.SOLID_FOREGROUND);
+		
+		XSSFFont projectFont = wb.createFont();
+		projectFont.setColor(projectFontColor);
+		projectFont.setBold(true);
+		projectFont.setFontName("Cambria");
+		projectFont.setFontHeightInPoints((short) 13);
+		projectCellStyle.setFont(projectFont);
+		
+		
+		projectHoursCellStyle = wb.createCellStyle();
+		projectHoursCellStyle.setFillForegroundColor(projectFillColor);
+		projectHoursCellStyle.setFillPattern(CellStyle.SOLID_FOREGROUND);
+		projectHoursCellStyle.setDataFormat(hoursDataFormat);
+		
+		XSSFFont projectHoursFont = wb.createFont();
+		projectHoursFont.setColor(projectFontColor);
+		projectHoursFont.setBold(true);
+		projectHoursFont.setFontName("Calibri");
+		projectHoursFont.setFontHeightInPoints((short) 11);
+		projectHoursCellStyle.setFont(projectHoursFont);
+	}
+	
+	private void addProject(XSSFWorkbook  wb, Project project, Date startDate, Date endDate) {
 		Sheet sheet = wb.createSheet(project.getName());
-		MutableInt nextRowIndex = new MutableInt(-1);
+		MutableInt nextRowIndex = new MutableInt(0);
+		
+		int rowIndex = nextRowIndex.intValue();
+		Row row = sheet.createRow(rowIndex);
+		Cell cell = row.createCell(projectColIndex);
+		cell.setCellValue(project.getName());
+		cell.setCellStyle(projectCellStyle);
+		
+		mergeCellsInRow(sheet, rowIndex, projectColIndex, runningTotalValueColIndex);	
+		
+		addWeeklyTotal(row, project.getHoursWorkedBetween(startDate, endDate), projectHoursCellStyle, projectHoursCellStyle, true);
+		
 		for (Epic epic : project.getEpics()) {
 			float hoursWorkedForWeek = epic.getHoursWorkedBetween(startDate, endDate);
 			//log.debug("Weekly hours worked for epic: " + hoursWorkedForWeek);
 			if (hoursWorkedForWeek > 0) {
 				nextRowIndex.add(1);
-				addEpic(sheet, nextRowIndex, epic, startDate, endDate);
+				addEpic(wb, sheet, nextRowIndex, epic, startDate, endDate);
 			}
 		}
 		// have to autosize after sheet is populated
@@ -227,40 +312,40 @@ public class WeeklyStatusReportXlsxGenerator {
 		return maxColumnNum;
 	}
 	
-	private void addEpic(Sheet sheet, MutableInt nextRowIndex, Epic epic, Date startDate, Date endDate) {
+	private void addEpic(XSSFWorkbook  wb, Sheet sheet, MutableInt nextRowIndex, Epic epic, Date startDate, Date endDate) {
 		int rowIndex = nextRowIndex.intValue();
 		Row row = sheet.createRow(rowIndex);
 		Cell cell = row.createCell(epicColIndex);
 		cell.setCellValue(epic.getName());
 		cell.setCellStyle(epicCellStyle);
 		
-		mergeCellsInRow(sheet, rowIndex, epicColIndex, taskSummaryColIndex);		
+		//mergeCellsInRow(sheet, rowIndex, epicColIndex, mergedColIndex);		
 		
-		addRunningTotal(row, epic.getTotalHoursWorked(), epicCellStyle, epicHoursCellStyle, true);
-		addWeeklyTotal(row, epic.getHoursWorkedBetween(startDate, endDate), epicCellStyle, epicHoursCellStyle, true);
+		addRunningTotal(row, epic.getTotalHoursWorked(), epicHoursCellStyle, epicHoursCellStyle, true);
+		addWeeklyTotal(row, epic.getHoursWorkedBetween(startDate, endDate), epicHoursCellStyle, epicHoursCellStyle, true);
 		
 		for (Story story : epic.getStories()) {
 			float hoursWorkedForWeek = story.getHoursWorkedBetween(startDate, endDate);
 			//log.debug("Weekly hours worked for story: " + hoursWorkedForWeek);
 			if (hoursWorkedForWeek > 0) {
 				nextRowIndex.add(1);
-				addStory(sheet, nextRowIndex, story, startDate, endDate);
+				addStory(wb, sheet, nextRowIndex, story, startDate, endDate);
 			}
 		}
 	}
 	
-	private void addStory(Sheet sheet, MutableInt nextRowIndex, Story story, Date startDate, Date endDate) {
+	private void addStory(XSSFWorkbook  wb, Sheet sheet, MutableInt nextRowIndex, Story story, Date startDate, Date endDate) {
 		int storyRowIndex = nextRowIndex.intValue();
 		
 		Row row = sheet.createRow(storyRowIndex);
 		Cell cell = row.createCell(storyColIndex);
-		cell.setCellValue(story.getName());
 		cell.setCellStyle(storyCellStyle);
+		cell.setCellValue(story.getName());
 		
-		mergeCellsInRow(sheet, storyRowIndex, storyColIndex, taskSummaryColIndex);		
+		//mergeCellsInRow(sheet, storyRowIndex, storyColIndex, mergedColIndex);		
 		
-		addRunningTotal(row, story.getTotalHoursWorked(), storyCellStyle, storyHoursCellStyle, false);
-		addWeeklyTotal(row, story.getHoursWorkedBetween(startDate, endDate), storyCellStyle, storyHoursCellStyle, false);
+		addRunningTotal(row, story.getTotalHoursWorked(), storyHoursCellStyle, storyHoursCellStyle, true);
+		addWeeklyTotal(row, story.getHoursWorkedBetween(startDate, endDate), storyHoursCellStyle, storyHoursCellStyle, true);
 		
 		for (Task task : story.getTasks()) {
 			float hoursWorkedForWeek = task.getHoursWorkedBetween(startDate, endDate);
@@ -272,15 +357,18 @@ public class WeeklyStatusReportXlsxGenerator {
 		}
 		//Group the Rows together
         sheet.groupRow(storyRowIndex+1,nextRowIndex.intValue());
-        sheet.setRowGroupCollapsed(storyRowIndex+1, true);
+        sheet.setRowGroupCollapsed(storyRowIndex+1, false);
 	}
 	
 	private void addTask(Sheet sheet, MutableInt nextRowIndex, Task task, Date startDate, Date endDate) {
-		Row row = sheet.createRow(nextRowIndex.intValue());
+		int taskRowIndex = nextRowIndex.intValue();
+		
+		Row row = sheet.createRow(taskRowIndex);
 		Cell cell = row.createCell(taskSummaryColIndex);
 		cell.setCellValue(task.getSummary());
-			
-		addRunningTotal(row, task.getTotalHoursWorked(), taskCellStyle, taskHoursCellStyle, false);
+
+		mergeCellsInRow(sheet, taskRowIndex, taskSummaryColIndex, weeklyTotalLabelColIndex);
+		
 		addWeeklyTotal(row, task.getHoursWorkedBetween(startDate, endDate), taskCellStyle, taskHoursCellStyle, false);
 	}
 	
