@@ -47,7 +47,6 @@ public class WeeklyStatusReportXlsxGenerator {
 	private static final int epicColIndex = 0;
 	private static final int storyColIndex = 0;
 	private static final int taskSummaryColIndex = 0;
-	//private static final int mergedColIndex = 2;
 	private static final int runningTotalLabelColIndex = 1;
 	private static final int runningTotalValueColIndex = 2;
 	private static final int weeklyTotalLabelColIndex = 3;
@@ -62,7 +61,7 @@ public class WeeklyStatusReportXlsxGenerator {
 	private static final XSSFColor storyFontColor = new XSSFColor(new Color(0,0,0));
 	private static final XSSFColor storyFillColor = new XSSFColor(new Color(236,237,225));
 	
-	private static final HorizontalAlignment storyHorizontalAlignment = HorizontalAlignment.CENTER;
+	private static final HorizontalAlignment storyHorizontalAlignment = HorizontalAlignment.LEFT;
 	
 	private static XSSFCellStyle  projectCellStyle;
 	private static XSSFCellStyle epicCellStyle;
@@ -72,8 +71,10 @@ public class WeeklyStatusReportXlsxGenerator {
 	private static XSSFCellStyle epicHoursCellStyle;
 	private static XSSFCellStyle storyHoursCellStyle;
 	private static XSSFCellStyle taskHoursCellStyle;
+	
 	private static DataFormat dataFormat;
 	private static short hoursDataFormat;
+	
 	
 	/**
 	 * Generates the Weekly Status Report spreadsheet from the given report and report path.
@@ -113,7 +114,8 @@ public class WeeklyStatusReportXlsxGenerator {
 		}
 		String documentName = generateReportName(weekEndingDate);
 		
-		return Paths.get(reportPath, documentName).toAbsolutePath().toString();
+		//return Paths.get(reportPath, documentName).toAbsolutePath().toString();
+		return Paths.get(documentName).toAbsolutePath().toString();
 		
 	}
 	
@@ -177,13 +179,8 @@ public class WeeklyStatusReportXlsxGenerator {
 	}
 	
 	private void initializeTaskStyles(XSSFWorkbook  wb){
-		taskCellStyle = wb.createCellStyle();
-		//taskCellStyle.setFillForegroundColor(IndexedColors.SKY_BLUE.getIndex());
-		//taskCellStyle.setFillPattern(CellStyle.SOLID_FOREGROUND);
-		
+		taskCellStyle = wb.createCellStyle();		
 		taskHoursCellStyle = wb.createCellStyle();
-		//taskHoursCellStyle.setFillForegroundColor(IndexedColors.SKY_BLUE.getIndex());
-		//taskHoursCellStyle.setFillPattern(CellStyle.SOLID_FOREGROUND);
 		taskHoursCellStyle.setDataFormat(hoursDataFormat);
 	}
 	
@@ -317,9 +314,7 @@ public class WeeklyStatusReportXlsxGenerator {
 		Row row = sheet.createRow(rowIndex);
 		Cell cell = row.createCell(epicColIndex);
 		cell.setCellValue(epic.getName());
-		cell.setCellStyle(epicCellStyle);
-		
-		//mergeCellsInRow(sheet, rowIndex, epicColIndex, mergedColIndex);		
+		cell.setCellStyle(epicCellStyle);	
 		
 		addRunningTotal(row, epic.getTotalHoursWorked(), epicHoursCellStyle, epicHoursCellStyle, true);
 		addWeeklyTotal(row, epic.getHoursWorkedBetween(startDate, endDate), epicHoursCellStyle, epicHoursCellStyle, true);
@@ -340,9 +335,7 @@ public class WeeklyStatusReportXlsxGenerator {
 		Row row = sheet.createRow(storyRowIndex);
 		Cell cell = row.createCell(storyColIndex);
 		cell.setCellStyle(storyCellStyle);
-		cell.setCellValue(story.getName());
-		
-		//mergeCellsInRow(sheet, storyRowIndex, storyColIndex, mergedColIndex);		
+		cell.setCellValue(story.getName());	
 		
 		addRunningTotal(row, story.getTotalHoursWorked(), storyHoursCellStyle, storyHoursCellStyle, true);
 		addWeeklyTotal(row, story.getHoursWorkedBetween(startDate, endDate), storyHoursCellStyle, storyHoursCellStyle, true);
