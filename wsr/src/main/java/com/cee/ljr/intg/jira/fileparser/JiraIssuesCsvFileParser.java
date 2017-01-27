@@ -204,7 +204,7 @@ public class JiraIssuesCsvFileParser {
 	
 	private List<JiraIssue> parse(String csvPath) {
 		List<JiraIssue> jiraIssues = new ArrayList<JiraIssue>();
-		
+		//log.info("Attempting to parse " + csvPath + "...");
 		Iterable<CSVRecord> records = csvFileParser.parseCsvFileReader(csvPath, false);
 		
 		//Iterable<CSVRecord> records = csvFileParser.parse(csvPath, false);
@@ -262,7 +262,7 @@ public class JiraIssuesCsvFileParser {
 		for (String attributeName : record) {
 			JiraAttribute ja = JiraAttribute.get(attributeName);
 			if (ja == null) {
-				throw new RuntimeException("Cannot create JiraAttribute given attributeName = " + attributeName);
+				throw new RuntimeException("Cannot create JiraAttribute given attributeName = '" + attributeName + "' in index: " + index);
 			}
 			//log.debug("indexToAttributeMap.put({}, {})", index, JiraAttribute.get(attributeName));
 			indexToAttributeMap.put(index, JiraAttribute.get(attributeName));

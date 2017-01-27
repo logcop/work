@@ -13,9 +13,9 @@ public class LogcopJiraReports {
 		ApplicationContext ctx = new AnnotationConfigApplicationContext(ApplicationConfig.class);
 		
 		// weekly status report generation
-		String weekEndDate = "10/09/2016";
+		String weekEndDate = "01/22/2017";
 		String pathToReports = null;
-		String pathToJiraCsvs = "C:/wsr_dev/JIRA1.csv;C:/wsr_dev/JIRA2.csv;C:/wsr_dev/JIRA3.csv";
+		String pathToJiraCsvs = "C:/wsr_dev/JIRA1.csv;C:/wsr_dev/JIRA2.csv;C:/wsr_dev/JIRA3.csv;C:/wsr_dev/JIRA4.csv";
 		WeeklyStatusReportGenerator wsrGenerator = ctx.getBean(WeeklyStatusReportGenerator.class);
 		wsrGenerator.generateV2(weekEndDate, pathToReports, pathToJiraCsvs);
 		

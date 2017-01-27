@@ -19,9 +19,9 @@ public class Task extends BaseIssue {
 	private String summary;	
 	private String status;
 	private String storyPoints;
-	private int timeSpentInSeconds = 0;
-	private int hoursWorkedBetween = 0;
-	private float totalHoursWorked = 0;
+	private double timeSpentInSeconds = 0.0;
+	private double hoursWorkedBetween = 0.0;
+	private double totalHoursWorked = 0.0;
 	
 	private List<Developer> developers = new ArrayList<Developer>();
 	private Map<Date, WorkLog> dateToWorkLogMap = new HashMap<Date, WorkLog>();
@@ -36,17 +36,17 @@ public class Task extends BaseIssue {
 	}
 	
 	@Override
-	public float getTotalHoursWorked() {
+	public double getTotalHoursWorked() {
 		if (totalHoursWorked <=0 ) {
 			//log.debug("calculating totalHoursWorked.....");
 			for (WorkLog workLog : dateToWorkLogMap.values()) {
-				float workLogHours = workLog.getHours();
+				double workLogHours = workLog.getHours();
 				//log.debug("\tAdding workLogHours: {} to total.", workLogHours);
 				totalHoursWorked += workLogHours;
 			}
 			
 			for (Task task : keyToSubtaskMap.values()) {
-				float totalSubtaskHoursWorked = task.getTotalHoursWorked();
+				double totalSubtaskHoursWorked = task.getTotalHoursWorked();
 				totalHoursWorked += totalSubtaskHoursWorked;
 				//log.debug("\tAdding totalSubtaskHoursWorked: {} to total.", totalSubtaskHoursWorked );
 			}			
@@ -57,7 +57,7 @@ public class Task extends BaseIssue {
 	
 	
 	@Override
-	public float getHoursWorkedBetween(Date startDate, Date endDate) {
+	public double getHoursWorkedBetween(Date startDate, Date endDate) {
 		//log.debug("getting hours worked between {} and {}", startDate, endDate);
 		if (hoursWorkedBetween <=0 ) {
 			//log.debug("hoursWorkedBetween <=0");
@@ -65,7 +65,7 @@ public class Task extends BaseIssue {
 				//log.debug("Date key = " + date);
 				if (date != null && date.after(startDate) && date.before(endDate)) {
 					//log.debug("{} is between {} and {}", date, startDate, endDate);
-					float workLogHours = dateToWorkLogMap.get(date).getHours();
+					double workLogHours = dateToWorkLogMap.get(date).getHours();
 					//log.debug("Adding workLogHours: " + workLogHours);
 					hoursWorkedBetween += workLogHours;
 				}
@@ -140,14 +140,14 @@ public class Task extends BaseIssue {
 		this.summary = summary;
 	}
 
-	public float getTimeSpentInHours() {
+	public double getTimeSpentInHours() {
 		return getTimeSpentInSeconds() / 3600f;
 	}
 	
 	/**
 	 * @return the timeSpentInSeconds
 	 */
-	public int getTimeSpentInSeconds() {
+	public double getTimeSpentInSeconds() {
 		return timeSpentInSeconds / 3600;
 	}
 	

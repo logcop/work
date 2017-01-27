@@ -25,7 +25,7 @@ public class WeeklyStatusReport {
 	private Author author;
 	private Date weekStartDate;
 	private Date weekEndingDate;
-	private float hoursWorkedBetween = 0;
+	private double hoursWorkedBetween = 0.0;
 	
 	private Map<String, Project> keyToProjectMap = new HashMap<String, Project>(6,1.0f);
 
@@ -53,12 +53,12 @@ public class WeeklyStatusReport {
 		
 	}
 	
-	public float getHoursWorkedBetween() {
+	public double getHoursWorkedBetween() {
 		log.debug("getting hours worked between {} and {}", weekStartDate, weekStartDate);
 		if (hoursWorkedBetween <= 0) {
 			log.debug("hoursWorkedBetween <= 0");
 			for (Project project : keyToProjectMap.values()) {
-				float projectHours = project.getHoursWorkedBetween(weekStartDate, weekEndingDate);
+				double projectHours = project.getHoursWorkedBetween(weekStartDate, weekEndingDate);
 				log.debug("project hours: " + projectHours);
 				hoursWorkedBetween += projectHours;
 			}

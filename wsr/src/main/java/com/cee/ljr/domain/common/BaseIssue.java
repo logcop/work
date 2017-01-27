@@ -32,7 +32,7 @@ public abstract class BaseIssue {
 	 * @param endDate The end Date of the range to get the hours for.
 	 * @return The hours worked.
 	 */
-	public abstract float getHoursWorkedBetween(Date startDate, Date endDate);
+	public abstract double getHoursWorkedBetween(Date startDate, Date endDate);
 	
 	/**
 	 * <b>WARNING: If this method is called and the results are greater than zero, it will not update again.
@@ -43,7 +43,7 @@ public abstract class BaseIssue {
 	 * @param endDate The end Date of the range to get the hours for.
 	 * @return The running total of the hours worked.
 	 */
-	public abstract float getTotalHoursWorked();
+	public abstract double getTotalHoursWorked();
 	
 	/**
 	 * @return the summary

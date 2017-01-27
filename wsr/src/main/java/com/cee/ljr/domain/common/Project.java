@@ -16,8 +16,8 @@ public class Project {
 	private String name;
 	private String key;
 	private Map<String, Epic> keyToEpicMap = new HashMap<String, Epic>();
-	private float hoursWorkedBetween;
-	private float totalHoursWorked;
+	private double hoursWorkedBetween;
+	private double totalHoursWorked;
 	
 	public Project(String key, String name) {
 		this.key = key;
@@ -35,12 +35,12 @@ public class Project {
 	 * @param endDate The end Date of the range to get the hours for.
 	 * @return The hours worked.
 	 */
-	public float getHoursWorkedBetween(Date startDate, Date endDate) {
+	public double getHoursWorkedBetween(Date startDate, Date endDate) {
 		//log.debug("getting hours worked between {} and {}", startDate, endDate);
 		if (hoursWorkedBetween <=0 ) {
 			//log.debug("hoursWorkedBetween <=0");
 			for (Epic epic : keyToEpicMap.values()) {
-				float epicHoursWorkedBetween = epic.getHoursWorkedBetween(startDate, endDate);
+				double epicHoursWorkedBetween = epic.getHoursWorkedBetween(startDate, endDate);
 				////log.debug("epic hours: {}", epicHoursWorkedBetween);
 				hoursWorkedBetween += epicHoursWorkedBetween;
 			}
@@ -49,8 +49,8 @@ public class Project {
 		return hoursWorkedBetween;
 	}
 	
-	public float getTimeSpentInHours() {
-		float timeSpent = 0;
+	public double getTimeSpentInHours() {
+		double timeSpent = 0;
 		for (Epic epic : keyToEpicMap.values()) {
 			timeSpent += epic.getTimeSpentInHours();
 		}
@@ -130,10 +130,10 @@ public class Project {
 	/**
 	 * @return the totalHoursWorked
 	 */
-	public float getTotalHoursWorked() {
+	public double getTotalHoursWorked() {
 		if (totalHoursWorked <=0) {
 			for (Epic epic : keyToEpicMap.values()) {
-				float totalEpicHoursWorked = epic.getTotalHoursWorked();
+				double totalEpicHoursWorked = epic.getTotalHoursWorked();
 				totalHoursWorked += totalEpicHoursWorked;
 			}
 		}

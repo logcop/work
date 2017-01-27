@@ -22,8 +22,8 @@ public class WorkLog {
 		this.timeInSeconds = timeInSeconds;
 	}
 	
-	public float getHours() {
-		return (Float.valueOf(timeInSeconds) / 3600);
+	public double getHours() {
+		return (timeInSeconds / 3600.00);
 	}
 	/**
 	 * @return the comment

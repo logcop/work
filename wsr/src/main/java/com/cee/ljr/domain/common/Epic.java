@@ -12,8 +12,8 @@ import org.springframework.util.CollectionUtils;
 public class Epic extends BaseIssue {
 	private static final Logger log = LoggerFactory.getLogger(Epic.class);
 	private String name;
-	private float hoursWorkedBetween;
-	private float totalHoursWorked;
+	private double hoursWorkedBetween;
+	private double totalHoursWorked;
 	
 	private Map<String, Story> keyToStoryMap = new HashMap<String, Story>(); 
 	
@@ -27,7 +27,7 @@ public class Epic extends BaseIssue {
 	}
 	
 	@Override
-	public float getTotalHoursWorked() {
+	public double getTotalHoursWorked() {
 		if (totalHoursWorked <=0 ) {
 			////log.debug("totalHoursWorked <=0");
 			for (Story story : keyToStoryMap.values()) {
@@ -38,12 +38,12 @@ public class Epic extends BaseIssue {
 	}
 	
 	@Override
-	public float getHoursWorkedBetween(Date startDate, Date endDate) {
+	public double getHoursWorkedBetween(Date startDate, Date endDate) {
 		//log.debug("getting hours worked between {} and {}", startDate, endDate);
 		if (hoursWorkedBetween <=0 ) {
 			//log.debug("\thoursWorkedBetween <=0");
 			for (Story story : keyToStoryMap.values()) {
-				float storyHours = story.getHoursWorkedBetween(startDate, endDate);
+				double storyHours = story.getHoursWorkedBetween(startDate, endDate);
 				//log.debug("\tadding storyHours: {}", storyHours);
 				hoursWorkedBetween += storyHours;
 			}
@@ -52,8 +52,8 @@ public class Epic extends BaseIssue {
 		return hoursWorkedBetween;
 	}
 	
-	public float getTimeSpentInHours() {
-		float timeSpent = 0;
+	public double getTimeSpentInHours() {
+		double timeSpent = 0;
 		for (Story story : keyToStoryMap.values()) {
 			timeSpent += story.getTimeSpentInHours();
 		}

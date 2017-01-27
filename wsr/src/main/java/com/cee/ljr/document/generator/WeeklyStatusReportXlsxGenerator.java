@@ -141,7 +141,7 @@ public class WeeklyStatusReportXlsxGenerator {
 		initializeCellStyles(wb);
 		
 		for (Project project : weeklyStatusReport.getProjects()) {
-			float hoursWorkedForWeek = project.getHoursWorkedBetween(startDate, endDate);
+			double hoursWorkedForWeek = project.getHoursWorkedBetween(startDate, endDate);
 			//log.debug("Weekly hours worked for project: " + hoursWorkedForWeek);
 			if (hoursWorkedForWeek > 0) {
 				addProject(wb, project, startDate, endDate);
@@ -279,7 +279,7 @@ public class WeeklyStatusReportXlsxGenerator {
 		addWeeklyTotal(row, project.getHoursWorkedBetween(startDate, endDate), projectHoursCellStyle, projectHoursCellStyle, true);
 		
 		for (Epic epic : project.getEpics()) {
-			float hoursWorkedForWeek = epic.getHoursWorkedBetween(startDate, endDate);
+			double hoursWorkedForWeek = epic.getHoursWorkedBetween(startDate, endDate);
 			//log.debug("Weekly hours worked for epic: " + hoursWorkedForWeek);
 			if (hoursWorkedForWeek > 0) {
 				nextRowIndex.add(1);
@@ -325,7 +325,7 @@ public class WeeklyStatusReportXlsxGenerator {
 		addWeeklyTotal(row, epic.getHoursWorkedBetween(startDate, endDate), epicHoursCellStyle, epicHoursCellStyle, true);
 		
 		for (Story story : epic.getStories()) {
-			float hoursWorkedForWeek = story.getHoursWorkedBetween(startDate, endDate);
+			double hoursWorkedForWeek = story.getHoursWorkedBetween(startDate, endDate);
 			//log.debug("Weekly hours worked for story: " + hoursWorkedForWeek);
 			if (hoursWorkedForWeek > 0) {
 				nextRowIndex.add(1);
@@ -348,7 +348,7 @@ public class WeeklyStatusReportXlsxGenerator {
 		addWeeklyTotal(row, story.getHoursWorkedBetween(startDate, endDate), storyHoursCellStyle, storyHoursCellStyle, true);
 		
 		for (Task task : story.getTasks()) {
-			float hoursWorkedForWeek = task.getHoursWorkedBetween(startDate, endDate);
+			double hoursWorkedForWeek = task.getHoursWorkedBetween(startDate, endDate);
 			//log.debug("Weekly hours worked for task: " + hoursWorkedForWeek);
 			if (hoursWorkedForWeek > 0) {
 				nextRowIndex.add(1);
@@ -372,7 +372,7 @@ public class WeeklyStatusReportXlsxGenerator {
 		addWeeklyTotal(row, task.getHoursWorkedBetween(startDate, endDate), taskCellStyle, taskHoursCellStyle, false);
 	}
 	
-	private void addRunningTotal(Row row, float value, CellStyle labelCellStyle, CellStyle valueCellStyle, boolean showLabel) {
+	private void addRunningTotal(Row row, double value, CellStyle labelCellStyle, CellStyle valueCellStyle, boolean showLabel) {
 		Cell cell = row.createCell(runningTotalLabelColIndex);
 		if (labelCellStyle != null) {
 			cell.setCellStyle(labelCellStyle);
@@ -388,7 +388,7 @@ public class WeeklyStatusReportXlsxGenerator {
 		}
 	}
 	
-	private void addWeeklyTotal(Row row, float value,  CellStyle labelCellStyle, CellStyle valueCellStyle, boolean showLabel) {
+	private void addWeeklyTotal(Row row, double value,  CellStyle labelCellStyle, CellStyle valueCellStyle, boolean showLabel) {
 		Cell cell = row.createCell(weeklyTotalLabelColIndex);
 		if (labelCellStyle != null) {
 			cell.setCellStyle(labelCellStyle);

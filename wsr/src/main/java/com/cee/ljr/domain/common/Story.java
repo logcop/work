@@ -13,8 +13,8 @@ import com.cee.ljr.intg.jira.domain.IssueType;
 public class Story extends BaseIssue {
 	private static final Logger log = LoggerFactory.getLogger(Story.class);
 	private String name;
-	private float hoursWorkedBetween;
-	private float totalHoursWorked;
+	private double hoursWorkedBetween;
+	private double totalHoursWorked;
 	public static final String MISC_STORY_NAME = "MISC";
 	
 	public Map<String, Task> keyToTaskMap;
@@ -26,7 +26,7 @@ public class Story extends BaseIssue {
 	}
 	
 	@Override
-	public float getTotalHoursWorked() {
+	public double getTotalHoursWorked() {
 		if (totalHoursWorked <=0 ) {
 			////log.debug("totalHoursWorked <=0");
 			for (Task task : keyToTaskMap.values()) {
@@ -37,12 +37,12 @@ public class Story extends BaseIssue {
 	}
 	
 	@Override
-	public float getHoursWorkedBetween(Date startDate, Date endDate) {
+	public double getHoursWorkedBetween(Date startDate, Date endDate) {
 		//log.debug("getting hours worked between {} and {}", startDate, endDate);
 		if (hoursWorkedBetween <=0 ) {
 			//log.debug("\thoursWorkedBetween <=0");
 			for (Task task : keyToTaskMap.values()) {
-				float taskHours = task.getHoursWorkedBetween(startDate, endDate);
+				double taskHours = task.getHoursWorkedBetween(startDate, endDate);
 				//log.debug("adding task hours: " + taskHours);
 				hoursWorkedBetween += taskHours;
 			}
@@ -51,8 +51,8 @@ public class Story extends BaseIssue {
 		return hoursWorkedBetween;
 	}
 	
-	public float getTimeSpentInHours() {
-		float timeSpent = 0;
+	public double getTimeSpentInHours() {
+		double timeSpent = 0;
 		for (Task task : keyToTaskMap.values()) {
 			timeSpent += task.getTimeSpentInHours();
 		}
