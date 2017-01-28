@@ -19,7 +19,6 @@ import com.cee.ljr.intg.mapping.JiraIssueMapper;
 import com.cee.ljr.utils.FileUtil;
 
 @Component
-@Deprecated
 public class JiraIssuesCsvFileParser {
 	private static final Logger log = LoggerFactory.getLogger(JiraIssuesCsvFileParser.class);
 	
@@ -34,7 +33,7 @@ public class JiraIssuesCsvFileParser {
 	//private Map<Integer, String> indexToAttributeNameMap;
 	//private Map<String, List<Integer>> attributeNameToListOfIndexesMap;	
 	
-	//@Deprecated
+	//
 	/*public List<JiraIssue> parseTasksByDeveloperAndSprints(String csvPaths, String developerName, List<String> sprintNames) {
 		List<JiraIssue> jiraIssues = new ArrayList<JiraIssue>();
 		
@@ -74,7 +73,6 @@ public class JiraIssuesCsvFileParser {
 	 * @param csvPaths The path(s) of the files to parse.
 	 * @return A list of jira issues.
 	 */
-	@Deprecated
 	public List<JiraIssue> parseAll(String csvPaths) {
 		List<JiraIssue> jiraIssues = new ArrayList<JiraIssue>();
 		

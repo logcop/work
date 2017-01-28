@@ -24,7 +24,6 @@ import com.cee.ljr.intg.jira.domain.JiraIssue;
 import com.cee.ljr.utils.DateUtil;
 
 @Component
-@Deprecated
 public class JiraIssueMapper {	
 	private static final Logger log = LoggerFactory.getLogger(JiraIssueMapper.class);
 	

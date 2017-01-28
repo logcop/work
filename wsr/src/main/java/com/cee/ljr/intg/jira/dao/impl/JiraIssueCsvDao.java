@@ -10,7 +10,6 @@ import com.cee.ljr.intg.jira.domain.JiraIssue;
 import com.cee.ljr.intg.jira.fileparser.JiraIssuesCsvFileParser;
 
 @Component
-@Deprecated
 public class JiraIssueCsvDao implements JiraIssueDao{
 
 	@Autowired
