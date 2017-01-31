@@ -52,8 +52,8 @@ public class WeeklyStatusReportFactory {
 		
 		// iterate over tasks, bugs, and sub-tasks
 		addTasksToStatusReport(jiraIssues, weeklyStatusReport);	
-		addBugsToStatusReport(jiraIssues, weeklyStatusReport);
-		addSubTasksToStatusReport(jiraIssues, weeklyStatusReport);
+		//addBugsToStatusReport(jiraIssues, weeklyStatusReport);
+		//addSubTasksToStatusReport(jiraIssues, weeklyStatusReport);
 		
 		return weeklyStatusReport;
 	}
@@ -148,6 +148,7 @@ public class WeeklyStatusReportFactory {
 		Project project = new Project(projectKey, projectName, developers, holidayDays);		
 		
 		Epic epic = createNewEpic(taskJiraIssue, jiraIssues);
+		
 		project.addEpic(epic);
 		
 		return project;

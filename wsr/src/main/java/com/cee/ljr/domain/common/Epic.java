@@ -18,7 +18,7 @@ public class Epic extends BaseIssue {
 	private Map<String, Story> keyToStoryMap = new HashMap<String, Story>(); 
 	
 	
-	public static final String TIME_OFF_EPIC_KEY = "Time Off";
+	//public static final String TIME_OFF_EPIC_NAME = "Time Off";
 	
 	public Epic(String name) {
 		this.name = name;
@@ -100,4 +100,13 @@ public class Epic extends BaseIssue {
 	}
 	
 	
+	public boolean isTimeOffEpic() {
+		if (name == null) {
+			return false;
+		}
+		
+		String epicName = name.toLowerCase();
+		
+		return (epicName.contains("time") && epicName.contains("off"));
+	}
 }

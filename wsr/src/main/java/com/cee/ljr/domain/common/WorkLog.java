@@ -22,7 +22,7 @@ public class WorkLog {
 		this.timeInSeconds = timeInSeconds;
 	}
 	
-	public double getHours() {
+	public double getTimeInHours() {
 		return (timeInSeconds / 3600.00);
 	}
 	/**
@@ -77,7 +77,7 @@ public class WorkLog {
 	@Override
 	public String toString() {
 		ToStringBuilder sb = new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE);
-		sb.append("hours", this.getHours());
+		sb.append("hours", this.getTimeInHours());
 		sb.append("date", this.date);
 		return sb.toString();
 	}

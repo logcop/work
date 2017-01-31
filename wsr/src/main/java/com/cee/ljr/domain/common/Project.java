@@ -21,7 +21,7 @@ public class Project {
 	private List<Developer> developers = new ArrayList<Developer>();
 	private Map<String, Epic> keyToEpicMap = new HashMap<String, Epic>();
 	
-	private Epic timeOffEpic;
+	private String timeOffEpicKey;
 	
 	private int holidayDays;
 	private double hoursWorkedBetween;
@@ -51,9 +51,12 @@ public class Project {
 		if (hoursWorkedBetween <=0 ) {
 			//log.debug("hoursWorkedBetween <=0");
 			for (Epic epic : keyToEpicMap.values()) {
-				double epicHoursWorkedBetween = epic.getHoursWorkedBetween(startDate, endDate);
-				////log.debug("epic hours: {}", epicHoursWorkedBetween);
-				hoursWorkedBetween += epicHoursWorkedBetween;
+				// exclude time off.
+				if(!epic.isTimeOffEpic()) {
+					double epicHoursWorkedBetween = epic.getHoursWorkedBetween(startDate, endDate);
+					////log.debug("epic hours: {}", epicHoursWorkedBetween);
+					hoursWorkedBetween += epicHoursWorkedBetween;
+				}
 			}
 		}
 		
@@ -63,6 +66,8 @@ public class Project {
 	
 	
 	public double getTimeOffHoursBetween(Date startDate, Date endDate) {
+		Epic timeOffEpic = keyToEpicMap.get(timeOffEpicKey);
+		
 		if (timeOffEpic == null) {
 			return 0.00;
 		}
@@ -75,7 +80,10 @@ public class Project {
 		double timeSpent = 0;
 		
 		for (Epic epic : keyToEpicMap.values()) {
-			timeSpent += epic.getTimeSpentInHours();
+			// exclude time off.
+			if (!epic.isTimeOffEpic()) {
+				timeSpent += epic.getTimeSpentInHours();
+			}
 		}
 		
 		return timeSpent;
@@ -97,16 +105,36 @@ public class Project {
 			throw new RuntimeException("Epic must contain a key.");
 		}
 		
-		if (Epic.TIME_OFF_EPIC_KEY.equals(epicKey)) {
-			addTimeOffEpic(epic);
+		
+		if (epic.isTimeOffEpic()) {
+			// add a reference to the time off epic for later retrieval when necessary...
+			this.timeOffEpicKey = epicKey;
 		}
-		else {
-			addToEpicMap(epicKey, epic);
-		}		
+		
+		addToEpicMap(epicKey, epic);
 	}
 	
 	
-	private void addTimeOffEpic(Epic epic) {
+	public double getLeave(Date startDate, Date endDate) {
+		int numberOfDevelopers = developers.size();
+		
+		Epic timeOffEpic = keyToEpicMap.get(timeOffEpicKey);
+		
+		double leave = 0.00;
+		
+		if (timeOffEpic != null) {
+			leave += timeOffEpic.getHoursWorkedBetween(startDate, endDate);
+		}
+		
+		// have to add the holiday hours
+		if (holidayDays != 0) {
+			leave += (holidayDays * numberOfDevelopers * 8); 
+		}
+		
+		return leave;
+	}
+	
+	/*private void addTimeOffEpic(Epic epic) {
 		
 		if (epic == null) {
 			throw new RuntimeException("'Time Off' Epic must not be null.");
@@ -117,7 +145,7 @@ public class Project {
 			throw new RuntimeException("Epic must contain a key.");
 		}
 		
-		if (!Epic.TIME_OFF_EPIC_KEY.equals(epicKey)) {
+		if (!Epic.TIME_OFF_EPIC_NAME.equals(epicKey)) {
 			throw new RuntimeException("Epic " + epicKey + " is not a 'Time Off' Epic... ");
 		}
 		
@@ -126,7 +154,7 @@ public class Project {
 		}
 		
 		timeOffEpic = epic;
-	}
+	}*/
 	
 	
 	private void addToEpicMap(String epicKey, Epic epic) {
@@ -205,8 +233,11 @@ public class Project {
 	public double getTotalHoursWorked() {
 		if (totalHoursWorked <=0) {
 			for (Epic epic : keyToEpicMap.values()) {
-				double totalEpicHoursWorked = epic.getTotalHoursWorked();
-				totalHoursWorked += totalEpicHoursWorked;
+				// exclude time off
+				if (!epic.isTimeOffEpic()) {
+					double totalEpicHoursWorked = epic.getTotalHoursWorked();
+					totalHoursWorked += totalEpicHoursWorked;
+				}
 			}
 		}
 		return totalHoursWorked;

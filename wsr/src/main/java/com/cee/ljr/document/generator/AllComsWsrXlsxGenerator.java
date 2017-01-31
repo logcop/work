@@ -324,11 +324,14 @@ public class AllComsWsrXlsxGenerator {
 			//addWeeklyTotal(row, project.getHoursWorkedBetween(startDate, endDate), projectHoursCellStyle, projectHoursCellStyle, true);
 			int epicNumber = 1;
 			for (Epic epic : project.getEpics()) {
-				double hoursWorkedForWeek = epic.getHoursWorkedBetween(startDate, endDate);
-				//log.debug("Weekly hours worked for epic: " + hoursWorkedForWeek);
-				if (hoursWorkedForWeek > 0) {
-					nextRowIndex.add(1);
-					addEpic(wb, sheet, nextRowIndex, epicNumber++, epic, startDate, endDate);
+				// don't add time off epic...
+				if (!epic.isTimeOffEpic()) {
+					double hoursWorkedForWeek = epic.getHoursWorkedBetween(startDate, endDate);
+					//log.debug("Weekly hours worked for epic: " + hoursWorkedForWeek);
+					if (hoursWorkedForWeek > 0) {
+						nextRowIndex.add(1);
+						addEpic(wb, sheet, nextRowIndex, epicNumber++, epic, startDate, endDate);
+					}
 				}
 			}
 			// have to autosize after sheet is populated
@@ -346,19 +349,24 @@ public class AllComsWsrXlsxGenerator {
 		}
 		
 		private void addProjectTotals(Sheet sheet, MutableInt nextRowIndex, Project project, Date startDate, Date endDate) {
+			double expectedTotal = project.getDevelopers().size() * 40;
+			double workLogged = project.getHoursWorkedBetween(startDate, endDate);
+			double leave = project.getLeave(startDate, endDate);
+			double overhead = expectedTotal - (workLogged + leave);
+			
 			int rowIndex = nextRowIndex.intValue();
 			Row row = sheet.createRow(rowIndex);
 			Cell cell = row.createCell(projectWorkLogColIndex);
 			// create Work Logged
-			cell.setCellValue("Work Logged: " + project.getHoursWorkedBetween(startDate, endDate)); 
+			cell.setCellValue("Work Logged: " + workLogged); 
 			cell.setCellStyle(projectHoursCellStyle);			
 			// create Email/Meetings/Admin
 			cell = row.createCell(projectOverheadColIndex);
-			cell.setCellValue("Email/Meetings/Admin: " + "<0.00>");
+			cell.setCellValue("Email/Meetings/Admin: " + overhead);
 			cell.setCellStyle(projectHoursCellStyle);
 			// create Leave
 			cell = row.createCell(projectLeaveColIndex);
-			cell.setCellValue("Leave: " + "<0.00>");
+			cell.setCellValue("Leave: " + leave);
 			cell.setCellStyle(projectHoursCellStyle);
 			// create Total
 			cell = row.createCell(weeklyTotalLabelColIndex);
@@ -366,7 +374,7 @@ public class AllComsWsrXlsxGenerator {
 			cell.setCellStyle(projectTotalHoursCellStyle);
 			cell.getCellStyle().setAlignment(CellStyle.ALIGN_RIGHT);
 			cell = row.createCell(weeklyTotalValueColIndex);
-			cell.setCellValue("<0.00>");
+			cell.setCellValue(expectedTotal);
 			cell.setCellStyle(projectTotalHoursCellStyle);
 		}
 		

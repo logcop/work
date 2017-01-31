@@ -1,3 +1,4 @@
-/META-INF/
-/properties/
-/com/
+/META-INF
+/com
+/log4j.properties
+/properties

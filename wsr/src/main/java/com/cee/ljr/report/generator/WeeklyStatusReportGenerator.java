@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.cee.ljr.document.generator.AllComsWsrXlsxGenerator;
+import com.cee.ljr.document.generator.PmWsrXlsxGenerator;
 import com.cee.ljr.document.generator.WeeklyStatusReportDocxGenerator;
 import com.cee.ljr.document.generator.WeeklyStatusReportXlsxGenerator;
 import com.cee.ljr.domain.report.WeeklyStatusReport;
@@ -26,6 +27,8 @@ public class WeeklyStatusReportGenerator {
 	private WeeklyStatusReportXlsxGenerator weeklyStatusReportXlsxGenerator;
 	@Autowired
 	private AllComsWsrXlsxGenerator allComsWsrXlsxGenerator;
+	@Autowired
+	private PmWsrXlsxGenerator pmWsrXlsxGenerator;
 	
 	public void generateV1(String weekEndingDateStr, String jiraFilePaths) {
 		Date weekStartDate = DateUtil.getWeekStartDate(weekEndingDateStr);
@@ -48,10 +51,12 @@ public class WeeklyStatusReportGenerator {
 	
 	public void generateV3(String numberOfHolidays, String weekEndingDateStr, String reportPath, String jiraFilePaths) {
 		Date weekStartDate = DateUtil.getWeekStartDate(weekEndingDateStr);
-		Date weekEndingDate = DateUtil.getWeekEndingDate(weekEndingDateStr);
+		Date weekEndingDate = new Date(); //DateUtil.getWeekEndingDate(weekEndingDateStr); 
 		int holidaysInt = Integer.parseInt(numberOfHolidays);
 		WeeklyStatusReport weeklyStatusReport = srService.getWeeklyStatusReport(jiraFilePaths, holidaysInt, weekStartDate, weekEndingDate);
 		
-		allComsWsrXlsxGenerator.generateWsrDocument(weeklyStatusReport, reportPath);
+		//allComsWsrXlsxGenerator.generateWsrDocument(weeklyStatusReport, reportPath);
+		
+		pmWsrXlsxGenerator.generateWsrDocument(weeklyStatusReport, reportPath);
 	}
 }

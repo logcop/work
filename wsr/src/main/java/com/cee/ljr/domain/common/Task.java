@@ -40,7 +40,7 @@ public class Task extends BaseIssue {
 		if (totalHoursWorked <=0 ) {
 			//log.debug("calculating totalHoursWorked.....");
 			for (WorkLog workLog : dateToWorkLogMap.values()) {
-				double workLogHours = workLog.getHours();
+				double workLogHours = workLog.getTimeInHours();
 				//log.debug("\tAdding workLogHours: {} to total.", workLogHours);
 				totalHoursWorked += workLogHours;
 			}
@@ -65,7 +65,7 @@ public class Task extends BaseIssue {
 				//log.debug("Date key = " + date);
 				if (date != null && date.after(startDate) && date.before(endDate)) {
 					//log.debug("{} is between {} and {}", date, startDate, endDate);
-					double workLogHours = dateToWorkLogMap.get(date).getHours();
+					double workLogHours = dateToWorkLogMap.get(date).getTimeInHours();
 					//log.debug("Adding workLogHours: " + workLogHours);
 					hoursWorkedBetween += workLogHours;
 				}
@@ -155,14 +155,6 @@ public class Task extends BaseIssue {
 		this.timeSpentInSeconds = timeSpentInSeconds;
 	}
 	
-	public int getLoggedTimeInHours () {
-		int timeSpentInSeconds = 0;
-		
-		for (WorkLog workLog : dateToWorkLogMap.values()) {
-			timeSpentInSeconds += workLog.getTimeInSeconds();
-		}
-		return timeSpentInSeconds;
-	}
 
 	/**
 	 * @return the developers
