@@ -3,11 +3,13 @@ package com.cee.ljr.document.generator;
 import java.awt.Color;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.nio.file.Paths;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang3.mutable.MutableInt;
 import org.apache.poi.ss.usermodel.BorderStyle;
 import org.apache.poi.ss.usermodel.Cell;
@@ -24,6 +26,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
 import com.cee.ljr.domain.common.Epic;
@@ -34,6 +37,7 @@ import com.cee.ljr.domain.report.WeeklyStatusReport;
 import com.cee.ljr.properties.ReportProperties;
 import com.cee.ljr.utils.FileUtil;
 
+@Component
 public class PmWsrXlsxGenerator {
 	private static final Logger log = LoggerFactory.getLogger(AllComsWsrXlsxGenerator.class);
 	
@@ -137,7 +141,7 @@ public class PmWsrXlsxGenerator {
 		String dateString = weekEndingDateFormater.format(weekEndingDate);
 		
 		return new StringBuilder()
-					.append(props.getWeeklyStatusReportTitle())
+					.append("LOGCOP PM Weekly Status Report")
 					.append(" WE ")
 					.append(dateString)
 					.append(".xlsx")
@@ -357,6 +361,16 @@ public class PmWsrXlsxGenerator {
 		cell = row.createCell(projectLeaveColIndex);
 		cell.setCellValue("Leave: " + leave);
 		cell.setCellStyle(projectHoursCellStyle);
+		// create 3 blanks
+		cell = row.createCell(projectLeaveColIndex +1);
+		cell.setCellValue(" ");
+		cell.setCellStyle(projectHoursCellStyle);
+		cell = row.createCell(projectLeaveColIndex +2);
+		cell.setCellValue(" ");
+		cell.setCellStyle(projectHoursCellStyle);
+		cell = row.createCell(projectLeaveColIndex +3);
+		cell.setCellValue(" ");
+		cell.setCellStyle(projectHoursCellStyle);
 		// create Total
 		cell = row.createCell(weeklyTotalLabelColIndex);
 		cell.setCellValue("Total:");
@@ -491,6 +505,7 @@ public class PmWsrXlsxGenerator {
 		addRunningHours(row, task.getTotalHoursWorked());
 		addStoryPoints(row, task.getStoryPoints());
 		addDeveloper(row, task.getDevelopers().get(0).getFullName());// STOPPED HERE!!!!!!!!!!
+		addStatus(row, task.getStatus());
 	}
 	
 	private void addTaskHeaderRow(Sheet sheet, MutableInt nextRowIndex) {
@@ -504,20 +519,21 @@ public class PmWsrXlsxGenerator {
 		Cell cell = row.createCell(taskLoggedHoursColIndex);
 		cell.setCellStyle(taskHeadersCellStyle); 
 		cell.setCellValue("Logged");
+		
 		// "Running"
-		cell = row.createCell(taskLoggedHoursColIndex);
+		cell = row.createCell(taskRunningHoursColIndex);
 		cell.setCellStyle(taskHeadersCellStyle); 
 		cell.setCellValue("Running");
 		// "Points"
-		cell = row.createCell(taskLoggedHoursColIndex);
+		cell = row.createCell(taskStoryPointsColIndex);
 		cell.setCellStyle(taskHeadersCellStyle); 
 		cell.setCellValue("Points");
 		// "Developer"
-		cell = row.createCell(taskLoggedHoursColIndex);
+		cell = row.createCell(taskDeveloperColIndex);
 		cell.setCellStyle(taskHeadersCellStyle); 
 		cell.setCellValue("Developer");
 		// "Status"
-		cell = row.createCell(taskLoggedHoursColIndex);
+		cell = row.createCell(taskStatusColIndex);
 		cell.setCellStyle(taskHeadersCellStyle); 
 		cell.setCellValue("Status");
 	}
@@ -528,9 +544,9 @@ public class PmWsrXlsxGenerator {
 		Row row = sheet.createRow(storyTotalRowIndex);			
 		Cell emptyCellToMerge = row.createCell(taskSummaryColIndex);
 		emptyCellToMerge.setCellValue(" "); // do not remove, or it will break the autosizing...
-		mergeCellsInRow(sheet, storyTotalRowIndex, taskSummaryColIndex, weeklyTotalLabelColIndex);
+		mergeCellsInRow(sheet, storyTotalRowIndex, taskSummaryColIndex, taskLoggedHoursColIndex -1);
 		
-		Cell cell = row.createCell(weeklyTotalValueColIndex);
+		Cell cell = row.createCell(taskLoggedHoursColIndex);
 		cell.setCellStyle(storyHoursCellStyle);
 		cell.setCellValue(value);
 	}
@@ -553,15 +569,23 @@ public class PmWsrXlsxGenerator {
 	}
 	
 	private void addLoggedHours(Row row, double value) {
-		addRightAlignedValue(row, taskLoggedHoursColIndex, value);		
+		addTaskHoursValue(row, taskLoggedHoursColIndex, value);		
 	}
 	
 	private void addRunningHours(Row row, double value) {
-		addRightAlignedValue(row, taskRunningHoursColIndex, value);		
+		addTaskHoursValue(row, taskRunningHoursColIndex, value);		
 	}
 	
 	private void addStoryPoints(Row row, String value) {
-		addRightAlignedValue(row, taskStoryPointsColIndex, value);		
+		//addRightAlignedValue(row, taskStoryPointsColIndex, value);	
+		Cell cell = row.createCell(taskStoryPointsColIndex);
+		if (StringUtils.isNotEmpty(value)) {
+			cell.setCellValue(new BigDecimal(Double.parseDouble(value)).intValue());
+		}
+		else {
+			cell.setCellValue(" ");
+		}
+		cell.getCellStyle().setAlignment(CellStyle.ALIGN_RIGHT);
 	}
 	
 	private void addDeveloper(Row row, String value) {
@@ -572,10 +596,10 @@ public class PmWsrXlsxGenerator {
 		addRightAlignedValue(row, taskStatusColIndex, value);		
 	}
 	
-	private void addRightAlignedValue(Row row, int colIndex, double value) {
+	private void addTaskHoursValue(Row row, int colIndex, double value) {
 		Cell cell = row.createCell(colIndex);
 		cell.setCellValue(value);
-		cell.getCellStyle().setAlignment(CellStyle.ALIGN_RIGHT);
+		cell.setCellStyle(taskHoursCellStyle);
 	}
 	
 	private void addRightAlignedValue(Row row, int colIndex, String value) {
