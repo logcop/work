@@ -4,7 +4,7 @@ package com.cee.ljr.poc;
 public class RestClientPOC {
 
 	public static void main(String[] args) {
-		final JiraRestClientFactory factory = new JerseyJiraRestClientFactory();
+		/*final JiraRestClientFactory factory = new JerseyJiraRestClientFactory();
 
         final URI jiraServerUri = new URI("http://localhost:8090/jira");
 
@@ -13,10 +13,10 @@ public class RestClientPOC {
         //final NullProgressMonitor pm = new NullProgressMonitor();
 
         final Issue issue = restClient.getIssueClient().getIssue("TST-1", pm);
-
+*/
  
 
-        System.out.println(issue);
+        //System.out.println(issue);
 	  }
 	
 	
