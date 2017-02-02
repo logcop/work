@@ -1,0 +1,58 @@
+/*https://logcop.atlassian.net/rest/api/2/search?jql=key=PACAF-563&fields=id,key,worklog*/
+
+{
+	"expand":"names,schema",
+	"startAt":0,
+	"maxResults":50,
+	"total":1,
+	"issues":[{
+		"expand":"operations,versionedRepresentations,editmeta,changelog,renderedFields",
+		"id":"23216",
+		"self":"https://logcop.atlassian.net/rest/api/2/issue/23216",
+		"key":"PACAF-563",
+		"fields":{
+			"worklog":{
+				"startAt":0,
+				"maxResults":20,
+				"total":2,
+				"worklogs":[{
+					"self":"https://logcop.atlassian.net/rest/api/2/issue/23216/worklog/23000",
+					"author":{
+						"self":"https://logcop.atlassian.net/rest/api/2/user?username=pacaf.logcop",
+						"name":"pacaf.logcop",
+						"key":"peter.justeson.ctr",
+						"emailAddress":"charles.e.emmons.ctr@navy.mil",
+						"avatarUrls":{
+							"48x48":"https://avatar-cdn.atlassian.com/a132434560003cfd8aeced57607ea664?s=48&d=https%3A%2F%2Flogcop.atlassian.net%2Fsecure%2Fuseravatar%3FavatarId%3D10334%26noRedirect%3Dtrue","24x24":"https://avatar-cdn.atlassian.com/a132434560003cfd8aeced57607ea664?s=24&d=https%3A%2F%2Flogcop.atlassian.net%2Fsecure%2Fuseravatar%3Fsize%3Dsmall%26avatarId%3D10334%26noRedirect%3Dtrue",
+							"16x16":"https://avatar-cdn.atlassian.com/a132434560003cfd8aeced57607ea664?s=16&d=https%3A%2F%2Flogcop.atlassian.net%2Fsecure%2Fuseravatar%3Fsize%3Dxsmall%26avatarId%3D10334%26noRedirect%3Dtrue",
+							"32x32":"https://avatar-cdn.atlassian.com/a132434560003cfd8aeced57607ea664?s=32&d=https%3A%2F%2Flogcop.atlassian.net%2Fsecure%2Fuseravatar%3Fsize%3Dmedium%26avatarId%3D10334%26noRedirect%3Dtrue"
+						},
+						"displayName":"PACAF LOGCOP",
+						"active":true,
+						"timeZone":"Pacific/Honolulu"
+					},
+					"updateAuthor":{
+						"self":"https://logcop.atlassian.net/rest/api/2/user?username=pacaf.logcop",
+						"name":"pacaf.logcop",
+						"key":"peter.justeson.ctr",
+						"emailAddress":"charles.e.emmons.ctr@navy.mil",
+						"avatarUrls":{
+							"48x48":"https://avatar-cdn.atlassian.com/a132434560003cfd8aeced57607ea664?s=48&d=https%3A%2F%2Flogcop.atlassian.net%2Fsecure%2Fuseravatar%3FavatarId%3D10334%26noRedirect%3Dtrue",
+							"24x24":"https://avatar-cdn.atlassian.com/a132434560003cfd8aeced57607ea664?s=24&d=https%3A%2F%2Flogcop.atlassian.net%2Fsecure%2Fuseravatar%3Fsize%3Dsmall%26avatarId%3D10334%26noRedirect%3Dtrue",
+							"16x16":"https://avatar-cdn.atlassian.com/a132434560003cfd8aeced57607ea664?s=16&d=https%3A%2F%2Flogcop.atlassian.net%2Fsecure%2Fuseravatar%3Fsize%3Dxsmall%26avatarId%3D10334%26noRedirect%3Dtrue",
+							"32x32":"https://avatar-cdn.atlassian.com/a132434560003cfd8aeced57607ea664?s=32&d=https%3A%2F%2Flogcop.atlassian.net%2Fsecure%2Fuseravatar%3Fsize%3Dmedium%26avatarId%3D10334%26noRedirect%3Dtrue"
+						},
+						"displayName":"PACAF LOGCOP",
+						"active":true,
+						"timeZone":"Pacific/Honolulu"
+					},
+					"comment":"",
+					"created":"2017-02-01T06:47:00.440-1000",
+					"updated":"2017-02-01T06:47:00.440-1000",
+					"started":"2017-01-30T06:46:00.000-1000",
+					"timeSpent":"3h",
+					"timeSpentSeconds":10800,
+					"id":"23000",
+					"issueId":"23216"
+					},
+					{"self":"https://logcop.atlassian.net/rest/api/2/issue/23216/worklog/23001","author":{"self":"https://logcop.atlassian.net/rest/api/2/user?username=pacaf.logcop","name":"pacaf.logcop","key":"peter.justeson.ctr","emailAddress":"charles.e.emmons.ctr@navy.mil","avatarUrls":{"48x48":"https://avatar-cdn.atlassian.com/a132434560003cfd8aeced57607ea664?s=48&d=https%3A%2F%2Flogcop.atlassian.net%2Fsecure%2Fuseravatar%3FavatarId%3D10334%26noRedirect%3Dtrue","24x24":"https://avatar-cdn.atlassian.com/a132434560003cfd8aeced57607ea664?s=24&d=https%3A%2F%2Flogcop.atlassian.net%2Fsecure%2Fuseravatar%3Fsize%3Dsmall%26avatarId%3D10334%26noRedirect%3Dtrue","16x16":"https://avatar-cdn.atlassian.com/a132434560003cfd8aeced57607ea664?s=16&d=https%3A%2F%2Flogcop.atlassian.net%2Fsecure%2Fuseravatar%3Fsize%3Dxsmall%26avatarId%3D10334%26noRedirect%3Dtrue","32x32":"https://avatar-cdn.atlassian.com/a132434560003cfd8aeced57607ea664?s=32&d=https%3A%2F%2Flogcop.atlassian.net%2Fsecure%2Fuseravatar%3Fsize%3Dmedium%26avatarId%3D10334%26noRedirect%3Dtrue"},"displayName":"PACAF LOGCOP","active":true,"timeZone":"Pacific/Honolulu"},"updateAuthor":{"self":"https://logcop.atlassian.net/rest/api/2/user?username=pacaf.logcop","name":"pacaf.logcop","key":"peter.justeson.ctr","emailAddress":"charles.e.emmons.ctr@navy.mil","avatarUrls":{"48x48":"https://avatar-cdn.atlassian.com/a132434560003cfd8aeced57607ea664?s=48&d=https%3A%2F%2Flogcop.atlassian.net%2Fsecure%2Fuseravatar%3FavatarId%3D10334%26noRedirect%3Dtrue","24x24":"https://avatar-cdn.atlassian.com/a132434560003cfd8aeced57607ea664?s=24&d=https%3A%2F%2Flogcop.atlassian.net%2Fsecure%2Fuseravatar%3Fsize%3Dsmall%26avatarId%3D10334%26noRedirect%3Dtrue","16x16":"https://avatar-cdn.atlassian.com/a132434560003cfd8aeced57607ea664?s=16&d=https%3A%2F%2Flogcop.atlassian.net%2Fsecure%2Fuseravatar%3Fsize%3Dxsmall%26avatarId%3D10334%26noRedirect%3Dtrue","32x32":"https://avatar-cdn.atlassian.com/a132434560003cfd8aeced57607ea664?s=32&d=https%3A%2F%2Flogcop.atlassian.net%2Fsecure%2Fuseravatar%3Fsize%3Dmedium%26avatarId%3D10334%26noRedirect%3Dtrue"},"displayName":"PACAF LOGCOP","active":true,"timeZone":"Pacific/Honolulu"},"comment":"","created":"2017-02-01T06:47:15.728-1000","updated":"2017-02-01T06:47:15.728-1000","started":"2017-01-31T06:47:00.000-1000","timeSpent":"3h","timeSpentSeconds":10800,"id":"23001","issueId":"23216"}]}}}]}

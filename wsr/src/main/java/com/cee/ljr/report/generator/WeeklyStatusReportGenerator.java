@@ -42,7 +42,7 @@ public class WeeklyStatusReportGenerator {
 	
 	public void generateV2(String weekEndingDateStr, String reportPath, String jiraFilePaths){
 		Date weekStartDate = DateUtil.getWeekStartDate(weekEndingDateStr);
-		Date weekEndingDate = DateUtil.getWeekEndingDate(weekEndingDateStr);
+		Date weekEndingDate = new Date();//DateUtil.getWeekEndingDate(weekEndingDateStr);
 		
 		WeeklyStatusReport weeklyStatusReport = srService.getWeeklyStatusReport(jiraFilePaths, 0, weekStartDate, weekEndingDate);
 		
