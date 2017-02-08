@@ -62,7 +62,8 @@ public class JiraIssueMapper {
 		Task task = null;
 		/*if (!IssueType.TASK.equals(taskJiraIssue.getType())) {
 			return task;
-		}*/
+		}*/ // commented out because we are treating subtasks and bugs as tasks.
+		
 		task = new Task(taskJiraIssue.getSummary());
 		task.setKey(taskJiraIssue.getKey());
 		task.setId(taskJiraIssue.getId());

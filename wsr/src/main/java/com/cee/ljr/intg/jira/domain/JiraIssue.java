@@ -175,8 +175,8 @@ public class JiraIssue {
 	}
 	
 	
-	public Set<String> getWorkLog() {
-		return getDistinctValues(JiraAttribute.LOG_WORK);
+	public List<String> getWorkLog() {
+		return getAllValues(JiraAttribute.LOG_WORK);
 	}
 
 

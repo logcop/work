@@ -24,7 +24,7 @@ public class Task extends BaseIssue {
 	private double totalHoursWorked = 0.0;
 	
 	private List<Developer> developers = new ArrayList<Developer>();
-	private Map<Date, WorkLog> dateToWorkLogMap = new HashMap<Date, WorkLog>();
+	private Map<Date, List<WorkLog>> dateToWorkLogMap = new HashMap<Date, List<WorkLog>>();// have to map date to collection because jira dates are to the minute and a developer can add 2 worklogs for the same jira date/time.
 
 	private Map<String, Task> keyToSubtaskMap = new HashMap<String, Task>();
 
@@ -39,10 +39,12 @@ public class Task extends BaseIssue {
 	public double getTotalHoursWorked() {
 		if (totalHoursWorked <=0 ) {
 			//log.debug("calculating totalHoursWorked.....");
-			for (WorkLog workLog : dateToWorkLogMap.values()) {
-				double workLogHours = workLog.getTimeInHours();
-				//log.debug("\tAdding workLogHours: {} to total.", workLogHours);
-				totalHoursWorked += workLogHours;
+			for (List<WorkLog> workLogs : dateToWorkLogMap.values()) {
+				for (WorkLog workLog : workLogs) {
+					double workLogHours = workLog.getTimeInHours();
+					//log.debug("\tAdding workLogHours: {} to total.", workLogHours);
+					totalHoursWorked += workLogHours;
+				}
 			}
 			
 			for (Task task : keyToSubtaskMap.values()) {
@@ -65,7 +67,11 @@ public class Task extends BaseIssue {
 				//log.debug("Date key = " + date);
 				if (date != null && date.after(startDate) && date.before(endDate)) {
 					//log.debug("{} is between {} and {}", date, startDate, endDate);
-					double workLogHours = dateToWorkLogMap.get(date).getTimeInHours();
+					List<WorkLog> workLogs = dateToWorkLogMap.get(date);					
+					double workLogHours = 0.00;
+					for(WorkLog workLog : workLogs) {		
+						workLogHours += workLog.getTimeInHours();
+					}
 					//log.debug("Adding workLogHours: " + workLogHours);
 					hoursWorkedBetween += workLogHours;
 				}
@@ -93,7 +99,7 @@ public class Task extends BaseIssue {
 	/**
 	 * @return the workLog
 	 */
-	public Collection<WorkLog> getWorkLog() {
+	public Collection<List<WorkLog>> getWorkLog() {
 		return dateToWorkLogMap.values();
 	}
 	
@@ -101,13 +107,23 @@ public class Task extends BaseIssue {
 		if(workLog == null) {
 			return;
 		}
-		if (dateToWorkLogMap.containsValue(workLog)) {
+		/*if (dateToWorkLogMap.containsValue(workLog)) {
 			return;
-		}
+		}*/
 		
 		////log.debug("adding worklog: " + workLog);
 		////log.debug("worklog hours: " + workLog.getHours());
-		dateToWorkLogMap.put(workLog.getDate(), workLog);
+		List<WorkLog> workLogs = dateToWorkLogMap.get(workLog.getDate());
+		
+		if (workLogs == null) {
+			workLogs = new ArrayList<WorkLog>();
+			workLogs.add(workLog);
+			dateToWorkLogMap.put(workLog.getDate(), workLogs);
+		}
+		else {
+			dateToWorkLogMap.get(workLog.getDate()).add(workLog);
+			//workLogs.add(workLog);
+		}
 	}
 	
 	/**

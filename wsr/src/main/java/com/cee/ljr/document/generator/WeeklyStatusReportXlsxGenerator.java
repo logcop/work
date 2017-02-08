@@ -121,7 +121,7 @@ public class WeeklyStatusReportXlsxGenerator {
 		String dateString = weekEndingDateFormater.format(weekEndingDate);
 		
 		return new StringBuilder()
-					.append(props.getWeeklyStatusReportTitle())
+					.append("v2" + props.getWeeklyStatusReportTitle())
 					.append(" WE ")
 					.append(dateString)
 					.append(".xlsx")

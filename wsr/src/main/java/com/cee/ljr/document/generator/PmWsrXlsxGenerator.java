@@ -504,7 +504,9 @@ public class PmWsrXlsxGenerator {
 		addLoggedHours(row, task.getHoursWorkedBetween(startDate, endDate));
 		addRunningHours(row, task.getTotalHoursWorked());
 		addStoryPoints(row, task.getStoryPoints());
-		addDeveloper(row, task.getDevelopers().get(0).getFullName());// STOPPED HERE!!!!!!!!!!
+		if(!CollectionUtils.isEmpty(task.getDevelopers()) ) {
+			addDeveloper(row, task.getDevelopers().get(0).getFullName());// STOPPED HERE!!!!!!!!!!
+		}
 		addStatus(row, task.getStatus());
 	}
 	

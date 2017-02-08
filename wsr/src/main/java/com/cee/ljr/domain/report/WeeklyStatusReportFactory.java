@@ -109,7 +109,7 @@ public class WeeklyStatusReportFactory {
 		
 		//log.debug("addTaskToProject epicKey = '{}'", epicKey);
 		Epic epic = project.getEpic(epicKey);
-		System.out.println("epicKey = [" + epicKey + "]");
+		//System.out.println("epicKey = [" + epicKey + "]");
 		if (epic == null) {
 			epic = createNewEpic(taskJiraIssue, jiraIssues);
 			project.addEpic(epic);
@@ -159,16 +159,16 @@ public class WeeklyStatusReportFactory {
 		
 		String epicKey = taskJiraIssue.getEpicKey();
 		//log.debug("createNewEpic epicKey = '{}'", epicKey);
-		System.out.println("task = " + taskJiraIssue.getKey());
-		System.out.println("createNewEpic epicKey = [" + epicKey + "]");
+		//System.out.println("task = " + taskJiraIssue.getKey());
+		//System.out.println("createNewEpic epicKey = [" + epicKey + "]");
 		JiraIssue epicJiraIssue = jiraIssues.getEpic(epicKey);
 		
 		if (epicJiraIssue != null) {
-			System.out.println("epicJiraIssue != null, creating epic from jira issue");
+			//System.out.println("epicJiraIssue != null, creating epic from jira issue");
 			epic = JiraIssueMapper.createEpic(epicJiraIssue);
 		} 
 		else {
-			System.out.println("epicJiraIssue == null, creating new 'MISC' epic. ");
+			//System.out.println("epicJiraIssue == null, creating new 'MISC' epic. ");
 			epic = new Epic("Miscellaneous");
 			epic.setKey("");
 		}
