@@ -1,150 +1,83 @@
 package mil.pacom.logcop.jira.poc.rest;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Set;
+import java.util.concurrent.ExecutionException;
 
-import javax.net.ssl.SSLSocketFactory;
+import com.atlassian.jira.rest.client.api.JiraRestClient;
+import com.atlassian.jira.rest.client.api.domain.Issue;
+import com.atlassian.jira.rest.client.api.domain.IssueLink;
+import com.atlassian.jira.rest.client.api.domain.SearchResult;
+import com.atlassian.jira.rest.client.internal.async.AsynchronousJiraRestClientFactory;
+import com.atlassian.util.concurrent.Promise;
 
-import mil.pacom.logcop.jira.poc.rest.util.HttpsUtil;
 
-/**
- * TODO: Not finished. I copied the methods from Jim's HttpsUtil that I thought would be useful. Not sure if we need the cert or not. Basic Authentication is not implemented yet.
- * @author charles.e.emmons
- *
- */
 public class RestClient2Poc {
-
-	private static final String JIRA_CERT = "jira-cert.cer";
 	
 	private static final String USER_NAME = "charles.e.emmons.ctr@navy.mil";
 	
 	private static final String PASSWORD = "logcop@2016!";
 	
-	private static final String URL = "https://logcop.atlassian.net/rest/api/2/search?jql=key=PACAF-563&fields=id,key,worklog";
-	
-	private static final Map<String, String> REQUEST_PROPERTIES = createRequestPropertiesMap();
-	
-	private static Map<String, String> createRequestPropertiesMap() {
-		Map<String, String> map = new HashMap<>();
-		map.put("Accept", "application/json");
+	//private static final String URL = "https://logcop.atlassian.net/rest/api/2/search?jql=key=PACAF-563&fields=id,key,worklog";
 		
-		return map;
+	
+	// configure the proxy we need to connect through
+	static {
+		//System.getProperties().put("https.proxyHost", "nmciproxyb1");
+       // System.getProperties().put("https.proxyPort", "8080");
+        System.getProperties().put("https.proxyHost", "nmciproxyb1secure");
+        System.getProperties().put("https.proxyPort", "8443");
+        System.getProperties().put("https.proxySet", "true");
 	}
 	
-	public static String performRequestForUrl(String requestUrl) {
-		SSLSocketFactory socketFactory = HttpsUtil.createSocketFactoryFromResource(JIRA_CERT, PASSWORD); // not the cert password, need to do basic authentication....
+	
+	public static void main(String[] args) throws URISyntaxException, InterruptedException, ExecutionException {
+		//performRequestForUrl(URL);
+		performQuerySingleIssue();
 		
-		if (socketFactory == null) {
-			System.out.println("Failed to create socket factory.");
-			return null;
-		}
+	}	
+	
+	public static void performQuerySingleIssue()  {
+		AsynchronousJiraRestClientFactory clientFactory = new AsynchronousJiraRestClientFactory();
 		
 		try {
-			String contents = HttpsUtil.getHttpsUrlContents(requestUrl, socketFactory, REQUEST_PROPERTIES);
-			if (contents == null) {
-				System.out.println("Failed to retrieve data from: " + requestUrl);
-				return null;
-			}
-			return contents;
-		}
-		catch (Exception e) {
-			System.out.println("Error encountered when retrieving data from: " + requestUrl);
-			e.printStackTrace();
-			return null;
-		}
-	}
-	
-	public static void main(String[] args) {	
-		// make call to performRequestForUrl here.......
-		performRequestForUrl(URL);
-	}
-	
-	
-	
-	/*public static void main(String[] args) {		
-		try { 
-			String https_url = "https://logcop.atlassian.net/rest/api/2/search?jql=key=PACAF-563&fields=id,key,worklog";
-		      URL url;
-		      try {
-
-			     url = new URL(https_url);
-			     HttpsURLConnection con = (HttpsURLConnection)url.openConnection();
-			     con.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
-			     con.setRequestProperty("Accept", "application/json");
-			     con.setRequestMethod("GET");            
-
-			     //dumpl all cert info
-			     print_https_cert(con);
-
-			     //dump all the content
-			     print_content(con);
-
-		      } catch (MalformedURLException e) {
-			     e.printStackTrace();
-		      } catch (IOException e) {
-			     e.printStackTrace();
-		      }
-		} catch (Exception ex) {
-			ex.printStackTrace();
-		}
-
-	}
-	
-	private static void print_https_cert(HttpsURLConnection con){
-
-	    if(con!=null){
-
-	      try {
-
-		System.out.println("Response Code : " + con.getResponseCode());
-		System.out.println("Cipher Suite : " + con.getCipherSuite());
-		System.out.println("\n");
-
-		Certificate[] certs = con.getServerCertificates();
-		for(Certificate cert : certs){
-		   System.out.println("Cert Type : " + cert.getType());
-		   System.out.println("Cert Hash Code : " + cert.hashCode());
-		   System.out.println("Cert Public Key Algorithm : "
-	                                    + cert.getPublicKey().getAlgorithm());
-		   System.out.println("Cert Public Key Format : "
-	                                    + cert.getPublicKey().getFormat());
-		   System.out.println("\n");
-		}
-
-		} catch (SSLPeerUnverifiedException e) {
-			e.printStackTrace();
-		} catch (IOException e){
+	        
+			URI uri = new URI("https://logcop.atlassian.net");
+	        JiraRestClient jiraClient = clientFactory.createWithBasicHttpAuthentication(uri, USER_NAME, PASSWORD);
+	        
+	        Set<String> issueFields = new HashSet<>();
+	        issueFields.add("*all");
+	        //Promise<SearchResult> r = jc.getSearchClient().searchJql("Sprint=\"PACAF Sprint 22\"", null, null, set);
+	        //Promise<SearchResult> r = jc.getSearchClient().searchJql("Sprint=\"PACAF Sprint 22\"", null, null, set);
+	        Promise<SearchResult> searchResultPromise = jiraClient.getSearchClient().searchJql("Key=\"PACAF-563\"", null, null, issueFields);
+	        //Promise<SearchResult> r = jc.getSearchClient().
+	        
+	        Iterator<Issue> it = searchResultPromise.get().getIssues().iterator();
+	        while (it.hasNext()) {
+	             
+	            //Promise<Issue> issue = jc.getIssueClient().getIssue((it.next()).getKey(), null);
+	        	Promise<Issue> issuePromise = jiraClient.getIssueClient().getIssue(it.next().getKey());
+	        	Issue issue = issuePromise.get();
+	            System.out.println(issue); 
+	            System.out.println("Epic Key: " + issue.getFieldByName("Epic Link").getValue());
+	            //System.out.println("Epic: " + issuePromise.get().getKey() + " " + issuePromise.get().getSummary());
+	             
+	            Iterator<IssueLink> itLink = issuePromise.get().getIssueLinks().iterator();
+	            while (itLink.hasNext()) {
+	                 
+	                IssueLink issueLink = itLink.next();
+	                //Issue issueL = jc.getIssueClient().getIssue((issueLink).getTargetIssueKey(), null);
+	                Promise<Issue> issueL = jiraClient.getIssueClient().getIssue(issueLink.getTargetIssueKey());	                 
+	            }
+	             
+	        }
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
-	     }
-
-	   }
-
-	   private static void print_content(HttpsURLConnection con){
-		if(con!=null){
-
-		try {
-
-		   System.out.println("****** Content of the URL ********");
-		   BufferedReader br =
-			new BufferedReader(
-				new InputStreamReader(con.getInputStream()));
-
-		   String input;
-
-		   while ((input = br.readLine()) != null){
-		      System.out.println(input);
-		   }
-		   br.close();
-
-		} catch (IOException e) {
-		   e.printStackTrace();
-		}
-
-	       }
-
-	   }*/
-
+		
+	}
 
 }

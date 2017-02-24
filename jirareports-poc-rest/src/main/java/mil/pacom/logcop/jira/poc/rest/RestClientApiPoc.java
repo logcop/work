@@ -2,13 +2,6 @@ package mil.pacom.logcop.jira.poc.rest;
 
 import java.net.URI;
 
-import com.atlassian.jira.rest.client.api.JiraRestClient;
-import com.atlassian.jira.rest.client.api.JiraRestClientFactory;
-import com.atlassian.jira.rest.client.api.domain.Issue;
-import com.atlassian.jira.rest.client.api.domain.Transition;
-import com.atlassian.jira.rest.client.internal.async.AsynchronousJiraRestClientFactory;
-import com.atlassian.util.concurrent.Promise;
-
 public class RestClientApiPoc {
 
 	private static final String LET439 = "LET-439";
@@ -20,16 +13,16 @@ public class RestClientApiPoc {
 		String user = "charles.e.emmons.ctr@navy.mil";
 		String password = "logcop@2016!";
 
-		JiraRestClientFactory restClientFactory = new AsynchronousJiraRestClientFactory();
+		/*JiraRestClientFactory restClientFactory = new AsynchronousJiraRestClientFactory();
 
-		JiraRestClient restClient = restClientFactory.createWithBasicHttpAuthentication(uri, user, password);
+		JiraRestClient restClient = restClientFactory.createWithBasicHttpAuthentication(uri, user, password);*/
 		
 		//final NullProgressMonitor pm = new NullProgressMonitor();
 		
-        final Promise<Issue> issue = restClient.getIssueClient().getIssue(LET439);
+        //final Promise<Issue> issue = restClient.getIssueClient().getIssue(LET439);
  
 
-        System.out.println(issue.claim()); 
+        //System.out.println(issue.claim()); 
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
@@ -48,7 +41,7 @@ public class RestClientApiPoc {
         restClient.getIssueClient().transition(issue.getTransitionsUri(), transitionInput, pm);*/
 	}
 	
-	private static Transition getTransitionByName(Iterable<Transition> transitions, String transitionName) {
+	/*private static Transition getTransitionByName(Iterable<Transition> transitions, String transitionName) {
 
         for (Transition transition : transitions) {
             if (transition.getName().equals(transitionName)) {
@@ -59,6 +52,6 @@ public class RestClientApiPoc {
 
         return null;
 
-    }
+    }*/
 
 }

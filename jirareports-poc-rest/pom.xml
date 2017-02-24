@@ -1,9 +1,17 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  <groupId>mil.pacom.logcop</groupId>
+  <groupId>mil.pacom.logcop.poc</groupId>
   <artifactId>jirareports-poc-rest</artifactId>
   <version>0.0.1-SNAPSHOT</version>
-  <name>priareports-pos-rest</name>
+  <name>jirareports-poc-rest</name>
+
+<properties>
+	<java.home>C:\dev\jdk_1.7.0\jre</java.home>
+	<java.version>1.7</java.version>
+	<java.client.api.version>3.0.0</java.client.api.version>
+	<java.client.api.2.version>2.0.0-m19</java.client.api.2.version>
+	
+</properties>
 
 <repositories> 
   <repository>
@@ -48,13 +56,13 @@
       <groupId>com.atlassian.jira</groupId>
       <artifactId>jira-rest-java-client-api</artifactId>
       <version>2.0.0-m25</version>
-  </dependency>
+  </dependency>  -->
   
   <dependency>
       <groupId>com.atlassian.jira</groupId>
       <artifactId>jira-rest-java-client-core</artifactId>
-      <version>2.0.0-m25</version>
-  </dependency> -->
+      <version>${java.client.api.version}</version>
+  </dependency>
   
   <dependency>
         <groupId>junit</groupId>
@@ -78,15 +86,15 @@
     <dependency>
         <groupId>com.atlassian.jira</groupId>
         <artifactId>jira-rest-java-client-api</artifactId>
-        <version>2.0.0-m19</version>
+        <version>${java.client.api.version}</version>
     </dependency>
 
-    <dependency>
+    <!-- <dependency>
         <groupId>com.atlassian.jira</groupId>
         <artifactId>jira-rest-java-client-core</artifactId>
         <version>2.0.0-m19</version>
-    </dependency>
-
+    </dependency> -->
+    
     <dependency>
         <groupId>com.google.guava</groupId>
         <artifactId>guava</artifactId>
@@ -112,4 +120,18 @@
         <version>2.4</version>
     </dependency>  
   </dependencies>
+  
+  <build>
+    <plugins>
+        <!-- we want JDK 1.7 source and binary compatiblility -->
+        <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-compiler-plugin</artifactId>
+            <configuration>
+                <source>${java.version}</source>
+                <target>${java.version}</target>
+            </configuration>
+        </plugin>
+    </plugins>
+</build>
 </project>
