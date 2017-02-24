@@ -14,7 +14,7 @@ public class LogcopJiraReports {
 		
 		// weekly status report generation
 		String holidays = "0";
-		String weekEndDate = "02/05/2017";
+		String weekEndDate = "02/21/2017";
 		String pathToReports = null;
 		String pathToJiraCsvs = "C:/wsr_dev/JIRA1.csv;C:/wsr_dev/JIRA2.csv;C:/wsr_dev/JIRA3.csv;C:/wsr_dev/JIRA4.csv";
 		
