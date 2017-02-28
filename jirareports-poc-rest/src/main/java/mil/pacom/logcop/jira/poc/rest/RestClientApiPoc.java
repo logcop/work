@@ -3,10 +3,16 @@ package mil.pacom.logcop.jira.poc.rest;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
+import java.util.StringTokenizer;
 import java.util.concurrent.ExecutionException;
 
 import org.apache.commons.lang.time.StopWatch;
@@ -36,13 +42,13 @@ public class RestClientApiPoc {
 		
 	
 	// configure the proxy we need to connect through
-	/*static {
+	static {
 		//System.getProperties().put("https.proxyHost", "nmciproxyb1");
        // System.getProperties().put("https.proxyPort", "8080");
         System.getProperties().put("https.proxyHost", "nmciproxyb1secure");
         System.getProperties().put("https.proxyPort", "8443");
         System.getProperties().put("https.proxySet", "true");
-	}*/
+	}
 	
 	
 	public static void main(String[] args) {
@@ -197,15 +203,16 @@ public class RestClientApiPoc {
 		}
 	}
 	
-	private static List<Object> getSprints(Issue issue) {
-		List<Object> sprintList = new ArrayList<Object>();
+	private static List<Sprint> getSprints(Issue issue) {
+		List<Sprint> sprintList = new ArrayList<Sprint>();
 		
 		try {
 			JSONArray jsonArray = getJsonArrayValue(issue, CustomField.SPRINT);
 			for (int i = 0; i < jsonArray.length(); i++) {
 				Object obj = jsonArray.get(i);
 				if (obj != null) {
-					sprintList.add(obj);
+					Sprint sprint = mapSprintObject(obj);
+					sprintList.add(sprint);
 				}
 			}
 		} catch (JSONException je) {
@@ -214,6 +221,41 @@ public class RestClientApiPoc {
 		}
 		
 		return sprintList;
+	}
+	
+	private static Sprint mapSprintObject(Object sprintObj) {
+		DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
+		String str = sprintObj.toString();
+		String keyValue = str.substring(str.indexOf("[") + 1, str.lastIndexOf("]"));
+		StringTokenizer tok = new StringTokenizer(keyValue, ",");
+		Map<String, String> map = new LinkedHashMap<String, String>();
+		
+		while (tok.hasMoreTokens()) {
+		    String entString = tok.nextToken();
+		    String[] propertyValuePair = entString.split("=");
+		    String property = propertyValuePair[0];
+		    String value = (propertyValuePair.length == 2) ? propertyValuePair[1] : ""; 
+		    map.put(property, value);
+		}
+		
+		Sprint sprint = null;
+		
+		try {		
+			sprint = 
+				new Sprint(map.get("id"), 
+						map.get("rapidViewId"),
+						map.get("state"),
+						map.get("name"), 
+						map.get("goal"), 
+						df.parse(map.get("startDate")), 
+						df.parse(map.get("endDate")), 
+						df.parse(map.get("completeDate")), 
+						map.get("sequence"));
+		} catch(ParseException pe) {
+			System.out.println("Unable to parse date field...");
+			pe.printStackTrace();
+		}
+		return sprint;
 	}
 	
 	private static String getAssignedDeveloper(Issue issue) {		
