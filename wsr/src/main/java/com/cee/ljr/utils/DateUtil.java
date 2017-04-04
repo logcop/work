@@ -88,7 +88,7 @@ public class DateUtil {
 		}
 		
 		Date weekEndingDate = toDate(WEEK_ENDING_DATE_FORMAT, weekEndingDateString);
-		Date weekStartDate = DateUtils.addDays(weekEndingDate, -6);
+		Date weekStartDate = DateUtils.addDays(weekEndingDate, -7);
 		
 		Calendar cal = Calendar.getInstance();
 		cal.setTime(weekStartDate);

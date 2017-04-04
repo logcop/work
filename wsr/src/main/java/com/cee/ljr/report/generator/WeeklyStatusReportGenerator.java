@@ -32,7 +32,7 @@ public class WeeklyStatusReportGenerator {
 	
 	public void generateV1(String weekEndingDateStr, String jiraFilePaths) {
 		Date weekStartDate = DateUtil.getWeekStartDate(weekEndingDateStr);
-		Date weekEndingDate = DateUtil.getWeekEndingDate(weekEndingDateStr);
+		Date weekEndingDate = new Date();//DateUtil.getWeekEndingDate(weekEndingDateStr);
 		
 		WeeklyStatusReport weeklyStatusReport = srService.getWeeklyStatusReport(jiraFilePaths, 0, weekStartDate, weekEndingDate);
 		
@@ -42,7 +42,7 @@ public class WeeklyStatusReportGenerator {
 	
 	public void generateV2(String weekEndingDateStr, String reportPath, String jiraFilePaths){
 		Date weekStartDate = DateUtil.getWeekStartDate(weekEndingDateStr);
-		Date weekEndingDate = new Date();//DateUtil.getWeekEndingDate(weekEndingDateStr);
+		Date weekEndingDate = new Date();//DateUtil.getWeekEndingDate(weekEndingDateStr); //new Date();//
 		
 		WeeklyStatusReport weeklyStatusReport = srService.getWeeklyStatusReport(jiraFilePaths, 0, weekStartDate, weekEndingDate);
 		
@@ -51,7 +51,7 @@ public class WeeklyStatusReportGenerator {
 	
 	public void generateV3(String numberOfHolidays, String weekEndingDateStr, String reportPath, String jiraFilePaths) {
 		Date weekStartDate = DateUtil.getWeekStartDate(weekEndingDateStr);
-		Date weekEndingDate = new Date(); //DateUtil.getWeekEndingDate(weekEndingDateStr); 
+		Date weekEndingDate = new Date();//DateUtil.getWeekEndingDate(weekEndingDateStr); //new Date(); //DateUtil.getWeekEndingDate(weekEndingDateStr); 
 		int holidaysInt = Integer.parseInt(numberOfHolidays);
 		WeeklyStatusReport weeklyStatusReport = srService.getWeeklyStatusReport(jiraFilePaths, holidaysInt, weekStartDate, weekEndingDate);
 		
