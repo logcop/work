@@ -55,7 +55,7 @@ public class WeeklyStatusReportGenerator {
 		int holidaysInt = Integer.parseInt(numberOfHolidays);
 		WeeklyStatusReport weeklyStatusReport = srService.getWeeklyStatusReport(jiraFilePaths, holidaysInt, weekStartDate, weekEndingDate);
 		
-		allComsWsrXlsxGenerator.generateWsrDocument(weeklyStatusReport, reportPath);
+		//allComsWsrXlsxGenerator.generateWsrDocument(weeklyStatusReport, reportPath);
 		
 		pmWsrXlsxGenerator.generateWsrDocument(weeklyStatusReport, reportPath);
 	}

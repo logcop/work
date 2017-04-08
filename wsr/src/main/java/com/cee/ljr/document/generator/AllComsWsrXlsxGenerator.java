@@ -351,7 +351,7 @@ public class AllComsWsrXlsxGenerator {
 		private void addProjectTotals(Sheet sheet, MutableInt nextRowIndex, Project project, Date startDate, Date endDate) {
 			double expectedTotal = project.getDevelopers().size() * 40;
 			double workLogged = project.getHoursWorkedBetween(startDate, endDate);
-			double leave = project.getLeave(startDate, endDate);
+			double leave = project.getLeaveHours(startDate, endDate);
 			double overhead = expectedTotal - (workLogged + leave);
 			
 			int rowIndex = nextRowIndex.intValue();

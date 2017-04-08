@@ -16,6 +16,8 @@ import org.springframework.util.CollectionUtils;
 public class Project {
 	private static final Logger log = LoggerFactory.getLogger(Project.class);
 	
+	private static final int ADMIN_HOURS_PER_DAY = 2;
+	
 	private String name;
 	private String key;
 	private List<Developer> developers = new ArrayList<Developer>();
@@ -89,6 +91,9 @@ public class Project {
 		return timeSpent;
 	}
 	
+	public double getExpectedTotal() {
+		return getDevelopers().size() * WorkWeek.HOURS_PER_WEEK;
+	}
 	
 	public Epic getEpic(String epicKey) {
 		return keyToEpicMap.get(epicKey);
@@ -115,7 +120,7 @@ public class Project {
 	}
 	
 	
-	public double getLeave(Date startDate, Date endDate) {
+	public double getLeaveHours(Date startDate, Date endDate) {
 		int numberOfDevelopers = developers.size();
 		
 		Epic timeOffEpic = keyToEpicMap.get(timeOffEpicKey);
@@ -128,10 +133,23 @@ public class Project {
 		
 		// have to add the holiday hours
 		if (holidayDays != 0) {
-			leave += (holidayDays * numberOfDevelopers * 8); 
+			leave += (holidayDays * numberOfDevelopers * WorkWeek.HOURS_PER_DAY); 
 		}
 		
 		return leave;
+	}
+	
+	public double getWorkWeekAdminTime(Date workWeekStartDate, Date workWeekEndDate) {
+		int numberOfDevelopers = developers.size();
+		
+		if (numberOfDevelopers == 0) {
+			return 0.0;
+		}
+		
+		double leaveHours = getLeaveHours(workWeekStartDate, workWeekEndDate);
+		double leaveDays =  (leaveHours == 0.0) ? 0.0 : leaveHours / WorkWeek.HOURS_PER_DAY;
+		
+		return (numberOfDevelopers * WorkWeek.HOURS_PER_WEEK) - (leaveDays * ADMIN_HOURS_PER_DAY);
 	}
 	
 	/*private void addTimeOffEpic(Epic epic) {

@@ -51,7 +51,8 @@ public class PmWsrXlsxGenerator {
 	private static final int projectWorkLogColIndex =0;
 	private static final int projectOverheadColIndex = 1;
 	private static final int projectLeaveColIndex = 2;
-	private static final XSSFColor projectFillColor = new XSSFColor(new Color(112,112,112));
+	private static final XSSFColor projectFillColor = new XSSFColor(new Color(166,166,166));
+	private static final XSSFColor hoursBorderColor = new XSSFColor(new Color(112,112,112));
 	private static final XSSFColor projectFontColor = new XSSFColor(new Color(255,255,255));
 
 	// Epic related layout and styling
@@ -63,6 +64,7 @@ public class PmWsrXlsxGenerator {
 	private static final int storyColIndex = 0;
 	private static final XSSFColor storyFontColor = new XSSFColor(new Color(0,0,0));
 	private static final XSSFColor storyFillColor = new XSSFColor(new Color(236,237,225));
+	private static final XSSFColor subTotalFillColor = new XSSFColor(new Color(253,233,217));
 
 	// Task related layout
 	private static final int taskSummaryColIndex = 0;
@@ -307,13 +309,7 @@ public class PmWsrXlsxGenerator {
 		Sheet sheet = wb.createSheet(project.getName());
 		MutableInt nextRowIndex = new MutableInt(0);
 		
-		addProjectHeader(sheet, nextRowIndex, project);
-		nextRowIndex.add(1);
-		
-		addProjectTotals(sheet, nextRowIndex, project, startDate, endDate);
-		nextRowIndex.add(1);
-		
-		addProjectBottomRow(sheet, nextRowIndex);
+		addHeader(sheet, nextRowIndex, project, startDate, endDate);
 		
 		int epicNumber = 1;
 		for (Epic epic : project.getEpics()) {
@@ -331,7 +327,17 @@ public class PmWsrXlsxGenerator {
 		autosizeSheet(sheet); 
 	}
 	
-	private void addProjectBottomRow(Sheet sheet, MutableInt nextRowIndex) {
+	private void addHeader(Sheet sheet, MutableInt nextRowIndex, Project project, Date startDate, Date endDate) {
+		addProjectHeader(sheet, nextRowIndex, project);
+		nextRowIndex.add(1);
+		
+		addProjectActualTotals(sheet, nextRowIndex, project, startDate, endDate);
+		nextRowIndex.add(1);
+		
+		addProjectExpectedTotal(sheet, nextRowIndex);
+	}
+	
+	private void addProjectExpectedTotal(Sheet sheet, MutableInt nextRowIndex) {
 		int rowIndex = nextRowIndex.intValue();
 		Row row = sheet.createRow(rowIndex);
 		Cell cell = row.createCell(projectColIndex);
@@ -341,10 +347,11 @@ public class PmWsrXlsxGenerator {
 		mergeCellsInRow(sheet, rowIndex, projectColIndex, weeklyTotalValueColIndex);
 	}
 	
-	private void addProjectTotals(Sheet sheet, MutableInt nextRowIndex, Project project, Date startDate, Date endDate) {
-		double expectedTotal = project.getDevelopers().size() * 40;
+	private void addProjectActualTotals(Sheet sheet, MutableInt nextRowIndex, Project project, Date startDate, Date endDate) {
+		double expectedTotal = project.getExpectedTotal();
 		double workLogged = project.getHoursWorkedBetween(startDate, endDate);
-		double leave = project.getLeave(startDate, endDate);
+		double adminTime = project.getAdminTime(startDate, endDate);
+		double leave = project.getLeaveHours(startDate, endDate);
 		double overhead = expectedTotal - (workLogged + leave);
 		
 		int rowIndex = nextRowIndex.intValue();
@@ -373,7 +380,7 @@ public class PmWsrXlsxGenerator {
 		cell.setCellStyle(projectHoursCellStyle);
 		// create Total
 		cell = row.createCell(weeklyTotalLabelColIndex);
-		cell.setCellValue("Total:");
+		cell.setCellValue("Weekly Actual Total:");
 		cell.setCellStyle(projectTotalHoursCellStyle);
 		cell.getCellStyle().setAlignment(CellStyle.ALIGN_RIGHT);
 		cell = row.createCell(weeklyTotalValueColIndex);
